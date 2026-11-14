@@ -1,0 +1,51 @@
+name: tokens-sync
+
+on:
+  pull_request:
+    paths:
+      - packages/design-tokens/src/tokens.json
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    # Token Forge opens these PRs from a branch in this repo.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      # Pushes made with GITHUB_TOKEN don't re-trigger `ci`; use the GitHub App token when configured.
+      - id: app
+        if: ${{ vars.RELEASE_APP_ID != '' }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ steps.app.outputs.token || secrets.GITHUB_TOKEN }}
+      - uses: jdx/mise-action@v2
+        with:
+          cache: true
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Classify token changes
+        run: pnpm --filter @civilian-dev/design-tokens token-diff --base origin/${{ github.base_ref }} --out "$RUNNER_TEMP/token-diff.md"
+      - name: Commit regenerated files and changeset
+        run: |
+          git config user.name "civilian-design[bot]"
+          git config user.email "civilian-design[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "chore(design-tokens): rebuild outputs and add changeset"
+            git push
+          fi
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: token-diff
+          path: ${{ runner.temp }}/token-diff.md
