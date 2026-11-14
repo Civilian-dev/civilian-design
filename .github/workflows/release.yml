@@ -13,6 +13,8 @@ permissions:
 
 jobs:
   release:
+    # Needs the GitHub App (see README) so the Version PR can be created and run the required `ci` check.
+    if: ${{ vars.RELEASE_APP_ID != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +31,6 @@ jobs:
       # pass the required `ci` check. Use a GitHub App token when the app is configured
       # (repo variable RELEASE_APP_ID + secret RELEASE_APP_PRIVATE_KEY).
       - id: app
-        if: ${{ vars.RELEASE_APP_ID != '' }}
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ vars.RELEASE_APP_ID }}
@@ -42,5 +43,5 @@ jobs:
           title: "chore: version packages"
           createGithubReleases: true
         env:
-          GITHUB_TOKEN: ${{ steps.app.outputs.token || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

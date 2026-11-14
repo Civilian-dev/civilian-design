@@ -36,5 +36,5 @@ Add a changeset (`pnpm changeset`) to any PR that changes a published package. O
 
 One-off setup:
 
-1. Create a GitHub App with contents and pull-requests write access, install it on this repo, then set repo variable `RELEASE_APP_ID` and secret `RELEASE_APP_PRIVATE_KEY`. Without it the Version PR is created with `GITHUB_TOKEN` and won't trigger the required `ci` check.
+1. Create a GitHub App with contents and pull-requests write access, install it on this repo, then set repo variable `RELEASE_APP_ID` and secret `RELEASE_APP_PRIVATE_KEY`. Until it is configured the release workflow is skipped (a `GITHUB_TOKEN` Version PR cannot run the required `ci` check).
 2. After the first publish, in each package's settings check visibility is **Public**, it's linked to this repo with **Inherit access from repository** on, and the repo has Actions write access.
