@@ -10,6 +10,7 @@
       "!**/tokens.json",
       "!**/__snapshots__",
       "!.claude",
+      "!.changeset",
       "!pnpm-lock.yaml"
     ]
   },
