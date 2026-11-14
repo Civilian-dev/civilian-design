@@ -16,7 +16,6 @@ import {
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// biome-ignore lint/suspicious/noExplicitAny: DTCG / resolved JSON
 type Json = any;
 
 export interface Snapshot {
