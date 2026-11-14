@@ -69,5 +69,5 @@ The callout backgrounds and textures have no `viewBox`, so they fill any box:
 
 - Titles are wrapped by the caller; the composer does not measure text.
 - Text uses Poppins and Monaspace Xenon by name. Rasterising to PNG for social cards needs the fonts embedded (stage 4 of [`docs/brand-plan.md`](../../docs/brand-plan.md)).
-- No tests yet. The rules in `DESIGN.md` are followed by construction, not checked.
+- Tests cover parsing, determinism, whole-pixel tiles and ids. The brand rules in `DESIGN.md` (colour placement, key, feature block) are not checked yet.
 - The dark scheme reads the light token set, because `night` is an inverse scheme built from primitives. It does not yet use the dark semantic tokens.
