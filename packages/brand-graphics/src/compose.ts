@@ -541,7 +541,7 @@ export function compose(kit: Kit, hex: Hex, o: ComposeOptions): string {
     s: SCHEMES[o.scheme],
     rng: mulberry32(o.seed),
     id: `${o.layout}-${o.scheme}-s${o.seed}`,
-    u: o.height / 6,
+    u: Math.min(o.width, o.height) / 6,
     defs: [],
     out: [],
   };
