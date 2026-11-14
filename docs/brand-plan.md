@@ -12,14 +12,14 @@ The seed idea is **fridge magnets**: a few plain, solid pieces on a clean white 
 
 ## Research summary
 
-| Source | What we take from it |
-| --- | --- |
-| Stripe Press, _Working in Public_ | One flat ground colour per page, one dark ink for all type, a cover built from a repeating module in three flat inks. Colour is printed, not lit. |
-| Increment | Light neutral ground, one accent per issue, hairline rules, a short accent bar over a tracked uppercase byline, generous gaps between cards. |
-| NYCTA Graphic Standards Manual (Unimark, 1970) | A fixed module, a small kit of parts, strict hierarchy, one typeface doing one job per size, information only where a decision is made. |
-| Keith Haring | One uniform bold line with round ends, flat fills, radiating "action" ticks around the subject, dash and dot fields as texture. |
-| Memphis | Squiggles, zigzags, confetti and terrazzo as seamless pattern; unexpected pairings of simple solids. |
-| First attempt (profile banner) | Disc, square, bars, triangle, arc and half-disc as magnets; the disc + square + two bars snap into a person: the civilian. Rounded geometric sans, lots of white. |
+| Source                                         | What we take from it                                                                                                                                              |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Stripe Press, _Working in Public_              | One flat ground colour per page, one dark ink for all type, a cover built from a repeating module in three flat inks. Colour is printed, not lit.                 |
+| Increment                                      | Light neutral ground, one accent per issue, hairline rules, a short accent bar over a tracked uppercase byline, generous gaps between cards.                      |
+| NYCTA Graphic Standards Manual (Unimark, 1970) | A fixed module, a small kit of parts, strict hierarchy, one typeface doing one job per size, information only where a decision is made.                           |
+| Keith Haring                                   | One uniform bold line with round ends, flat fills, radiating "action" ticks around the subject, dash and dot fields as texture.                                   |
+| Memphis                                        | Squiggles, zigzags, confetti and terrazzo as seamless pattern; unexpected pairings of simple solids.                                                              |
+| First attempt (profile banner)                 | Disc, square, bars, triangle, arc and half-disc as magnets; the disc + square + two bars snap into a person: the civilian. Rounded geometric sans, lots of white. |
 
 Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/design.md) (alpha, Apache-2.0) is the closest thing to a common, agent-readable design guide: YAML tokens in front matter plus fixed-order prose sections, with a linter (`@google/design.md lint`). Tokens themselves already follow DTCG in `packages/design-tokens`. The agent harness file convention is `AGENTS.md` (plural), which `CLAUDE.md` can import.
 
@@ -36,17 +36,18 @@ Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/de
 
 This file.
 
-### Stage 1: brand guide `[ ]`
+### Stage 1: brand guide `[x]`
 
 - `DESIGN.md` at the root: principles (with rule ids), colour roles, typography, layout, shapes, components, graphics system, artefact specs, do's and don'ts.
 - Done when: the file follows the DESIGN.md section order and every colour, font and size in it exists in `packages/design-tokens/dist/tokens.css`.
 
-### Stage 2: source graphics and examples `[ ]`
+### Stage 2: source graphics and examples `[x]`
 
 - `packages/brand-graphics/src/shapes/` magnets (solids), `src/lines/` marks (strokes), `src/patterns/` seamless tiles, `src/mark/` the civilian figure.
 - `packages/brand-graphics/scripts/compose.ts` composer and texture generators (grain gradient, stipple fade).
 - `packages/brand-graphics/examples/` generated variations: Open Graph images, article banners, profile banner, callout backgrounds, textures, avatar.
-- Done when: examples regenerate byte-identically from the script and the README shows them.
+- Done when: examples regenerate byte-identically from the script and `examples/index.html` shows them.
+- Not done: `DESIGN.md` has not been run through `@google/design.md lint` (only checked by script against the tokens and the section order).
 
 Left for a follow-up session (refine and expand):
 
