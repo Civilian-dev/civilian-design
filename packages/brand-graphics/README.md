@@ -6,14 +6,14 @@ Private for now. Open [`examples/index.html`](examples/index.html) to see everyt
 
 ## Layout
 
-| Path               | What                                                                 | Edited by         |
-| ------------------ | -------------------------------------------------------------------- | ----------------- |
-| `src/shapes/`      | The working pieces: disc, quarter-disc, half-disc, triangle, square   | hand              |
-| `src/mark/`        | The civilian figure (provisional brand mark)                          | hand              |
-| `src/reserve/`     | Earlier pieces, line marks and pattern tiles. Not loaded, not used.   | hand              |
-| `src/compose.ts`   | Composer: layouts, feature blocks, callout backgrounds, textures      | hand              |
-| `scripts/build.ts` | Writes `examples/` from the sources and the design tokens             | hand              |
-| `examples/`        | Generated output, committed and drift-checked by CI                   | `pnpm build` only |
+| Path               | What                                                                | Edited by         |
+| ------------------ | ------------------------------------------------------------------- | ----------------- |
+| `src/shapes/`      | The working pieces: disc, quarter-disc, half-disc, triangle, square | hand              |
+| `src/mark/`        | The civilian figure (provisional brand mark)                        | hand              |
+| `src/reserve/`     | Earlier pieces, line marks and pattern tiles. Not loaded, not used. | hand              |
+| `src/compose.ts`   | Composer: layouts, feature blocks, callout backgrounds, textures    | hand              |
+| `scripts/build.ts` | Writes `examples/` from the sources and the design tokens           | hand              |
+| `examples/`        | Generated output, committed and drift-checked by CI                 | `pnpm build` only |
 
 ## Source rules
 

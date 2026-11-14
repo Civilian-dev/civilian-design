@@ -196,7 +196,9 @@ function put(
   turn = 0,
 ): string {
   const s = height / piece.h;
-  const spin = turn ? ` rotate(${turn} ${n(piece.w / 2)} ${n(piece.h / 2)})` : "";
+  const spin = turn
+    ? ` rotate(${turn} ${n(piece.w / 2)} ${n(piece.h / 2)})`
+    : "";
   return `<g transform="translate(${n(x)} ${n(y)}) scale(${Math.round(s * 10000) / 10000})${spin}" fill="${colour}">${piece.body}</g>`;
 }
 
@@ -340,7 +342,10 @@ function sign(c: Ctx): void {
 
   if (c.s.band) {
     c.out.push(
-      rect({ x: 0, y: 0, w: W, h: Math.round(u * 0.267) }, `fill="${c.hex(c.s.band)}"`),
+      rect(
+        { x: 0, y: 0, w: W, h: Math.round(u * 0.267) },
+        `fill="${c.hex(c.s.band)}"`,
+      ),
     );
   }
 
@@ -384,7 +389,10 @@ function sign(c: Ctx): void {
     } else {
       grain(c, block);
       c.out.push(
-        rect({ x: block.x - rule, y: top, w: rule, h: bottom - top }, `fill="${ink}"`),
+        rect(
+          { x: block.x - rule, y: top, w: rule, h: bottom - top },
+          `fill="${ink}"`,
+        ),
       );
     }
   }
@@ -403,7 +411,14 @@ function sign(c: Ctx): void {
     heading(c, m, H - u * 0.61, u * 0.248, WORDMARK, "-0.01em");
   }
   if (text) {
-    label(c, m + u * 2.457, H - u * 0.629, u * 0.152, text.meta, c.hex(c.s.muted));
+    label(
+      c,
+      m + u * 2.457,
+      H - u * 0.629,
+      u * 0.152,
+      text.meta,
+      c.hex(c.s.muted),
+    );
   }
   const size = u * 0.381;
   key(c, W - m, H - u * 0.857, size);
@@ -426,10 +441,16 @@ function ledger(c: Ctx): void {
   const tile = cellH / 12;
   const cellW = tile * 10;
   const vx = W - f - rule / 2 - cellW - rule;
-  const cell: Box = { x: vx + rule, y: top + rule / 2, w: cellW, h: cellH + rule / 2 };
+  const cell: Box = {
+    x: vx + rule,
+    y: top + rule / 2,
+    w: cellW,
+    h: cellH + rule / 2,
+  };
   const pad = u * 0.305;
 
-  if (feature === "weave") weave(c, { ...cell, y: top + rule / 2, h: tile * 12 }, tile);
+  if (feature === "weave")
+    weave(c, { ...cell, y: top + rule / 2, h: tile * 12 }, tile);
   if (feature === "grain") grain(c, cell);
 
   const half = rule / 2;
