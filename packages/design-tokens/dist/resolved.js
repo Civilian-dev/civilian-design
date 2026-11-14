@@ -4,10 +4,10 @@ export const resolved = {
     "colors": {
       "neutral": {
         "50": {
-          "hex": "#f9fafb",
+          "hex": "#f9fafc",
           "oklch": "oklch(0.9846 0.0017 247.84)",
           "alpha": 1,
-          "css": "#f9fafb"
+          "css": "#f9fafc"
         },
         "100": {
           "hex": "#f0f3f4",
@@ -362,10 +362,10 @@ export const resolved = {
           "css": "#ffffff"
         },
         "subtle": {
-          "hex": "#f9fafb",
+          "hex": "#f9fafc",
           "oklch": "oklch(0.9846 0.0017 247.84)",
           "alpha": 1,
-          "css": "#f9fafb"
+          "css": "#f9fafc"
         },
         "muted": {
           "hex": "#f0f3f4",
@@ -1123,10 +1123,10 @@ export const resolved = {
     "colors": {
       "neutral": {
         "50": {
-          "hex": "#f9fafb",
+          "hex": "#f9fafc",
           "oklch": "oklch(0.9846 0.0017 247.84)",
           "alpha": 1,
-          "css": "#f9fafb"
+          "css": "#f9fafc"
         },
         "100": {
           "hex": "#f0f3f4",
@@ -1499,18 +1499,18 @@ export const resolved = {
           "css": "#566263"
         },
         "inverse": {
-          "hex": "#f9fafb",
+          "hex": "#f9fafc",
           "oklch": "oklch(0.9846 0.0017 247.84)",
           "alpha": 1,
-          "css": "#f9fafb"
+          "css": "#f9fafc"
         }
       },
       "fg": {
         "default": {
-          "hex": "#f9fafb",
+          "hex": "#f9fafc",
           "oklch": "oklch(0.9846 0.0017 247.84)",
           "alpha": 1,
-          "css": "#f9fafb"
+          "css": "#f9fafc"
         },
         "muted": {
           "hex": "#e0e6e7",

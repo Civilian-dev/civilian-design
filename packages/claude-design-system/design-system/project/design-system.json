@@ -20,7 +20,7 @@
   "lastChange": {
     "by": "Civilian CI",
     "at": "2026-11-14T00:00:00Z",
-    "via": "CI c84f41f5",
+    "via": "CI 54f2f905",
     "note": "Generated from @civilian-dev/design-tokens. Edit the tokens in Figma, not here."
   }
 }

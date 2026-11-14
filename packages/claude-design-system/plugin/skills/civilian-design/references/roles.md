@@ -6,11 +6,11 @@ Generated from the design tokens. Light and dark hex values per semantic role.
 |---|---|---|---|
 | `bg.canvas` | `#fdfbf8` | `#1b2223` | Surface background: page background behind everything |
 | `bg.default` | `#ffffff` | `#2c3536` | Surface background: default |
-| `bg.subtle` | `#f9fafb` | `#404a4b` | Surface background: subtle tinted fill |
+| `bg.subtle` | `#f9fafc` | `#404a4b` | Surface background: subtle tinted fill |
 | `bg.muted` | `#f0f3f4` | `#404a4b` | Surface background: muted fill |
 | `bg.emphasized` | `#e0e6e7` | `#566263` | Surface background: emphasised fill or stronger line |
-| `bg.inverse` | `#01343a` | `#f9fafb` | Surface background: inverted surface or text on inverted surface |
-| `fg.default` | `#01343a` | `#f9fafb` | Text and icons: default |
+| `bg.inverse` | `#01343a` | `#f9fafc` | Surface background: inverted surface or text on inverted surface |
+| `fg.default` | `#01343a` | `#f9fafc` | Text and icons: default |
 | `fg.muted` | `#2c3536` | `#e0e6e7` | Text and icons: muted fill |
 | `fg.subtle` | `#404a4b` | `#aab7b9` | Text and icons: subtle tinted fill |
 | `fg.disabled` | `#aab7b9` | `#566263` | Text and icons: disabled content |

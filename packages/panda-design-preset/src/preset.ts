@@ -22,7 +22,7 @@ export const civilianPreset = definePreset({
       "colors": {
             "neutral": {
                   "50": {
-                        "value": "#f9fafb"
+                        "value": "#f9fafc"
                   },
                   "100": {
                         "value": "#f0f3f4"
