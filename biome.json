@@ -10,6 +10,7 @@
       "!**/tokens.json",
       "!**/__snapshots__",
       "!.claude",
+      "!DESIGN.md",
       "!.changeset",
       "!**/src/preset.ts",
       "!**/styled-system",
