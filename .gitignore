@@ -150,3 +150,6 @@ vite.config.ts.timestamp-*
 
 # claude worktrees
 .claude/worktrees/
+
+# generated outputs are committed (drift-checked in CI)
+!packages/design-tokens/dist
