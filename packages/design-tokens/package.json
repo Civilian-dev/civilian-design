@@ -39,6 +39,7 @@
     "normalise": "tsx scripts/normalise.ts",
     "build": "tsx scripts/build.ts",
     "test": "vitest run",
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p .",
+    "token-diff": "tsx scripts/token-diff.ts"
   }
 }
