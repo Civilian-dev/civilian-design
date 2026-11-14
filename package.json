@@ -1,0 +1,20 @@
+{
+  "name": "civilian-design",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm -r --workspace-concurrency=1 run --if-present build",
+    "test": "pnpm -r run --if-present test",
+    "lint": "biome check .",
+    "typecheck": "pnpm -r run --if-present typecheck",
+    "check": "pnpm lint && pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.7",
+    "typescript": "7.0.2"
+  }
+}

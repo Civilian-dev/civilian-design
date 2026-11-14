@@ -1,0 +1,18 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/node_modules",
+      "!packages/claude-design-system/plugin",
+      "!packages/claude-design-system/design-system",
+      "!**/tokens.json",
+      "!**/__snapshots__",
+      "!.claude",
+      "!pnpm-lock.yaml"
+    ]
+  },
+  "formatter": { "indentStyle": "space", "indentWidth": 2 },
+  "linter": { "rules": { "recommended": true } }
+}
