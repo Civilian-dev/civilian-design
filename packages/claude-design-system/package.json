@@ -1,0 +1,22 @@
+{
+  "name": "@civilian-dev/claude-design-system",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Generates the Civilian Claude plugin/skill and Design System artifact bundle (committed outputs)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@civilian-dev/design-tokens": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
+  }
+}

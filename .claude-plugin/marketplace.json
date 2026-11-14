@@ -1,0 +1,13 @@
+{
+  "name": "civilian-design",
+  "owner": {
+    "name": "Tim Kinnane"
+  },
+  "plugins": [
+    {
+      "name": "civilian-design",
+      "source": "./packages/claude-design-system/plugin",
+      "description": "Civilian design system skill: tokens, colour roles and usage guidance."
+    }
+  ]
+}
