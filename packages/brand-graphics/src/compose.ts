@@ -33,8 +33,6 @@ interface Scheme {
   bulletInk: string;
   /** Key colours, first piece first (G3). */
   key: readonly [string, string, string];
-  /** The one large piece in a grain block (G5). */
-  piece: string;
   grain: readonly Pair[];
   weave: readonly Pair[];
 }
@@ -52,7 +50,6 @@ export const SCHEMES = {
     bullet: "red.500",
     bulletInk: "base.paper",
     key: ["teal.900", "red.500", "gold.300"],
-    piece: "teal.900",
     grain: [["salmon.300", "red.500"]],
     weave: [
       ["teal.900", "red.500"],
@@ -67,7 +64,6 @@ export const SCHEMES = {
     bullet: "red.500",
     bulletInk: "base.paper",
     key: ["teal.900", "red.500", "salmon.300"],
-    piece: "teal.900",
     grain: [["salmon.300", "red.500"]],
     weave: [
       ["teal.900", "teal.500"],
@@ -82,7 +78,6 @@ export const SCHEMES = {
     bullet: "red.500",
     bulletInk: "base.paper",
     key: ["base.paper", "red.500", "gold.300"],
-    piece: "teal.900",
     grain: [["salmon.300", "red.500"]],
     weave: [["salmon.300", "red.500"]],
   },
@@ -296,7 +291,7 @@ function weave(c: Ctx, b: Box, tile: number): void {
   c.out.push(rect(b, `fill="url(#${id}-p)"`));
 }
 
-/** A noise gradient with one quarter-disc anchored in the corner (G5 grain). */
+/** A noise gradient with one ink quarter-disc anchored in the corner (G5 grain). */
 function grain(c: Ctx, b: Box): void {
   noise(c, `${c.id}-grain`, b, pick(c.rng, c.s.grain), "diagonal");
   const r = Math.min(b.w, b.h) * 0.66;
@@ -306,7 +301,7 @@ function grain(c: Ctx, b: Box): void {
       b.x + b.w - r,
       b.y + b.h - r,
       r,
-      c.hex(c.s.piece),
+      c.hex(c.s.ink),
       270,
     ),
   );

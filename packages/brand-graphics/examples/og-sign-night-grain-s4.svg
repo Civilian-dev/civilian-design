@@ -8,7 +8,7 @@
 <text x="172.07" y="131.98" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#a8d6d8">NO. 018 · PROJECTS</text>
 <rect x="831" y="182" width="297" height="324" fill="#fea993"/>
 <rect x="831" y="182" width="297" height="324" fill="url(#sign-night-s4-grain-g)" filter="url(#sign-night-s4-grain-f)"/>
-<g transform="translate(931.98 309.98) scale(1.6335) rotate(270 60 60)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<g transform="translate(931.98 309.98) scale(1.6335) rotate(270 60 60)" fill="#fdfbf8"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
 <rect x="829" y="180" width="2" height="326" fill="#fdfbf8"/>
 <rect x="72" y="180" width="1056" height="2" fill="#fdfbf8"/>
 <rect x="72" y="506" width="1056" height="2" fill="#fdfbf8"/>

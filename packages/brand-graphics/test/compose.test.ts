@@ -8,6 +8,8 @@ import {
   type Kit,
   type Layout,
   parsePiece,
+  SCHEMES,
+  type SchemeName,
   texture,
 } from "../src/compose";
 
@@ -26,7 +28,8 @@ const kit: Kit = {
   ),
   mark: parsePiece(read("mark/civilian.svg"), "civilian.svg"),
 };
-const hex = (path: string) => `#${path.length.toString(16).padStart(6, "0")}`;
+// Colours are passed through as token paths, so tests can assert on them.
+const hex = (path: string) => path;
 
 const svg = (body: string, root = 'viewBox="0 0 10 10" fill="currentColor"') =>
   `<svg xmlns="http://www.w3.org/2000/svg" ${root}>${body}</svg>`;
@@ -135,5 +138,35 @@ describe("ids", () => {
     const ids = [...page.matchAll(/ id="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.length).toBeGreaterThan(0);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe("brand rules", () => {
+  const schemes = Object.keys(SCHEMES) as SchemeName[];
+  const article = {
+    letter: "A",
+    kind: "Article",
+    number: "001",
+    section: "Notes",
+    title: ["One", "Two"] as [string, string],
+    meta: "1 Jan 2026",
+  };
+
+  it.each(schemes)("%s grain disc is ink (G5)", (scheme) => {
+    const out = compose(kit, hex, {
+      width: 1200,
+      height: 630,
+      layout: "sign",
+      scheme,
+      feature: "grain",
+      seed: 4,
+      text: article,
+    });
+    const disc = kit.shapes["quarter-disc"]?.body ?? "";
+    const fill = out
+      .split("<g ")
+      .find((g) => g.includes("rotate(270") && g.includes(disc))
+      ?.match(/ fill="([^"]+)"/)?.[1];
+    expect(fill).toBe(SCHEMES[scheme].ink);
   });
 });
