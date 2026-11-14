@@ -169,4 +169,33 @@ describe("brand rules", () => {
       ?.match(/ fill="([^"]+)"/)?.[1];
     expect(fill).toBe(SCHEMES[scheme].ink);
   });
+
+  it.each(
+    schemes.flatMap((scheme) =>
+      (["sign", "ledger"] as const).flatMap((layout) =>
+        (["weave", "grain", "none"] as const).map(
+          (feature) => [scheme, layout, feature] as const,
+        ),
+      ),
+    ),
+  )(
+    "%s %s %s: red only in the bullet and one key piece (C4)",
+    (scheme, layout, feature) => {
+      expect(
+        SCHEMES[scheme].key.filter((c) => c.startsWith("red.")).length,
+      ).toBeLessThanOrEqual(1);
+      const out = compose(kit, hex, {
+        width: 1200,
+        height: 630,
+        layout,
+        scheme,
+        feature,
+        seed: 2,
+        text: article,
+      });
+      // Feature gradients use red as a stipple flood, never as a fill.
+      const reds = out.match(/ fill="red\./g) ?? [];
+      expect(reds.length).toBeLessThanOrEqual(2);
+    },
+  );
 });
