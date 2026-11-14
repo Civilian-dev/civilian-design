@@ -6,7 +6,6 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// biome-ignore lint/suspicious/noExplicitAny: DTCG / resolved JSON
 type Json = any;
 
 const tokensDir = dirname(

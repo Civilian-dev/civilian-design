@@ -1,0 +1,26 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-14T00:00:00Z"
+  },
+  "editing": "code",
+  "title": "Civilian",
+  "namespace": "Civilian",
+  "libraries": [],
+  "sections": {},
+  "groups": [],
+  "assetGroups": {},
+  "blobs": {},
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "lastChange": {
+    "by": "Civilian CI",
+    "at": "2026-11-14T00:00:00Z",
+    "via": "CI c84f41f5",
+    "note": "Generated from @civilian-dev/design-tokens. Edit the tokens in Figma, not here."
+  }
+}
