@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" data-recipe="tile" data-scheme="night" data-seed="8" data-motif="rings">
+<rect width="1600" height="600" fill="#01343a"/>
+<rect x="1000" y="0" width="600" height="600" fill="#1c6b69"/>
+<g transform="translate(1003.33 3.33) scale(1.61) rotate(270 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1203.33 3.33) scale(1.61)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1403.33 3.33) scale(1.61) rotate(270 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1003.33 203.33) scale(1.61) rotate(180 60 60)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1203.33 203.33) scale(1.61) rotate(90 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1403.33 203.33) scale(1.61) rotate(180 60 60)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1003.33 403.33) scale(1.61) rotate(270 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1203.33 403.33) scale(1.61)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1403.33 403.33) scale(1.61) rotate(270 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+</svg>

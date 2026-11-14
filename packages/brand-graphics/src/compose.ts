@@ -20,59 +20,100 @@ export interface Kit {
 /** Looks up a primitive colour by token path, e.g. `salmon.300`. */
 export type Hex = (path: string) => string;
 
-export type Ground = "paper" | "ink";
-export type Recipe = "totem" | "scatter" | "band" | "field";
+export type Recipe = "corner" | "row" | "tile" | "band";
 
-/** Named palettes (C2): three magnet inks per ground, as token paths. */
-export const PALETTES = {
-  sunrise: {
-    paper: ["salmon.300", "gold.300", "teal.500"],
-    ink: ["salmon.300", "gold.300", "teal.300"],
+/**
+ * Colour schemes (C2), as token paths. Each is one flat ground, one ink for
+ * type, three magnet inks ordered by contrast with the ground, a block
+ * colour for panels and bands with two inks that read on it, and a tonal
+ * colour for textures.
+ */
+export const SCHEMES = {
+  paper: {
+    ground: "base.paper",
+    ink: "teal.900",
+    muted: "neutral.800",
+    shapes: ["red.500", "teal.700", "gold.300"],
+    block: "teal.900",
+    onBlock: ["gold.300", "red.500"],
+    tone: "salmon.300",
   },
-  dusk: {
-    paper: ["violet.500", "salmon.300", "teal.700"],
-    ink: ["violet.300", "salmon.300", "teal.300"],
+  press: {
+    ground: "salmon.300",
+    ink: "teal.900",
+    muted: "teal.900",
+    shapes: ["teal.900", "red.500", "gold.300"],
+    block: "red.500",
+    onBlock: ["teal.900", "gold.300"],
+    tone: "salmon.500",
   },
-  harbour: {
-    paper: ["teal.700", "teal.300", "gold.300"],
-    ink: ["teal.500", "teal.300", "gold.300"],
+  sun: {
+    ground: "gold.300",
+    ink: "teal.900",
+    muted: "teal.900",
+    shapes: ["violet.500", "teal.900", "red.500"],
+    block: "violet.500",
+    onBlock: ["gold.300", "teal.900"],
+    tone: "gold.500",
   },
-  signal: {
-    paper: ["violet.500", "gold.300", "red.500"],
-    ink: ["violet.300", "gold.300", "red.500"],
+  mint: {
+    ground: "teal.300",
+    ink: "teal.900",
+    muted: "teal.900",
+    shapes: ["teal.900", "red.500", "gold.300"],
+    block: "teal.900",
+    onBlock: ["teal.300", "gold.300"],
+    tone: "teal.500",
+  },
+  night: {
+    ground: "teal.900",
+    ink: "base.paper",
+    muted: "teal.300",
+    shapes: ["salmon.300", "gold.300", "red.500"],
+    block: "teal.700",
+    onBlock: ["gold.300", "salmon.300"],
+    tone: "teal.500",
+  },
+  plum: {
+    ground: "violet.900",
+    ink: "base.paper",
+    muted: "violet.300",
+    shapes: ["gold.300", "salmon.300", "violet.300"],
+    block: "violet.500",
+    onBlock: ["gold.300", "violet.900"],
+    tone: "violet.500",
   },
 } as const;
 
-export type PaletteName = keyof typeof PALETTES;
+export type SchemeName = keyof typeof SCHEMES;
 
 export interface Inks {
   ground: string;
   /** Text and line marks. */
   ink: string;
   muted: string;
-  accents: [string, string, string];
+  shapes: [string, string, string];
+  block: string;
+  onBlock: [string, string];
+  tone: string;
+  /** First magnet ink that is not the text ink; used for the kicker bar. */
+  accent: string;
 }
 
-export function resolveInks(
-  hex: Hex,
-  palette: PaletteName,
-  ground: Ground,
-): Inks {
-  const [a, b, c] = PALETTES[palette][ground];
-  const accents: [string, string, string] = [hex(a), hex(b), hex(c)];
-  return ground === "paper"
-    ? {
-        ground: hex("base.paper"),
-        ink: hex("teal.900"),
-        muted: hex("neutral.800"),
-        accents,
-      }
-    : {
-        ground: hex("teal.900"),
-        ink: hex("base.paper"),
-        muted: hex("teal.300"),
-        accents,
-      };
+export function resolveInks(hex: Hex, scheme: SchemeName): Inks {
+  const s = SCHEMES[scheme];
+  const shapes = s.shapes.map(hex) as [string, string, string];
+  const ink = hex(s.ink);
+  return {
+    ground: hex(s.ground),
+    ink,
+    muted: hex(s.muted),
+    shapes,
+    block: hex(s.block),
+    onBlock: s.onBlock.map(hex) as [string, string],
+    tone: hex(s.tone),
+    accent: shapes.find((c) => c !== ink) ?? shapes[0],
+  };
 }
 
 export interface TextBlock {
@@ -87,11 +128,10 @@ export interface ComposeOptions {
   width: number;
   height: number;
   recipe: Recipe;
-  palette: PaletteName;
-  ground: Ground;
+  scheme: SchemeName;
   seed: number;
   text?: TextBlock;
-  /** `scatter` only: stand the civilian in the graphics zone with a wordmark. */
+  /** Add the wordmark and the civilian (A3). Use with `tile` or `band`. */
   profile?: boolean;
 }
 
@@ -136,15 +176,6 @@ function pick<T>(rng: Rng, items: readonly T[]): T {
   return items[Math.floor(rng() * items.length)] as T;
 }
 
-function shuffle<T>(rng: Rng, items: readonly T[]): T[] {
-  const out = [...items];
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [out[i], out[j]] = [out[j] as T, out[i] as T];
-  }
-  return out;
-}
-
 interface Placement {
   x: number;
   y: number;
@@ -174,6 +205,11 @@ interface Ctx {
   defs: string[];
   out: string[];
   uid: (prefix: string) => string;
+  /** Motif the recipe chose, recorded on the root element (G10). */
+  motif: string;
+  /** Edges of the area left free for text and the figure. */
+  bottom: number;
+  right: number;
 }
 
 function shape(c: Ctx, name: string): Piece {
@@ -182,12 +218,24 @@ function shape(c: Ctx, name: string): Piece {
   return p;
 }
 
-/** Accent colours in a shuffled cycle so neighbours differ. */
-function colourCycle(c: Ctx): () => string {
-  const order = shuffle(c.rng, c.inks.accents);
-  let i = 0;
-  return () => order[i++ % order.length] as string;
+/** Register a pattern tile as a paint server and return its id (G8). */
+function patternFill(c: Ctx, name: string, colour: string, scale: number) {
+  const tile = c.kit.patterns[name];
+  if (!tile) throw new Error(`Unknown pattern: ${name}`);
+  const id = c.uid("pat");
+  const paint = (v: string) => v.replaceAll("currentColor", colour);
+  c.defs.push(
+    `<pattern id="${id}" width="${tile.w}" height="${tile.h}" patternUnits="userSpaceOnUse" patternTransform="scale(${n(scale)})"><g ${paint(tile.attrs)}>${paint(tile.body)}</g></pattern>`,
+  );
+  return id;
 }
+
+/**
+ * Quarter-turn that puts the anchored corner of a corner-weighted piece
+ * (quarter-disc, arc, wedge: source corner is bottom-left) where we want it.
+ */
+const TURN = { bl: 0, tl: 90, tr: 180, br: 270 } as const;
+type Corner = keyof typeof TURN;
 
 // --- textures (G7) ---------------------------------------------------------
 
@@ -220,247 +268,280 @@ export function grainFilter(id: string, color: string, seed: number): string {
 
 // --- recipes ---------------------------------------------------------------
 
-const SQUARE_FILLERS = ["disc", "square", "ring", "cross"] as const;
-const TURNABLE_FILLERS = [
-  "quarter-disc",
+interface Ring {
+  name: string;
+  size: number;
+  color: string;
+}
+
+/**
+ * Concentric pieces for a corner, sized in px, innermost first. Arcs nest
+ * exactly: an arc's inner radius is half its size.
+ */
+function cornerRings(
+  motif: string,
+  u: number,
+  colors: readonly string[],
+): Ring[] {
+  const g = u / 30;
+  const [a, b, d] = colors as [string, string, string];
+  if (motif === "rings") {
+    const r = 1.4 * u;
+    return [
+      { name: "quarter-disc", size: r - g, color: a },
+      { name: "arc", size: 2 * r, color: b },
+    ];
+  }
+  if (motif === "rings3") {
+    const r = 0.9 * u;
+    return [
+      { name: "quarter-disc", size: r - g, color: a },
+      { name: "arc", size: 2 * r, color: b },
+      { name: "arc", size: 4 * r + 2 * g, color: d },
+    ];
+  }
+  if (motif === "arc") return [{ name: "arc", size: 3.6 * u, color: a }];
+  if (motif === "stair") return [{ name: "stair", size: 3 * u, color: a }];
+  if (motif === "wedge") return [{ name: "wedge", size: 3 * u, color: a }];
+  return [{ name: "quarter-disc", size: 3 * u, color: a }];
+}
+
+const CORNER_MOTIFS = [
+  "quarter",
+  "rings",
+  "rings3",
   "arc",
-  "arch",
   "stair",
   "wedge",
 ] as const;
-const PAIR_FILLERS = ["bars", "pills", "halves"] as const;
-const FLOATERS = [
-  "triangle",
-  "half-disc",
-  "pill",
-  "cross",
-  "disc",
-  "wedge",
-] as const;
+const HALOS = ["stipple", "stipple", "dots", "plus"] as const;
 
-/** Fill one grid cell with a snapped piece or pair (G3). */
-function fillCell(
-  c: Ctx,
-  name: string,
-  x: number,
-  y: number,
-  cell: number,
-  next: () => string,
-): void {
-  const gap = cell / 30;
-  const s = cell - gap;
-  const half = (s - gap) / 2;
-  if (name === "bars") {
-    c.out.push(put(shape(c, "bar"), { x, y, size: half * 2, color: next() }));
-    c.out.push(
-      put(shape(c, "bar"), {
-        x: x + half + gap,
-        y,
-        size: half * 2,
-        color: next(),
-      }),
+/**
+ * One motif anchored exactly in a corner, over a halo of texture or
+ * pattern. The same idea as the callout background (A4).
+ */
+function corner(c: Ctx, where: Corner): void {
+  const { w, h, u, rng, inks } = c;
+  const motif = pick(rng, CORNER_MOTIFS);
+  const halo = pick(rng, HALOS);
+  const swap = rng() < 0.5;
+  const colors = swap
+    ? [inks.shapes[0], inks.shapes[2], inks.shapes[1]]
+    : inks.shapes;
+  const rings = cornerRings(motif, u, colors);
+  const reach = Math.max(...rings.map((r) => r.size));
+  c.motif = `${motif}+${halo}`;
+
+  // Drawn for the bottom-right corner, then mirrored into place.
+  const parts: string[] = [];
+  if (halo === "stipple") {
+    const grad = c.uid("fade");
+    const filt = c.uid("stipple");
+    const span = reach * 1.9;
+    c.defs.push(
+      `<radialGradient id="${grad}" cx="1" cy="1" r="1"><stop offset="0" stop-opacity="0.95"/><stop offset="0.55" stop-opacity="0.5"/><stop offset="1" stop-opacity="0"/></radialGradient>`,
+      stippleFilter(filt, inks.tone, 1 + Math.floor(rng() * 90)),
     );
-  } else if (name === "pills" || name === "halves") {
-    const piece = shape(c, name === "pills" ? "pill" : "half-disc");
-    const inset = (s - half * 2) / 2;
-    c.out.push(put(piece, { x: x + inset, y, size: half * 2, color: next() }));
-    c.out.push(
-      put(piece, {
-        x: x + inset,
-        y: y + half + gap,
-        size: half * 2,
-        color: next(),
-        rot: name === "halves" ? 180 : 0,
-      }),
+    parts.push(
+      `<rect x="${n(w - span)}" y="${n(h - span)}" width="${n(span)}" height="${n(span)}" fill="url(#${grad})" filter="url(#${filt})"/>`,
     );
   } else {
-    const turnable = (TURNABLE_FILLERS as readonly string[]).includes(name);
-    const rot = turnable ? 90 * Math.floor(c.rng() * 4) : 0;
-    c.out.push(put(shape(c, name), { x, y, size: s, color: next(), rot }));
+    const id = patternFill(c, halo, inks.tone, u / 60);
+    parts.push(
+      `<circle cx="${w}" cy="${h}" r="${n(reach * 1.35)}" fill="url(#${id})"/>`,
+    );
+  }
+  for (const r of [...rings].reverse()) {
+    parts.push(
+      put(shape(c, r.name), {
+        x: w - r.size,
+        y: h - r.size,
+        size: r.size,
+        color: r.color,
+        rot: r.name === "stair" ? 0 : TURN.br,
+      }),
+    );
+  }
+  const mirror = {
+    br: "",
+    bl: `translate(${w} 0) scale(-1 1)`,
+    tr: `translate(0 ${h}) scale(1 -1)`,
+    tl: `translate(${w} ${h}) scale(-1 -1)`,
+  }[where];
+  c.out.push(
+    mirror
+      ? `<g transform="${mirror}">${parts.join("")}</g>`
+      : parts.join("\n"),
+  );
+}
+
+/**
+ * A short row of same-size pieces on one baseline, following one rule:
+ * route bullets, a piece turning through its positions, or an alternation.
+ */
+function row(c: Ctx, withText: boolean): void {
+  const { w, h, u, rng, inks } = c;
+  const motif = pick(rng, ["bullets", "turn", "pair", "phase"] as const);
+  const turner = pick(rng, ["quarter-disc", "arc", "wedge", "stair"] as const);
+  const pair = pick(rng, [
+    ["disc", "square"],
+    ["square", "ring"],
+    ["disc", "cross"],
+    ["arch", "disc"],
+  ] as const);
+  c.motif = motif === "turn" ? `turn-${turner}` : motif;
+
+  const cell = (withText ? 1.25 : 1.5) * u;
+  const count = (withText ? 4 : 5) + (motif === "phase" ? 2 : 0);
+  const gap = motif === "phase" ? cell / 30 : cell / 4;
+  const total = count * cell + (count - 1) * gap;
+  const m = 72 * (w / 1200);
+  const x0 = withText ? w - m - total : (w - total) / 2;
+  const top = withText ? c.bottom - m - cell : (h - cell) / 2;
+  const [a, b, d] = inks.shapes;
+  // Four distinct inks for bullets, whatever the scheme shares with its ink.
+  const four = [...new Set([a, b, d, inks.ink, inks.tone, inks.block])];
+
+  for (let i = 0; i < count; i++) {
+    const x = x0 + i * (cell + gap);
+    if (motif === "bullets") {
+      c.out.push(
+        put(shape(c, "disc"), {
+          x,
+          y: top,
+          size: cell,
+          color: four[i % 4] as string,
+        }),
+      );
+    } else if (motif === "turn") {
+      c.out.push(
+        put(shape(c, turner), {
+          x,
+          y: top,
+          size: cell,
+          color: i % 2 ? b : a,
+          rot: 90 * (i % 4),
+        }),
+      );
+    } else if (motif === "pair") {
+      c.out.push(
+        put(shape(c, pair[i % 2] as string), {
+          x,
+          y: top,
+          size: cell,
+          color: i % 2 ? b : a,
+        }),
+      );
+    } else {
+      // Half-discs alternately above and below the centre line: a wave.
+      c.out.push(
+        put(shape(c, "half-disc"), {
+          x,
+          y: top + (i % 2 ? cell / 2 : 0),
+          size: cell,
+          color: i % 2 ? b : a,
+          rot: i % 2 ? 180 : 0,
+        }),
+      );
+    }
   }
 }
 
-function totem(c: Ctx): void {
-  const { w, h, u, rng } = c;
-  const rows = 3;
-  const cell = Math.min(1.5 * u, (h - 1.5 * u) / rows);
-  const x0 = w - u - cell;
-  const y0 = (h - rows * cell) / 2;
-  const next = colourCycle(c);
-
-  // At most one pair cell keeps the piece count within G5.
-  const pair = rng() < 0.6 ? [pick(rng, PAIR_FILLERS)] : [];
-  const singles = shuffle(rng, [...SQUARE_FILLERS, ...TURNABLE_FILLERS]);
-  const stack = shuffle(rng, [
-    ...pair,
-    ...singles.slice(0, rows - pair.length),
-  ]);
-  const inkRow = rng() < 0.5 ? Math.floor(rng() * rows) : -1;
-  stack.forEach((name, row) => {
-    const colour = row === inkRow ? () => c.inks.ink : next;
-    fillCell(c, name, x0, y0 + row * cell, cell, colour);
-  });
-
-  // One piece snapped to the side breaks the column's silhouette.
-  const sideRow = 1 + Math.floor(rng() * 2);
-  const side = pick(rng, ["quarter-disc", "arc", "wedge", "stair"] as const);
-  c.out.push(
-    put(shape(c, side), {
-      x: x0 - cell,
-      y: y0 + sideRow * cell,
-      size: cell - cell / 30,
-      color: next(),
-      flip: true,
-    }),
-  );
-
-  // Floating pieces (G3) in the free cell beside the stack and lower left.
-  const freeRow = sideRow === 1 ? 2 : 1;
-  const a = 0.5 * cell;
-  c.out.push(
-    put(shape(c, pick(rng, FLOATERS)), {
-      x: x0 - cell + (cell - a) * (0.2 + rng() * 0.3),
-      y: y0 + freeRow * cell + (cell - a) * (0.3 + rng() * 0.4),
-      size: a,
-      color: next(),
-      rot: 15 * Math.floor(rng() * 24),
-    }),
-  );
-
-  // One spark, radiating away from the top piece (G6).
-  c.out.push(
-    put(shape(c, "spark"), {
-      x: x0 - 0.08 * cell - u,
-      y: y0 + 0.16 * cell - u,
-      size: u,
-      color: c.inks.ink,
-      flip: true,
-    }),
-  );
+interface Motif {
+  piece: (col: number, row: number) => string;
+  rot: (col: number, row: number) => number;
 }
 
-function patternBlock(
+const even = (v: number) => v % 2 === 0;
+/** Corners meet at every second grid crossing: four cells make one figure. */
+const meet = (col: number, row: number) =>
+  TURN[even(col) ? (even(row) ? "br" : "tr") : even(row) ? "bl" : "tl"];
+const checker = (col: number, row: number) => (even(col + row) ? 0 : 180);
+
+/** Symmetric repeats on the cell grid (G3). */
+const TILE_MOTIFS: Record<string, Motif> = {
+  discs: { piece: () => "quarter-disc", rot: meet },
+  rings: { piece: () => "arc", rot: meet },
+  diamonds: { piece: () => "wedge", rot: meet },
+  leaves: { piece: () => "quarter-disc", rot: checker },
+  ribbons: { piece: () => "arc", rot: checker },
+  steps: { piece: () => "stair", rot: checker },
+  arches: { piece: () => "arch", rot: () => 0 },
+  counters: {
+    piece: (col, row) => (even(col + row) ? "disc" : "square"),
+    rot: () => 0,
+  },
+};
+
+/** Fill a grid of cells on a flat block with one symmetric motif. */
+function grid(
   c: Ctx,
   name: string,
-  x: number,
-  y: number,
-  s: number,
-  colour: string,
+  x0: number,
+  y0: number,
+  cols: number,
+  rows: number,
+  cell: number,
+  colour: (col: number, row: number) => string,
 ): void {
-  const tile = c.kit.patterns[name];
-  if (!tile) throw new Error(`Unknown pattern: ${name}`);
-  const id = c.uid("pat");
-  // Two 120-unit tiles per cell side keeps the pattern finer than the magnets.
-  const k = s / 240;
-  const paint = (v: string) => v.replaceAll("currentColor", colour);
-  c.defs.push(
-    `<pattern id="${id}" width="${tile.w}" height="${tile.h}" patternUnits="userSpaceOnUse" patternTransform="translate(${n(x)} ${n(y)}) scale(${n(k)})"><g ${paint(tile.attrs)}>${paint(tile.body)}</g></pattern>`,
-  );
-  c.out.push(
-    `<rect x="${n(x)}" y="${n(y)}" width="${n(s)}" height="${n(s)}" rx="${n(s / 30)}" fill="url(#${id})"/>`,
-  );
-}
-
-function band(c: Ctx): void {
-  const { w, h, u, rng } = c;
-  const cell = 1.5 * u;
-  const gap = cell / 30;
-  const count = Math.floor((w * 0.62) / cell);
-  const next = colourCycle(c);
-  const fillers = shuffle(rng, [
-    ...SQUARE_FILLERS,
-    ...TURNABLE_FILLERS,
-    ...TURNABLE_FILLERS,
-    ...PAIR_FILLERS,
-  ]);
-  const patterns = shuffle(rng, Object.keys(c.kit.patterns).sort());
-  let filled = 0;
-  let upper = 0;
-  let usedPattern = false;
-  let lastEmpty = false;
-  for (let i = 0; i < count && filled < 6; i++) {
-    const x = w - (i + 1) * cell + gap;
-    const y = h - cell + gap;
-    if (i > 0 && !lastEmpty && rng() < 0.3) {
-      lastEmpty = true;
-      continue;
-    }
-    lastEmpty = false;
-    if (!usedPattern && i > 0 && rng() < 0.35) {
-      // One pattern per composition (G5), in ink so it reads as texture.
-      patternBlock(c, patterns[0] as string, x, y, cell - gap, c.inks.ink);
-      usedPattern = true;
-    } else {
-      fillCell(c, fillers[filled] as string, x, y, cell, next);
-    }
-    filled++;
-    // A second storey on a few cells gives the band a skyline.
-    if (upper < 2 && i < count - 2 && rng() < 0.3) {
-      const name = pick(rng, [...SQUARE_FILLERS, ...TURNABLE_FILLERS]);
-      fillCell(c, name, x, y - cell, cell, next);
-      upper++;
-      filled++;
+  const motif = TILE_MOTIFS[name];
+  if (!motif) throw new Error(`Unknown motif: ${name}`);
+  const g = cell / 30;
+  for (let r = 0; r < rows; r++) {
+    for (let col = 0; col < cols; col++) {
+      c.out.push(
+        put(shape(c, motif.piece(col, r)), {
+          x: x0 + col * cell + g / 2,
+          y: y0 + r * cell + g / 2,
+          size: cell - g,
+          color: colour(col, r),
+          rot: motif.rot(col, r),
+        }),
+      );
     }
   }
-  // One mark floating over the open end of the band.
-  const mark = pick(rng, ["squiggle", "zigzag"] as const);
-  c.out.push(
-    put(shape(c, mark), {
-      x: w - count * cell - 0.4 * u + rng() * 0.6 * u,
-      y: h - cell - 1.1 * u,
-      size: u,
-      color: c.inks.ink,
-      rot: pick(rng, [0, -15, 15]),
-    }),
-  );
 }
 
-function field(c: Ctx): void {
+/** A full-height panel on the right edge, like the cover of a paperback. */
+function tile(c: Ctx, withText: boolean): void {
+  const { w, h, rng, inks } = c;
+  const name = pick(rng, Object.keys(TILE_MOTIFS));
+  c.motif = name;
+  const rows = 3;
+  const cell = h / rows;
+  const cols = withText ? 2 : 3;
+  const x0 = w - cols * cell;
+  c.right = x0;
+  c.out.push(
+    `<rect x="${n(x0)}" y="0" width="${n(cols * cell)}" height="${h}" fill="${inks.block}"/>`,
+  );
+  const [a, b] = inks.onBlock;
+  grid(c, name, x0, 0, cols, rows, cell, (col, r) => (even(col + r) ? a : b));
+}
+
+/** A frieze along the bottom edge: one unit repeated, centred on the canvas. */
+function band(c: Ctx): void {
   const { w, h, u, rng, inks } = c;
-  const [a, b, d] = shuffle(rng, inks.accents) as [string, string, string];
-
-  // Texture from the bottom-right corner, gone before the text zone (G7).
-  const grad = c.uid("fade");
-  const filt = c.uid("stipple");
-  c.defs.push(
-    `<radialGradient id="${grad}" cx="1" cy="1" r="1"><stop offset="0" stop-opacity="0.95"/><stop offset="0.55" stop-opacity="0.5"/><stop offset="1" stop-opacity="0"/></radialGradient>`,
-    stippleFilter(filt, a, 1 + Math.floor(rng() * 90)),
-  );
+  const name = pick(rng, [
+    "discs",
+    "rings",
+    "diamonds",
+    "steps",
+    "arches",
+    "counters",
+  ] as const);
+  c.motif = name;
+  const cell = u;
+  const cols = Math.ceil(w / cell / 2) * 2;
+  const x0 = (w - cols * cell) / 2;
+  c.bottom = h - cell;
   c.out.push(
-    `<rect x="${n(w * 0.38)}" y="0" width="${n(w * 0.62)}" height="${h}" fill="url(#${grad})" filter="url(#${filt})"/>`,
+    `<rect x="0" y="${n(h - cell)}" width="${w}" height="${n(cell)}" fill="${inks.block}"/>`,
   );
-
-  // One very large cropped magnet (G4).
-  const big = 3.6 * u;
-  const name = pick(rng, ["disc", "quarter-disc", "arc", "ring"] as const);
-  c.out.push(
-    put(shape(c, name), {
-      x: w - big * 0.7,
-      y: h - big * 0.64,
-      size: big,
-      color: b,
-      rot: name === "quarter-disc" || name === "arc" ? 90 : 0,
-    }),
-  );
-
-  // One small floating piece and one mark.
-  c.out.push(
-    put(shape(c, pick(rng, FLOATERS)), {
-      x: w - big * 0.7 - 1.3 * u + rng() * 0.3 * u,
-      y: 0.7 * u + rng() * 0.5 * u,
-      size: 0.8 * u,
-      color: d,
-      rot: 15 * Math.floor(rng() * 24),
-    }),
-  );
-  c.out.push(
-    put(shape(c, pick(rng, ["squiggle", "zigzag"] as const)), {
-      x: w - big * 0.7 - 2.5 * u,
-      y: h - 1.5 * u,
-      size: u,
-      color: inks.ink,
-      rot: -15,
-    }),
+  const [a, b] = inks.onBlock;
+  // Colour in pairs so each two-cell figure is one colour.
+  grid(c, name, x0, h - cell, cols, 1, cell, (col) =>
+    even(Math.floor(col / 2)) ? a : b,
   );
 }
 
@@ -471,17 +552,11 @@ interface Rect {
   h: number;
 }
 
-const overlaps = (a: Rect, b: Rect, pad: number) =>
-  a.x < b.x + b.w + pad &&
-  b.x < a.x + a.w + pad &&
-  a.y < b.y + b.h + pad &&
-  b.y < a.y + a.h + pad;
-
 /** The civilian (G9): disc, square and two bars, feet at `bottom`. */
 function figure(c: Ctx, x: number, bottom: number, height: number): Rect {
   const k = height / 364;
   const y = bottom - height;
-  const [a, b, d] = c.inks.accents;
+  const [a, b, d] = c.inks.shapes;
   const size = 120 * k;
   const leg = (58 / 60) * size;
   c.out.push(put(shape(c, "disc"), { x, y, size, color: a }));
@@ -498,77 +573,27 @@ function figure(c: Ctx, x: number, bottom: number, height: number): Rect {
   return { x, y, w: size, h: height };
 }
 
-/** Slots as [centre x, centre y, size in modules], fractions of the canvas. */
-const SCATTER_SLOTS: readonly (readonly [number, number, number])[] = [
-  [0.07, 0.2, 1.2],
-  [0.22, 0.98, 1.7],
-  [0.4, 0.02, 1.6],
-  [0.56, 0.95, 1.1],
-  [0.9, 0.14, 1.1],
-  [1.0, 0.6, 1.9],
-  [0.27, 0.22, 0.8],
-  [0.72, 0.08, 0.9],
-  [0.02, 0.62, 1.3],
-];
-
-function scatter(c: Ctx, profile: boolean): void {
-  const { w, h, u, rng, inks } = c;
-  const taken: Rect[] = [];
-  if (profile) {
-    // Wordmark, left-aligned (T2), with the civilian standing to its right.
-    const size = 1.5 * u;
-    const tx = w * 0.3;
-    const person = figure(c, w * 0.74, h, 4.7 * u);
-    taken.push(person, { x: tx, y: h * 0.18, w: w * 0.4, h: h * 0.7 });
-    // Keep the avatar overlap clear (A3).
-    taken.push({ x: 0, y: h - 200, w: 200, h: 200 });
-    c.out.push(
-      `<text x="${n(tx)}" y="${n(h * 0.5)}" font-family="${FONTS.heading}" font-weight="600" font-size="${n(size)}" letter-spacing="${n(-0.025 * size)}" fill="${inks.ink}">Civilian<tspan x="${n(tx)}" dy="${n(size * 1.05)}">.dev</tspan></text>`,
-    );
-    c.out.push(
-      put(shape(c, "spark"), {
-        x: person.x + person.w + 0.05 * u,
-        y: person.y - 0.35 * u,
-        size: u,
-        color: inks.ink,
-      }),
-    );
-  }
-  const next = colourCycle(c);
-  const names = shuffle(rng, [
-    "triangle",
-    "half-disc",
-    "arc",
-    "pill",
-    "quarter-disc",
-    "cross",
-    "ring",
-    "wedge",
-    "stair",
-  ]);
-  let placed = 0;
-  for (const [fx, fy, fs] of shuffle(rng, SCATTER_SLOTS)) {
-    if (placed >= (profile ? 4 : 6)) break;
-    const size = fs * u;
-    const box = {
-      x: fx * w + (rng() - 0.5) * 0.04 * w - size / 2,
-      y: fy * h + (rng() - 0.5) * 0.04 * h - size / 2,
-      w: size,
-      h: size,
-    };
-    if (taken.some((t) => overlaps(box, t, u / 2))) continue;
-    taken.push(box);
-    c.out.push(
-      put(shape(c, names[placed] as string), {
-        x: box.x,
-        y: box.y,
-        size,
-        color: next(),
-        rot: 15 * Math.floor(rng() * 24),
-      }),
-    );
-    placed++;
-  }
+/** Wordmark, left-aligned (T2), with the civilian standing to its right. */
+function profile(c: Ctx): void {
+  const { w, u, inks } = c;
+  const size = 1.5 * u;
+  const tx = w * 0.18;
+  const height = 4.2 * u;
+  const width = (120 * height) / 364;
+  const x = Math.min(w * 0.72, c.right - 1.5 * u - width);
+  const person = figure(c, x, c.bottom, height);
+  c.out.push(
+    `<text x="${n(tx)}" y="${n(c.bottom * 0.5)}" font-family="${FONTS.heading}" font-weight="600" font-size="${n(size)}" letter-spacing="${n(-0.025 * size)}" fill="${inks.ink}">Civilian<tspan x="${n(tx)}" dy="${n(size * 1.05)}">.dev</tspan></text>`,
+  );
+  // The one burst of energy (P6), beside the head.
+  c.out.push(
+    put(shape(c, "spark"), {
+      x: person.x + person.w + 0.05 * u,
+      y: person.y - 0.3 * u,
+      size: u,
+      color: inks.ink,
+    }),
+  );
 }
 
 // --- text (T1, L4) ---------------------------------------------------------
@@ -577,13 +602,13 @@ const esc = (s: string) =>
   s.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 function textBlock(c: Ctx, t: TextBlock): void {
-  const { w, h, inks } = c;
+  const { w, inks } = c;
   const k = w / 1200;
   const m = 72 * k;
   let y = m;
   if (t.kicker) {
     c.out.push(
-      `<rect x="${n(m)}" y="${n(y)}" width="${n(48 * k)}" height="${n(6 * k)}" fill="${inks.accents[0]}"/>`,
+      `<rect x="${n(m)}" y="${n(y)}" width="${n(48 * k)}" height="${n(6 * k)}" fill="${inks.accent}"/>`,
       `<text x="${n(m)}" y="${n(y + 46 * k)}" font-family="${FONTS.mono}" font-weight="500" font-size="${n(22 * k)}" letter-spacing="${n(2.2 * k)}" fill="${inks.muted}">${esc(t.kicker.toUpperCase())}</text>`,
     );
     y += 46 * k;
@@ -602,10 +627,10 @@ function textBlock(c: Ctx, t: TextBlock): void {
     );
   }
   if (t.footer) {
-    const fh = 46 * k;
-    const person = figure(c, m, h - m, fh);
+    const base = c.bottom - (c.bottom < c.h ? m * 0.6 : m);
+    const person = figure(c, m, base, 46 * k);
     c.out.push(
-      `<text x="${n(m + person.w + 14 * k)}" y="${n(h - m - 11 * k)}" font-family="${FONTS.heading}" font-weight="600" font-size="${n(26 * k)}" fill="${inks.ink}">civilian.dev</text>`,
+      `<text x="${n(m + person.w + 14 * k)}" y="${n(base - 11 * k)}" font-family="${FONTS.heading}" font-weight="600" font-size="${n(26 * k)}" fill="${inks.ink}">civilian.dev</text>`,
     );
   }
 }
@@ -630,6 +655,9 @@ function context(
     defs: [],
     out: [],
     uid: (prefix) => `${prefix}-${seed}-${ids++}`,
+    motif: "",
+    bottom: h,
+    right: w,
   };
 }
 
@@ -640,21 +668,22 @@ function wrap(c: Ctx, meta: string): string {
 
 /** Compose a fixed-size artefact (A1, A2, A3). Deterministic per seed (G10). */
 export function compose(kit: Kit, hex: Hex, o: ComposeOptions): string {
-  const c = context(
-    kit,
-    resolveInks(hex, o.palette, o.ground),
-    o.width,
-    o.height,
-    o.seed,
-  );
-  if (o.recipe === "totem") totem(c);
-  else if (o.recipe === "band") band(c);
-  else if (o.recipe === "field") field(c);
-  else scatter(c, o.profile ?? false);
+  const c = context(kit, resolveInks(hex, o.scheme), o.width, o.height, o.seed);
+  const withText = Boolean(o.text) || Boolean(o.profile);
+  if (o.recipe === "corner") {
+    // Text sits top-left, so the motif takes the opposite corner.
+    const where = withText
+      ? "br"
+      : pick(c.rng, ["br", "bl", "tr", "tl"] as const);
+    corner(c, where);
+  } else if (o.recipe === "row") row(c, withText);
+  else if (o.recipe === "tile") tile(c, withText);
+  else band(c);
+  if (o.profile) profile(c);
   if (o.text) textBlock(c, o.text);
   return wrap(
     c,
-    `data-recipe="${o.recipe}" data-palette="${o.palette}" data-ground="${o.ground}" data-seed="${o.seed}"`,
+    `data-recipe="${o.recipe}" data-scheme="${o.scheme}" data-seed="${o.seed}" data-motif="${c.motif}"`,
   );
 }
 
@@ -662,41 +691,53 @@ export function compose(kit: Kit, hex: Hex, o: ComposeOptions): string {
 export function avatar(
   kit: Kit,
   hex: Hex,
-  o: { size: number; palette: PaletteName; ground: Ground },
+  o: { size: number; scheme: SchemeName },
 ): string {
-  const c = context(
-    kit,
-    resolveInks(hex, o.palette, o.ground),
-    o.size,
-    o.size,
-    0,
-  );
+  const c = context(kit, resolveInks(hex, o.scheme), o.size, o.size, 0);
   const height = o.size * 0.6;
   figure(c, (o.size - (120 * height) / 364) / 2, o.size * 0.8, height);
-  return wrap(
-    c,
-    `data-recipe="avatar" data-palette="${o.palette}" data-ground="${o.ground}"`,
-  );
+  return wrap(c, `data-recipe="avatar" data-scheme="${o.scheme}"`);
 }
 
 /**
  * Callout background (A4). Fluid: no viewBox, so it fills any box. The
- * texture and the piece are anchored to the right edge and bottom-right
+ * texture and the motif are anchored to the right edge and bottom-right
  * corner; everything left of them stays flat tint for text (C4).
  */
 export function calloutBackground(
   kit: Kit,
-  o: { tint: string; color: string; piece: string; seed: number },
+  o: {
+    tint: string;
+    /** Texture colour. */
+    tone: string;
+    /** Motif colours, innermost first. */
+    colors: [string, string, string];
+    motif: (typeof CORNER_MOTIFS)[number];
+    seed: number;
+  },
 ): string {
-  const piece = kit.shapes[o.piece];
-  if (!piece) throw new Error(`Unknown piece: ${o.piece}`);
-  const size = 96;
+  // A 32px module puts the largest motif at about 96 to 115px.
+  const rings = cornerRings(o.motif, 32, o.colors);
+  const pieces = [...rings]
+    .reverse()
+    .map((r) => {
+      const piece = kit.shapes[r.name];
+      if (!piece) throw new Error(`Unknown piece: ${r.name}`);
+      return put(piece, {
+        x: -r.size,
+        y: -r.size,
+        size: r.size,
+        color: r.color,
+        rot: r.name === "stair" ? 0 : TURN.br,
+      });
+    })
+    .join("");
   return (
-    `<svg ${NS} width="100%" height="100%" data-recipe="callout" data-seed="${o.seed}">\n` +
-    `<defs><linearGradient id="fade"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.75"/></linearGradient>${stippleFilter("stipple", o.color, o.seed)}</defs>\n` +
+    `<svg ${NS} width="100%" height="100%" data-recipe="callout" data-motif="${o.motif}" data-seed="${o.seed}">\n` +
+    `<defs><linearGradient id="fade"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.75"/></linearGradient>${stippleFilter("stipple", o.tone, o.seed)}</defs>\n` +
     `<rect width="100%" height="100%" fill="${o.tint}"/>\n` +
     `<svg x="100%" overflow="visible"><rect x="-240" width="240" height="100%" fill="url(#fade)" filter="url(#stipple)"/></svg>\n` +
-    `<svg x="100%" y="100%" overflow="visible">${put(piece, { x: -size, y: -size, size, color: o.color, flip: true })}</svg>\n` +
+    `<svg x="100%" y="100%" overflow="visible">${pieces}</svg>\n` +
     "</svg>\n"
   );
 }

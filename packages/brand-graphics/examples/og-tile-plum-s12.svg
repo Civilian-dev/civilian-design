@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-recipe="tile" data-scheme="plum" data-seed="12" data-motif="diamonds">
+<rect width="1200" height="630" fill="#2e215d"/>
+<rect x="780" y="0" width="420" height="630" fill="#7366bd"/>
+<g transform="translate(783.5 3.5) scale(1.69) rotate(270 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<g transform="translate(993.5 3.5) scale(1.69)" fill="#2e215d" stroke="#2e215d" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<g transform="translate(783.5 213.5) scale(1.69) rotate(180 60 60)" fill="#2e215d" stroke="#2e215d" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<g transform="translate(993.5 213.5) scale(1.69) rotate(90 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<g transform="translate(783.5 423.5) scale(1.69) rotate(270 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<g transform="translate(993.5 423.5) scale(1.69)" fill="#2e215d" stroke="#2e215d" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<rect x="72" y="72" width="48" height="6" fill="#fede8f"/>
+<text x="72" y="118" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-weight="500" font-size="22" letter-spacing="2.2" fill="#c9c4fe">TALK</text>
+<text x="72" y="214" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="62" letter-spacing="-1.55" fill="#fdfbf8"><tspan x="72" dy="0">Boring tools,</tspan><tspan x="72" dy="73.16">happy people</tspan></text>
+<g transform="translate(72 512) scale(0.13)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><circle cx="60" cy="60" r="56"/></g>
+<g transform="translate(72 527.67) scale(0.13)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="112"/></g>
+<g transform="translate(72 543.34) scale(0.12)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<g transform="translate(79.84 543.34) scale(0.12)" fill="#c9c4fe" stroke="#c9c4fe" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<text x="101.16" y="547" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="26" fill="#fdfbf8">civilian.dev</text>
+</svg>

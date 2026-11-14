@@ -50,20 +50,22 @@ import { compose } from "./src/compose";
 const svg = compose(kit, hex, {
   width: 1200,
   height: 630,
-  recipe: "totem", // totem | scatter | band | field
-  palette: "sunrise", // sunrise | dusk | harbour | signal
-  ground: "paper", // paper | ink
-  seed: 7,
+  recipe: "corner", // corner | row | tile | band
+  scheme: "press", // paper | press | sun | mint | night | plum
+  seed: 12,
   text: {
-    kicker: "Field notes",
-    title: ["Software for", "the rest of us"],
+    kicker: "Article",
+    title: ["A field guide to", "small libraries"],
     footer: true,
   },
 });
 ```
 
 - `kit` is the parsed sources (`parsePiece`), `hex` looks up a primitive token such as `salmon.300`. See `scripts/build.ts`.
-- The same options always return the same SVG. Change the seed for a new arrangement; do not edit the output.
+- A scheme is a whole colour set (ground, ink, three magnet inks, block, tone), defined in `SCHEMES` as token paths. Add or change schemes there, and in the table in `DESIGN.md`.
+- Every recipe is ordered: pieces sit on a cell grid and follow one rule (a quarter turn per step, an alternation, four cells meeting to make one figure). The seed picks the motif and the colour order, never a position.
+- The same options always return the same SVG, and the chosen motif is recorded as `data-motif` on the root. Change the seed for a different motif; do not edit the output.
+- `profile: true` adds the wordmark and the civilian; use it with `tile` or `band`.
 - Also exported: `avatar`, `calloutBackground`, `texture`, `stippleFilter`, `grainFilter`.
 
 ## Known gaps

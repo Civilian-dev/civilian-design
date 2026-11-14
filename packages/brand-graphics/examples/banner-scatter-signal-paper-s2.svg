@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" data-recipe="scatter" data-palette="signal" data-ground="paper" data-seed="2">
-<rect width="1600" height="600" fill="#fdfbf8"/>
-<g transform="translate(-2.82 295.94) scale(1.08) rotate(315 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M44 4H76V44H116V76H76V116H44V76H4V44H44Z"/></g>
-<g transform="translate(812.98 506.07) scale(0.92) rotate(60 60 52)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><path d="M60 8L113.07 100H6.93Z"/></g>
-<g transform="translate(1353.45 39.56) scale(0.92) rotate(150 60 60)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
-<g transform="translate(60.62 71.72) scale(1) rotate(75 60 30)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4.14 56A56 56 0 0 1 115.86 56Z"/></g>
-<g transform="translate(389.95 88.36) scale(0.67) rotate(15 60 60)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><path d="M4 116V84H44V44H84V4H116V116Z"/></g>
-<g transform="translate(1506.36 255.29) scale(1.58) rotate(15 60 30)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="52" rx="26"/></g>
-</svg>

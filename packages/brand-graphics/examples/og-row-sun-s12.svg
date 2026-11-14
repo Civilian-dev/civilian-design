@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-recipe="row" data-scheme="sun" data-seed="12" data-motif="turn-quarter-disc">
+<rect width="1200" height="630" fill="#fede8f"/>
+<g transform="translate(504.56 426.75) scale(1.09)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(668.63 426.75) scale(1.09) rotate(90 60 60)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(832.69 426.75) scale(1.09) rotate(180 60 60)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(996.75 426.75) scale(1.09) rotate(270 60 60)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<rect x="72" y="72" width="48" height="6" fill="#7366bd"/>
+<text x="72" y="118" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-weight="500" font-size="22" letter-spacing="2.2" fill="#01343a">GUIDE</text>
+<text x="72" y="214" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="62" letter-spacing="-1.55" fill="#01343a"><tspan x="72" dy="0">Four ways to</tspan><tspan x="72" dy="73.16">say it simply</tspan></text>
+<g transform="translate(72 512) scale(0.13)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><circle cx="60" cy="60" r="56"/></g>
+<g transform="translate(72 527.67) scale(0.13)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="112"/></g>
+<g transform="translate(72 543.34) scale(0.12)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<g transform="translate(79.84 543.34) scale(0.12)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<text x="101.16" y="547" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="26" fill="#01343a">civilian.dev</text>
+</svg>

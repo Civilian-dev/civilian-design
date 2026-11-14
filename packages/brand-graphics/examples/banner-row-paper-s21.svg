@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" data-recipe="row" data-scheme="paper" data-seed="21" data-motif="turn-arc">
+<rect width="1600" height="600" fill="#fdfbf8"/>
+<g transform="translate(350 225) scale(1.25)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(537.5 225) scale(1.25) rotate(90 60 60)" fill="#1c6b69" stroke="#1c6b69" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(725 225) scale(1.25) rotate(180 60 60)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(912.5 225) scale(1.25) rotate(270 60 60)" fill="#1c6b69" stroke="#1c6b69" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1100 225) scale(1.25)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+</svg>

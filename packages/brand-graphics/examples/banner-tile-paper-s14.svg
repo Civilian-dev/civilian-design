@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" data-recipe="tile" data-scheme="paper" data-seed="14" data-motif="leaves">
+<rect width="1600" height="600" fill="#fdfbf8"/>
+<rect x="1000" y="0" width="600" height="600" fill="#01343a"/>
+<g transform="translate(1003.33 3.33) scale(1.61)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1203.33 3.33) scale(1.61) rotate(180 60 60)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1403.33 3.33) scale(1.61)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1003.33 203.33) scale(1.61) rotate(180 60 60)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1203.33 203.33) scale(1.61)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1403.33 203.33) scale(1.61) rotate(180 60 60)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1003.33 403.33) scale(1.61)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1203.33 403.33) scale(1.61) rotate(180 60 60)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(1403.33 403.33) scale(1.61)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+</svg>

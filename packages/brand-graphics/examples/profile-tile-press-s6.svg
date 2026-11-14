@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" data-recipe="tile" data-scheme="press" data-seed="6" data-motif="ribbons">
+<rect width="1500" height="500" fill="#fea993"/>
+<rect x="1166.67" y="0" width="333.33" height="500" fill="#f25855"/>
+<g transform="translate(1169.44 2.78) scale(1.34)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1336.11 2.78) scale(1.34) rotate(180 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1169.44 169.44) scale(1.34) rotate(180 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1336.11 169.44) scale(1.34)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1169.44 336.11) scale(1.34)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(1336.11 336.11) scale(1.34) rotate(180 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 4.07A116 116 0 0 1 115.93 116H63.87A64 64 0 0 0 4 56.13Z"/></g>
+<g transform="translate(927.24 151.4) scale(0.96)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><circle cx="60" cy="60" r="56"/></g>
+<g transform="translate(927.24 270.15) scale(0.96)" fill="#f25855" stroke="#f25855" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="112"/></g>
+<g transform="translate(927.24 388.91) scale(0.93)" fill="#01343a" stroke="#01343a" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<g transform="translate(986.62 388.91) scale(0.93)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<text x="270" y="250" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="124.5" letter-spacing="-3.11" fill="#01343a">Civilian<tspan x="270" dy="130.73">.dev</tspan></text>
+<g transform="translate(1046.32 126.5) scale(0.69)" fill="none" stroke="#01343a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M55.3 111.2L102.7 103.7M49.9 94.6L78.4 80M39.6 80.4L73.5 46.5M25.4 70.1L40 41.6M8.8 64.7L16.3 17.3"/></g>
+</svg>
