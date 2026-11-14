@@ -1,0 +1,35 @@
+{
+  "name": "civilian",
+  "version": "2025.10",
+  "description": "Civilian design tokens. Light is the base set; dark overrides apply through the theme modifier.",
+  "sets": {
+    "foundation": {
+      "sources": [
+        {
+          "$ref": "tokens.json"
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "theme": {
+      "default": "light",
+      "contexts": {
+        "light": [],
+        "dark": [
+          {
+            "$ref": "tokens.dark.json"
+          }
+        ]
+      }
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/foundation"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    }
+  ]
+}

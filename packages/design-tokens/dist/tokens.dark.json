@@ -1,0 +1,462 @@
+{
+  "colors": {
+    "bg": {
+      "canvas": {
+        "$type": "color",
+        "$value": "{colors.neutral.950}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-bg-canvas"
+          }
+        }
+      },
+      "default": {
+        "$type": "color",
+        "$value": "{colors.neutral.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-bg-default"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.neutral.800}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-bg-subtle"
+          }
+        }
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{colors.neutral.800}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-bg-muted"
+          }
+        }
+      },
+      "emphasized": {
+        "$type": "color",
+        "$value": "{colors.neutral.700}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-bg-emphasized"
+          }
+        }
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{colors.neutral.50}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-bg-inverse"
+          }
+        }
+      }
+    },
+    "fg": {
+      "default": {
+        "$type": "color",
+        "$value": "{colors.neutral.50}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-fg-default"
+          }
+        }
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{colors.neutral.200}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-fg-muted"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.neutral.400}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-fg-subtle"
+          }
+        }
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{colors.neutral.700}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-fg-disabled"
+          }
+        }
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{colors.teal.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-fg-inverse"
+          }
+        }
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{colors.neutral.700}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-border-default"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.neutral.800}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-border-subtle"
+          }
+        }
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{colors.violet.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-border-focus"
+          }
+        }
+      }
+    },
+    "brand": {
+      "solid": {
+        "$type": "color",
+        "$value": "{colors.teal.500}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-brand-solid"
+          }
+        }
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{colors.teal.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-brand-hover"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.teal.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-brand-subtle"
+          }
+        }
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{colors.teal.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-brand-muted"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.teal.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-brand-fg"
+          }
+        }
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "{colors.teal.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-brand-contrast"
+          }
+        }
+      }
+    },
+    "accent": {
+      "hover": {
+        "$type": "color",
+        "$value": "{colors.salmon.100}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-accent-hover"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.salmon.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-accent-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.salmon.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-accent-fg"
+          }
+        }
+      }
+    },
+    "highlight": {
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.gold.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-highlight-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.gold.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-highlight-fg"
+          }
+        }
+      }
+    },
+    "secondary": {
+      "solid": {
+        "$type": "color",
+        "$value": "{colors.violet.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-secondary-solid"
+          }
+        }
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{colors.violet.100}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-secondary-hover"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.violet.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-secondary-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.violet.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-secondary-fg"
+          }
+        }
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "{colors.violet.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-secondary-contrast"
+          }
+        }
+      }
+    },
+    "success": {
+      "solid": {
+        "$type": "color",
+        "$value": "{colors.green.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-success-solid"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.green.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-success-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.green.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-success-fg"
+          }
+        }
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "{colors.green.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-success-contrast"
+          }
+        }
+      }
+    },
+    "warning": {
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.gold.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-warning-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.gold.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-warning-fg"
+          }
+        }
+      }
+    },
+    "danger": {
+      "solid": {
+        "$type": "color",
+        "$value": "{colors.red.500}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-danger-solid"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.red.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-danger-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.red.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-danger-fg"
+          }
+        }
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "{colors.neutral.950}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-danger-contrast"
+          }
+        }
+      }
+    },
+    "info": {
+      "solid": {
+        "$type": "color",
+        "$value": "{colors.violet.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-info-solid"
+          }
+        }
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "{colors.violet.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-info-subtle"
+          }
+        }
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{colors.violet.300}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-info-fg"
+          }
+        }
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "{colors.violet.900}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-info-contrast"
+          }
+        }
+      }
+    },
+    "shadow": {
+      "faint": {
+        "$type": "color",
+        "$value": "{colors.alpha.black.20}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-shadow-faint"
+          }
+        }
+      },
+      "default": {
+        "$type": "color",
+        "$value": "{colors.alpha.black.40}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-shadow-default"
+          }
+        }
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{colors.alpha.black.60}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-shadow-strong"
+          }
+        }
+      }
+    },
+    "overlay": {
+      "scrim": {
+        "$type": "color",
+        "$value": "{colors.alpha.black.60}",
+        "$extensions": {
+          "dev.civilian": {
+            "cssVar": "--colors-overlay-scrim"
+          }
+        }
+      }
+    }
+  }
+}
