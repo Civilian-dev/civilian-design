@@ -129,19 +129,36 @@ const WORDMARK = "civilian.dev";
 const KEY_PIECES = ["disc", "quarter-disc", "triangle", "square"] as const;
 const WEAVE_PIECES = ["triangle", "quarter-disc"] as const;
 
-/** Parse a single-colour source SVG into a placeable piece. */
-export function parsePiece(svg: string): Piece {
+/** What a source SVG body must not contain (README, Source rules). */
+const FORBIDDEN: readonly [RegExp, string][] = [
+  [/\sid=/, "an id"],
+  [/<style|\sstyle=/, "a style"],
+  [/#[0-9a-f]{3,8}\b/i, "a hex colour"],
+  [/\sstroke/, "a stroke"],
+  [/\sfill=/, "a fill below the root"],
+];
+
+/**
+ * Parse a single-colour source SVG into a placeable piece. Throws if the
+ * source breaks the rules in the README, so a bad file fails the build.
+ */
+export function parsePiece(svg: string, name = "source SVG"): Piece {
   const m = svg.match(/<svg([^>]*)>([\s\S]*)<\/svg>/);
-  const vb = m?.[1]?.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
-  if (!m || !vb) throw new Error("Source SVG needs a root viewBox at 0 0");
-  return {
-    w: Number(vb[1]),
-    h: Number(vb[2]),
-    body: (m[2] ?? "")
-      .replace(/<title>[^<]*<\/title>/, "")
-      .replace(/\s*\n\s*/g, "")
-      .trim(),
-  };
+  const root = m?.[1] ?? "";
+  const vb = root.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+  if (!m || !vb) throw new Error(`${name}: needs a root viewBox at 0 0`);
+  if (!/\sfill="currentColor"/.test(root)) {
+    throw new Error(`${name}: needs fill="currentColor" on the root`);
+  }
+  const body = (m[2] ?? "")
+    .replace(/<title>[^<]*<\/title>/, "")
+    .replace(/>\s+</g, "><")
+    .replace(/\s+/g, " ")
+    .trim();
+  for (const [pattern, what] of FORBIDDEN) {
+    if (pattern.test(body)) throw new Error(`${name}: must not have ${what}`);
+  }
+  return { w: Number(vb[1]), h: Number(vb[2]), body };
 }
 
 // --- helpers ---------------------------------------------------------------

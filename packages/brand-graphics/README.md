@@ -18,6 +18,7 @@ Private for now. Open [`examples/index.html`](examples/index.html) to see everyt
 ## Source rules
 
 - Every source SVG is one colour, written as `fill="currentColor"` on the root, with a `viewBox` starting at `0 0`. No ids, no embedded styles, no hex values.
+- `parsePiece` checks these rules, so a source that breaks them fails the build.
 - Pieces fill their `viewBox` edge to edge and have square corners (S1). No strokes.
 - To add a piece, drop a file in `src/shapes` and rebuild. It only appears in compositions once it is added to `KEY_PIECES` or `WEAVE_PIECES` in `src/compose.ts`, and those lists take pieces with square bounds only.
 - Files in `src/reserve` keep the earlier rounded style and do not follow these rules.

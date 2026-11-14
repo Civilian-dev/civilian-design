@@ -31,7 +31,7 @@ import {
 const root = fileURLToPath(new URL("..", import.meta.url));
 
 function read(path: string): Piece {
-  return parsePiece(readFileSync(join(root, "src", path), "utf8"));
+  return parsePiece(readFileSync(join(root, "src", path), "utf8"), path);
 }
 
 const shapeFiles = readdirSync(join(root, "src", "shapes"))
