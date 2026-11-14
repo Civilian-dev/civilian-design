@@ -8,7 +8,8 @@ ruleset="$root/.github/rulesets/main.json"
 name="$(jq -r .name "$ruleset")"
 
 gh api -X PATCH "repos/$repo" \
-  -F allow_rebase_merge=true -F allow_merge_commit=false -F allow_squash_merge=false \
+  -F allow_squash_merge=true -F allow_rebase_merge=false -F allow_merge_commit=false \
+  -f squash_merge_commit_title=PR_TITLE -f squash_merge_commit_message=PR_BODY \
   -F allow_auto_merge=true -F delete_branch_on_merge=true >/dev/null
 
 id="$(gh api "repos/$repo/rulesets" --jq ".[] | select(.name==\"$name\") | .id")"
