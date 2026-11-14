@@ -20,8 +20,8 @@ export interface Role {
   name: string; // bg.canvas
   group: string;
   key: string;
-  light: { hex: string; oklch: string };
-  dark: { hex: string; oklch: string };
+  light: { hex: string; oklch: string; alpha: number };
+  dark: { hex: string; oklch: string; alpha: number };
   usage: string;
   fromFigma: boolean;
 }

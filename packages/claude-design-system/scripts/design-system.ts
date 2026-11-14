@@ -38,7 +38,7 @@ const hexWithAlpha = (c: { hex: string; alpha: number }): string =>
     : c.hex;
 
 const hexOf = (r: Role, theme: "light" | "dark"): string =>
-  hexWithAlpha(r[theme] as { hex: string; alpha: number });
+  hexWithAlpha(r[theme]);
 
 const SPACE_USAGE: Record<string, string> = {
   "0": "No space.",
