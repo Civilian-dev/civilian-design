@@ -18,16 +18,16 @@ jobs:
       # Pushes made with GITHUB_TOKEN don't re-trigger `ci`; use the GitHub App token when configured.
       - id: app
         if: ${{ vars.RELEASE_APP_ID != '' }}
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
           token: ${{ steps.app.outputs.token || secrets.GITHUB_TOKEN }}
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v4
         with:
           cache: true
       - run: pnpm install --frozen-lockfile
@@ -45,7 +45,7 @@ jobs:
             git commit -m "chore(design-tokens): rebuild outputs and add changeset"
             git push
           fi
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: token-diff
           path: ${{ runner.temp }}/token-diff.md
