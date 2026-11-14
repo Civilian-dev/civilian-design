@@ -1,0 +1,44 @@
+{
+  "name": "@civilian-dev/panda-design-preset",
+  "version": "0.0.0",
+  "description": "Panda CSS preset for the Civilian design system",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Civilian-dev/civilian-design.git",
+    "directory": "packages/panda-design-preset"
+  },
+  "scripts": {
+    "generate": "tsx scripts/generate.ts",
+    "build": "pnpm generate && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@civilian-dev/design-tokens": "workspace:^"
+  },
+  "peerDependencies": {
+    "@pandacss/dev": ">=2"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "2.5.0",
+    "@pandacss/preset-base": "2.5.0",
+    "@types/node": "26.6.6",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
+  }
+}
