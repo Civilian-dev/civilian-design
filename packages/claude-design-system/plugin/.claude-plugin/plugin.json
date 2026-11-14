@@ -1,0 +1,9 @@
+{
+  "name": "civilian-design",
+  "description": "Civilian design system: tokens, colour roles and usage guidance for any visual output.",
+  "author": {
+    "name": "Tim Kinnane"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/Civilian-dev/civilian-design"
+}
