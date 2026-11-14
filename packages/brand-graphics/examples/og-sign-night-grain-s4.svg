@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="sign" data-scheme="night" data-feature="grain" data-seed="4">
+<defs><linearGradient id="sign-night-s4-grain-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="sign-night-s4-grain-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#f25855"/><feComposite in2="t" operator="in"/></filter></defs>
+<rect width="1200" height="630" fill="#01343a"/>
+<rect x="0" y="0" width="1200" height="28" fill="#54a2a6"/>
+<circle cx="108.02" cy="112.04" r="36.02" fill="#f25855"/>
+<text x="108.02" y="127.88" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="43.94" font-weight="600" text-anchor="middle" fill="#fdfbf8">P</text>
+<text x="172.07" y="103.95" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#fdfbf8">PROJECT</text>
+<text x="172.07" y="131.98" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#a8d6d8">NO. 018 · PROJECTS</text>
+<rect x="831" y="182" width="297" height="324" fill="#fea993"/>
+<rect x="831" y="182" width="297" height="324" fill="url(#sign-night-s4-grain-g)" filter="url(#sign-night-s4-grain-f)"/>
+<g transform="translate(931.98 309.98) scale(1.6335) rotate(270 60 60)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<rect x="829" y="180" width="2" height="326" fill="#fdfbf8"/>
+<rect x="72" y="180" width="1056" height="2" fill="#fdfbf8"/>
+<rect x="72" y="506" width="1056" height="2" fill="#fdfbf8"/>
+<text x="72" y="311.99" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#fdfbf8">Things I made</text>
+<text x="72" y="418.04" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#fdfbf8">this year</text>
+<text x="72" y="565.95" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="26.04" font-weight="600" letter-spacing="-0.01em" fill="#fdfbf8">civilian.dev</text>
+<text x="329.98" y="563.96" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#a8d6d8">1 DEC 2026 · 8 MIN</text>
+<g transform="translate(975.98 540.02) scale(0.3334)" fill="#fdfbf8"><circle cx="60" cy="60" r="60"/></g>
+<g transform="translate(1031.99 540.02) scale(0.3334)" fill="#f25855"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<g transform="translate(1088 540.02) scale(0.3334)" fill="#fede8f"><path d="M0 120V0L120 120Z"/></g>
+</svg>
