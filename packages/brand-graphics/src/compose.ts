@@ -175,6 +175,14 @@ function esc(text: string): string {
     .replace(/>/g, "&gt;");
 }
 
+/**
+ * Rule thickness for a module. Always even, so a stroke centred on a whole
+ * pixel has whole-pixel edges and the cells either side stay integral.
+ */
+function ruleWidth(u: number): number {
+  return 2 * Math.max(1, Math.round(u / 104));
+}
+
 interface Box {
   x: number;
   y: number;
@@ -332,7 +340,7 @@ function sign(c: Ctx): void {
   const u = c.u;
   const ink = c.hex(c.s.ink);
   const m = Math.round(W * 0.06);
-  const rule = Math.max(2, Math.round(u / 52));
+  const rule = ruleWidth(u);
   const top = Math.round(u * 1.714);
   // Snap the body to a multiple of 36 so 9 or 12 rows of tiles are whole
   // pixels and the weave has no seams (G5).
@@ -430,12 +438,20 @@ function ledger(c: Ctx): void {
   const u = c.u;
   const ink = c.hex(c.s.ink);
   const f = Math.round(u * 0.381);
-  const rule = Math.max(2, Math.round(u / 52));
+  const rule = ruleWidth(u);
   // Grow the label rows until the middle cell is 12 whole-pixel tiles high.
+  // An odd height gives the footer row the spare pixel, so the cell height
+  // is even and stepping both rows (2px a step) reaches a multiple of 12.
   let row = Math.round(u * 0.838);
-  for (let i = 0; i < 12 && (H - f * 2 - row * 2 - rule) % 12 !== 0; i++) row++;
+  const spare = H % 2;
+  const cellHeight = () => H - f * 2 - row * 2 - spare - rule;
+  for (let i = 0; i < 6 && cellHeight() % 12 !== 0; i++) row++;
+  if (cellHeight() % 12 !== 0) {
+    throw new Error(`ledger: no whole-pixel tile at height ${H}`);
+  }
+  const footer = row + spare;
   const top = f + row;
-  const bottom = H - f - row;
+  const bottom = H - f - footer;
   // Size the feature cell in whole tiles: 12 down, 10 across (G5).
   const cellH = bottom - top - rule;
   const tile = cellH / 12;
@@ -466,7 +482,7 @@ function ledger(c: Ctx): void {
     text.title.forEach((line, i) => {
       heading(c, f + pad, top + u * (1.543 + i * 0.933), u * 0.8, line);
     });
-    const by = bottom + row * 0.59;
+    const by = bottom + footer * 0.59;
     label(c, f + pad, by, u * 0.152, text.meta, ink);
     label(c, vx + rule + pad, by, u * 0.152, text.section, ink);
   }
@@ -474,7 +490,12 @@ function ledger(c: Ctx): void {
   const mark = u * 0.229;
   c.out.push(
     rect(
-      { x: W - f - pad - mark, y: bottom + (row - mark) / 2, w: mark, h: mark },
+      {
+        x: W - f - pad - mark,
+        y: bottom + (footer - mark) / 2,
+        w: mark,
+        h: mark,
+      },
       `fill="${c.hex(c.s.bullet)}"`,
     ),
   );
