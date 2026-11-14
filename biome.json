@@ -11,6 +11,9 @@
       "!**/__snapshots__",
       "!.claude",
       "!.changeset",
+      "!**/src/preset.ts",
+      "!**/styled-system",
+      "!**/test/fixture/out",
       "!pnpm-lock.yaml"
     ]
   },
