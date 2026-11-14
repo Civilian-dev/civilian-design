@@ -28,7 +28,7 @@ Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/de
 1. **`DESIGN.md` at the repo root is the brand guide.** It follows the DESIGN.md format so agents and the linter can read it. Prose is hand-written. Token values in its front matter mirror `packages/design-tokens/dist/resolved.json` and are never the source of truth: Figma is.
 2. **No new colours or fonts.** The brand is expressed with the tokens that already exist (teal ink, paper, salmon, gold, violet; Poppins, Instrument Sans, Monaspace Xenon). Anything the brand needs that tokens lack is listed under "Token requests" below, to be added in Figma.
 3. **`packages/brand-graphics` owns the artwork.** Hand-authored sources in `src/` (single-colour SVG, `currentColor`), a dependency-free composer in `scripts/`, and committed generated output in `examples/`.
-4. **Variety comes from recombination, not new art.** Every composed asset is reproducible from `(recipe, scheme, seed)`.
+4. **Variety comes from recombination, not new art.** Every composed asset is reproducible from `(layout, scheme, feature, seed)`.
 5. **`DESIGN.md` is excluded from Biome.** Its markdown formatter flattens the YAML front matter, which breaks the format.
 
 ## Feedback log
@@ -38,6 +38,16 @@ Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/de
 - Colour: went back to the Stripe Press book pages, where each page is one saturated flat ground with a single contrasting ink and a cover in two or three strong inks. Replaced the pastel palettes with six schemes that each pair warm with cool and light with dark, and added colour grounds (salmon, gold, mint, plum) alongside paper and ink. All values are still existing tokens.
 - Shapes: removed the `totem` and `scatter` recipes and all random placement and tilt. The recipes are now `corner` (the callout idea, generalised), `row` (same-size pieces on a baseline, like route bullets), `tile` (a symmetric repeat on a panel) and `band` (a frieze). Each follows one rule; the seed only picks the motif and colour order.
 - Not re-read: the NYCTA manual link is a PDF download, so that part of the rework is from memory of the manual (route discs, modular panels, strict alignment and repetition), not a fresh look.
+
+**Round 2 (2026-11-14).** The ordered layouts and stronger colour were an improvement, but the result read as cheap and cheerful: too much Memphis, not enough NYCTA. The brief is minimal and intentional, verging on brutalist, with the shapes kept only as accent, key and punctuation. Noise gradients, part of the original brief, had been reduced to halos and needed to come back. Changes made:
+
+- Direction: `DESIGN.md` was rewritten around a sign system. Ink and paper do the work; colour is limited to a route bullet, a three-piece key and one feature block. Colour grounds, loose marks and pattern tiles are out. Reference images are in [`docs/brand-seeds`](brand-seeds/README.md).
+- Layouts: `sign` (band, bullet row, rule, body, rule, footer) and `ledger` (a ruled frame of six cells on concrete grey) replace `corner`, `row`, `tile` and `band`.
+- Feature block: either `grain` (a two-colour noise gradient with one quarter-disc anchored in the corner) or `weave` (small tiles in the ground colour over a noise gradient, like houndstooth).
+- Schemes: `paper`, `concrete` and `night` replace the six colour schemes.
+- Shapes: the working set (disc, quarter-disc, half-disc, triangle, square) and the civilian were redrawn with square corners. The other shapes, the line marks and the pattern tiles moved to `src/reserve` and are not used.
+- Brought back from the original brief: cool with rationed warmth, noise gradients as a main material, `sm` and `md` radii as the interface default, tokens as the only source of values (no hex values in the guide's prose), assets that resize.
+- Not done: the `DESIGN.md` front matter is still a hand-kept mirror of the tokens (the build check is in stage 7), and the six old "token requests" for brighter colours no longer apply.
 
 ## Stages
 
@@ -52,8 +62,8 @@ This file.
 
 ### Stage 2: source graphics and examples `[x]`
 
-- `packages/brand-graphics/src/shapes/` magnets (solids), `src/lines/` marks (strokes), `src/patterns/` seamless tiles, `src/mark/` the civilian figure.
-- `packages/brand-graphics/scripts/compose.ts` composer and texture generators (grain gradient, stipple fade).
+- `packages/brand-graphics/src/shapes/` the working pieces, `src/mark/` the civilian figure, `src/reserve/` earlier pieces not in use.
+- `packages/brand-graphics/src/compose.ts` composer: `sign` and `ledger` layouts, `grain` and `weave` feature blocks, fluid callout backgrounds and textures.
 - `packages/brand-graphics/examples/` generated variations: Open Graph images, article banners, profile banner, callout backgrounds, textures, avatar.
 - Done when: examples regenerate byte-identically from the script and `examples/index.html` shows them.
 - Not done: `DESIGN.md` has not been run through `@google/design.md lint` (only checked by script against the tokens and the section order).
@@ -61,8 +71,8 @@ This file.
 Left for a follow-up session (refine and expand):
 
 - Review the shape set by eye in Figma; add or drop pieces; consider a second figure pose.
-- More recipes (for example a full-bleed pattern cover and a two-panel diptych), and more motifs per recipe.
-- Review the six schemes in Figma next to real pages; consider promoting them to a `graphic` token group (see token requests).
+- Decide the open round 3 questions in `docs/brand-seeds`: tile size, the cold gradient, and which weave piece is the default.
+- Review the three schemes in Figma next to real pages; consider promoting them to a `graphic` token group (see token requests).
 - A proper wordmark lock-up (the mark here is provisional and redrawn from the first attempt).
 
 ### Stage 3: `AGENTS.md` harness `[ ]`
@@ -106,7 +116,5 @@ Goal: a lower-reasoning model can work on one package without reading the others
 Nothing here blocks the stages above; the composer carries these as local constants until they exist as tokens.
 
 - `borderWidths`: `hairline` 1px, `rule` 2px, `bold` 4px.
-- A `graphic` colour group holding the schemes (ground, ink, three magnet inks, block, tone), so they are not hard-coded by primitive name in the composer.
-- A true blue hue. Stripe Press leans on deep royal blues and the first banner used blue; the closest tokens today are `violet.900` and `teal.700`.
-- A stronger orange and yellow (the `500` steps of salmon and gold are muted: terracotta and mustard). They work as texture tones but not as bright highlights.
+- A `graphic` colour group holding the schemes (ground, ink, band, key colours, gradient pairs), so they are not hard-coded by primitive name in the composer.
 - Variable descriptions for every semantic role (already noted in the `claude-design-system` README).
