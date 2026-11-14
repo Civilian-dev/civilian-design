@@ -4,6 +4,7 @@
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildDesignSystem } from "./design-system";
 import {
   aesthetic,
   assertDescriptions,
@@ -89,6 +90,8 @@ export function build(): void {
     resolve(skill, "references/roles.md"),
     `# Colour roles\n\nGenerated from the design tokens. Light and dark hex values per semantic role.\n\n${rolesTable(roles.roles)}\n`,
   );
+
+  buildDesignSystem();
 
   write(
     resolve(repoRoot, ".claude-plugin/marketplace.json"),
