@@ -1,0 +1,385 @@
+/**
+ * Build CSS, JS/TS and resolved outputs from the canonical DTCG tokens.
+ * Run via `pnpm build` (normalises first, then builds from the canonical data).
+ */
+import { mkdirSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  flatten,
+  type Normalised,
+  paths,
+  run,
+  type TokenTree,
+} from "./normalise";
+
+// biome-ignore lint/suspicious/noExplicitAny: DTCG values are heterogeneous JSON
+type Json = any;
+export type Theme = "light" | "dark";
+
+const refName = (v: unknown): string | undefined =>
+  typeof v === "string" ? /^\{([^{}]+)\}$/.exec(v)?.[1] : undefined;
+
+// ---------- colour maths (sRGB -> OKLCH) ----------
+
+const lin = (c: number) =>
+  c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+
+export function srgbToOklch([r, g, b]: number[]): {
+  l: number;
+  c: number;
+  h: number;
+} {
+  const [lr, lg, lb] = [
+    lin(r as number),
+    lin(g as number),
+    lin(b as number),
+  ] as [number, number, number];
+  const l = Math.cbrt(
+    0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb,
+  );
+  const m = Math.cbrt(
+    0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb,
+  );
+  const s = Math.cbrt(
+    0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb,
+  );
+  const L = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
+  const A = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s;
+  const B = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
+  const C = Math.hypot(A, B);
+  const H = C < 1e-4 ? 0 : ((Math.atan2(B, A) * 180) / Math.PI + 360) % 360;
+  return { l: L, c: C, h: H };
+}
+
+const r = (n: number, dp: number) => Number(n.toFixed(dp));
+
+export function oklchString(components: number[], alpha: number): string {
+  const { l, c, h } = srgbToOklch(components);
+  const base = `${r(l, 4)} ${r(c, 4)} ${r(h, 2)}`;
+  return `oklch(${base}${alpha < 1 ? ` / ${alpha}` : ""})`;
+}
+
+export interface ResolvedColour {
+  hex: string;
+  oklch: string;
+  alpha: number;
+  css: string;
+}
+
+function resolveColour(v: Json): ResolvedColour {
+  const [rr, gg, bb] = v.components as number[];
+  const hex = v.hex as string;
+  const css =
+    v.alpha < 1
+      ? `rgb(${Math.round((rr as number) * 255)} ${Math.round((gg as number) * 255)} ${Math.round((bb as number) * 255)} / ${v.alpha})`
+      : hex;
+  return {
+    hex,
+    oklch: oklchString(v.components, v.alpha),
+    alpha: v.alpha,
+    css,
+  };
+}
+
+// ---------- value serialisation ----------
+
+const dimCss = (d: Json) => `${d.value}${d.unit}`;
+const fontFamilyCss = (f: string[]) =>
+  f.map((n) => (/[\s]/.test(n) ? `"${n}"` : n)).join(", ");
+
+type VarOf = (path: string) => string;
+
+function shadowCss(layers: Json[], varOf: VarOf): string {
+  return layers
+    .map((l) => {
+      const c = refName(l.color);
+      const colour = c ? `var(${varOf(c)})` : "currentColor";
+      return `${l.inset ? "inset " : ""}${dimCss(l.offsetX)} ${dimCss(l.offsetY)} ${dimCss(l.blur)} ${dimCss(l.spread)} ${colour}`;
+    })
+    .join(", ");
+}
+
+/** CSS value for a token, keeping aliases as var() references. */
+function cssValue(path: string, t: Json, varOf: VarOf): string {
+  const alias = refName(t.$value);
+  if (alias) return `var(${varOf(alias)})`;
+  switch (t.$type) {
+    case "color":
+      return resolveColour(t.$value).css;
+    case "dimension":
+    case "duration":
+      return dimCss(t.$value);
+    case "fontFamily":
+      return fontFamilyCss(t.$value);
+    case "cubicBezier":
+      return `cubic-bezier(${t.$value.join(", ")})`;
+    case "shadow":
+      return shadowCss(t.$value, varOf);
+    case "number":
+      return path.startsWith("letterSpacings.")
+        ? `${t.$value}em`
+        : String(t.$value);
+    default:
+      return String(t.$value);
+  }
+}
+
+/** CSS custom-property name for a token (from Figma codeSyntax), or undefined for composites without one. */
+function cssVarOf(path: string, t: Json): string | undefined {
+  const fromFigma = t.$extensions?.["dev.civilian"]?.cssVar as
+    | string
+    | undefined;
+  if (fromFigma) return fromFigma;
+  if (path.startsWith("shadows.")) return `--${path.replace(".", "-")}`;
+  return undefined;
+}
+
+export function buildCss({ tokens, dark }: Normalised): string {
+  const light = flatten(tokens);
+  const darkMap = flatten(dark);
+  const names = new Map<string, string>();
+  for (const [p, t] of light) {
+    const n = cssVarOf(p, t);
+    if (n) names.set(p, n);
+  }
+  const varOf: VarOf = (p) => {
+    const n = names.get(p);
+    if (!n) throw new Error(`No CSS variable for ${p}`);
+    return n;
+  };
+  const decls = (m: Map<string, Json>) =>
+    [...m]
+      .filter(([p]) => names.has(p))
+      .map(([p, t]) => `  ${varOf(p)}: ${cssValue(p, t, varOf)};`)
+      .join("\n");
+  const darkDecls = decls(darkMap);
+  const indent = (s: string) => s.replace(/^/gm, "  ");
+  return `/* Generated by @civilian-dev/design-tokens. Do not edit. */
+:root {
+  color-scheme: light;
+${decls(light)}
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+${darkDecls}
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+${indent(darkDecls)}
+  }
+}
+`;
+}
+
+// ---------- JS / TS ----------
+
+function varTree(tokens: TokenTree): {
+  tree: Json;
+  flat: Record<string, string>;
+} {
+  const flat: Record<string, string> = {};
+  const tree: Json = {};
+  for (const [p, t] of flatten(tokens)) {
+    const n = cssVarOf(p, t);
+    if (!n) continue;
+    flat[p] = `var(${n})`;
+    let cur = tree;
+    const segs = p.split(".");
+    segs.forEach((s, i) => {
+      if (i === segs.length - 1) cur[s] = flat[p];
+      else cur = cur[s] ??= {};
+    });
+  }
+  return { tree, flat };
+}
+
+function typeOfTree(node: Json, depth = 1): string {
+  if (typeof node === "string") return JSON.stringify(node);
+  const pad = "  ".repeat(depth);
+  const body = Object.entries(node)
+    .map(
+      ([k, v]) =>
+        `${pad}readonly ${JSON.stringify(k)}: ${typeOfTree(v, depth + 1)};`,
+    )
+    .join("\n");
+  return `{\n${body}\n${"  ".repeat(depth - 1)}}`;
+}
+
+export function buildJs(n: Normalised): { js: string; dts: string } {
+  const { tree, flat } = varTree(n.tokens);
+  const js = `// Generated by @civilian-dev/design-tokens. Do not edit.
+export const tokens = ${JSON.stringify(tree, null, 2)};
+
+const flat = ${JSON.stringify(flat, null, 2)};
+
+/** CSS \`var(--…)\` reference for a dotted token path, e.g. token("colors.bg.canvas"). */
+export function token(path) {
+  const v = flat[path];
+  if (v === undefined) throw new Error(\`Unknown token: \${path}\`);
+  return v;
+}
+`;
+  const dts = `// Generated by @civilian-dev/design-tokens. Do not edit.
+export declare const tokens: ${typeOfTree(tree)};
+
+export type TokenPath =
+${Object.keys(flat)
+  .map((k) => `  | ${JSON.stringify(k)}`)
+  .join("\n")};
+
+/** CSS \`var(--…)\` reference for a dotted token path, e.g. token("colors.bg.canvas"). */
+export declare function token(path: TokenPath): string;
+`;
+  return { js, dts };
+}
+
+// ---------- resolved values ----------
+
+function effective(
+  path: string,
+  theme: Theme,
+  light: Map<string, Json>,
+  dark: Map<string, Json>,
+): Json {
+  return (theme === "dark" ? dark.get(path) : undefined) ?? light.get(path);
+}
+
+function resolveValue(
+  v: Json,
+  type: string,
+  theme: Theme,
+  ctx: Ctx,
+  path: string,
+): Json {
+  const alias = refName(v);
+  if (alias) {
+    const target = effective(alias, theme, ctx.light, ctx.dark);
+    if (!target) throw new Error(`Unresolved ${alias}`);
+    return resolveValue(target.$value, target.$type, theme, ctx, alias);
+  }
+  switch (type) {
+    case "color":
+      return resolveColour(v);
+    case "dimension":
+    case "duration":
+      return dimCss(v);
+    case "fontFamily":
+      return v;
+    case "cubicBezier":
+      return v;
+    case "number":
+      return v;
+    case "fontWeight":
+      return v;
+    case "shadow":
+      return v.map((l: Json) => ({
+        color: resolveValue(l.color, "color", theme, ctx, path),
+        offsetX: dimCss(l.offsetX),
+        offsetY: dimCss(l.offsetY),
+        blur: dimCss(l.blur),
+        spread: dimCss(l.spread),
+        inset: l.inset,
+      }));
+    case "typography":
+      return {
+        fontFamily: resolveValue(v.fontFamily, "fontFamily", theme, ctx, path),
+        fontWeight: resolveValue(v.fontWeight, "fontWeight", theme, ctx, path),
+        fontSize: resolveValue(v.fontSize, "dimension", theme, ctx, path),
+        lineHeight: v.lineHeight,
+        letterSpacing: `${ctx.letterSpacing(path)}em`,
+      };
+    default:
+      throw new Error(`Cannot resolve type ${type}`);
+  }
+}
+
+interface Ctx {
+  light: Map<string, Json>;
+  dark: Map<string, Json>;
+  letterSpacing: (path: string) => number;
+}
+
+export function buildResolved({
+  tokens,
+  dark,
+}: Normalised): Record<Theme, Json> {
+  const light = flatten(tokens);
+  const darkMap = flatten(dark);
+  const ctx: Ctx = {
+    light,
+    dark: darkMap,
+    letterSpacing: (p) =>
+      light.get(p)?.$extensions?.["dev.civilian"]?.letterSpacing ?? 0,
+  };
+  const out = {} as Record<Theme, Json>;
+  for (const theme of ["light", "dark"] as const) {
+    const tree: Json = {};
+    for (const [p] of light) {
+      const t = effective(p, theme, light, darkMap);
+      const value = resolveValue(t.$value, t.$type, theme, ctx, p);
+      const segs = p.split(".");
+      let cur = tree;
+      segs.forEach((s, i) => {
+        if (i === segs.length - 1) cur[s] = value;
+        else cur = cur[s] ??= {};
+      });
+    }
+    out[theme] = tree;
+  }
+  return out;
+}
+
+export function buildResolvedModule(resolved: Record<Theme, Json>): {
+  js: string;
+  dts: string;
+  json: string;
+} {
+  const json = `${JSON.stringify(resolved, null, 2)}\n`;
+  return {
+    json,
+    js: `// Generated by @civilian-dev/design-tokens. Do not edit.\nexport const resolved = ${JSON.stringify(resolved, null, 2)};\nexport default resolved;\n`,
+    dts: `// Generated by @civilian-dev/design-tokens. Do not edit.
+export interface ResolvedColour {
+  hex: string;
+  oklch: string;
+  alpha: number;
+  css: string;
+}
+// biome-ignore lint/suspicious/noExplicitAny: nested token tree
+export type ResolvedTheme = Record<string, any>;
+export declare const resolved: { light: ResolvedTheme; dark: ResolvedTheme };
+export default resolved;
+`,
+  };
+}
+
+export async function build(): Promise<void> {
+  const n = await run();
+  const w = (f: string, c: string) => writeFileSync(resolve(paths.dist, f), c);
+  mkdirSync(paths.dist, { recursive: true });
+  w("tokens.css", buildCss(n));
+  const { js, dts } = buildJs(n);
+  w("index.js", js);
+  w("index.d.ts", dts);
+  const rm = buildResolvedModule(buildResolved(n));
+  w("resolved.json", rm.json);
+  w("resolved.js", rm.js);
+  w("resolved.d.ts", rm.dts);
+}
+
+if (
+  process.argv[1] &&
+  fileURLToPath(import.meta.url) === resolve(process.argv[1])
+) {
+  build().then(
+    () => console.log("built design-tokens dist/"),
+    (e) => {
+      console.error(e);
+      process.exit(1);
+    },
+  );
+}

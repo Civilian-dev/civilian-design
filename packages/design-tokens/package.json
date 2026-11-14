@@ -30,13 +30,14 @@
   "devDependencies": {
     "@terrazzo/parser": "2.10.0",
     "@types/node": "26.6.6",
+    "lightningcss": "1.33.0",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vitest": "5.1.0"
   },
   "scripts": {
     "normalise": "tsx scripts/normalise.ts",
-    "build": "tsx scripts/normalise.ts",
+    "build": "tsx scripts/build.ts",
     "test": "vitest run",
     "typecheck": "tsc -p ."
   }
