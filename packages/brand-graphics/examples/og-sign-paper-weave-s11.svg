@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="sign" data-scheme="paper" data-feature="weave" data-seed="11">
+<defs><linearGradient id="w11-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="w11-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="11" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#54a2a6"/><feComposite in2="t" operator="in"/></filter><pattern id="w11-p" patternUnits="userSpaceOnUse" x="831" y="182" width="27" height="27"><g transform="translate(0 0) scale(0.225) rotate(180 60 60)" fill="#fdfbf8"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g></pattern></defs>
+<rect width="1200" height="630" fill="#fdfbf8"/>
+<rect x="0" y="0" width="1200" height="28" fill="#01343a"/>
+<circle cx="108.02" cy="112.04" r="36.02" fill="#f25855"/>
+<text x="108.02" y="127.88" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="43.94" font-weight="600" text-anchor="middle" fill="#fdfbf8">A</text>
+<text x="172.07" y="103.95" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">ARTICLE</text>
+<text x="172.07" y="131.98" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#404a4b">NO. 012 · FIELD NOTES</text>
+<rect x="831" y="182" width="297" height="324" fill="#01343a"/>
+<rect x="831" y="182" width="297" height="324" fill="url(#w11-g)" filter="url(#w11-f)"/>
+<rect x="831" y="182" width="297" height="324" fill="url(#w11-p)"/>
+<rect x="72" y="180" width="1056" height="2" fill="#01343a"/>
+<rect x="72" y="506" width="1056" height="2" fill="#01343a"/>
+<text x="72" y="311.99" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#01343a">A field guide to</text>
+<text x="72" y="418.04" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#01343a">small libraries</text>
+<text x="72" y="565.95" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="26.04" font-weight="600" letter-spacing="-0.01em" fill="#01343a">civilian.dev</text>
+<text x="329.98" y="563.96" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#404a4b">14 NOV 2026 · 6 MIN</text>
+<g transform="translate(975.98 540.02) scale(0.3334)" fill="#01343a"><rect width="120" height="120"/></g>
+<g transform="translate(1031.99 540.02) scale(0.3334)" fill="#f25855"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<g transform="translate(1088 540.02) scale(0.3334)" fill="#fede8f"><circle cx="60" cy="60" r="60"/></g>
+</svg>

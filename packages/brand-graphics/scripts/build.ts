@@ -18,32 +18,31 @@ import {
   calloutBackground,
   compose,
   type Hex,
+  type Hue,
   type Kit,
   type Piece,
   parsePiece,
-  resolveInks,
+  SCHEMES,
+  type SchemeName,
+  type TextBlock,
   texture,
 } from "../src/compose";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
-function load(dir: string): Record<string, Piece> {
-  const folder = join(root, "src", dir);
-  const entries = readdirSync(folder)
-    .filter((f) => f.endsWith(".svg"))
-    .sort();
-  return Object.fromEntries(
-    entries.map((f) => [
-      basename(f, ".svg"),
-      parsePiece(readFileSync(join(folder, f), "utf8")),
-    ]),
-  );
+function read(path: string): Piece {
+  return parsePiece(readFileSync(join(root, "src", path), "utf8"));
 }
 
+const shapeFiles = readdirSync(join(root, "src", "shapes"))
+  .filter((f) => f.endsWith(".svg"))
+  .sort();
+
 const kit: Kit = {
-  shapes: load("shapes"),
-  lines: load("lines"),
-  patterns: load("patterns"),
+  shapes: Object.fromEntries(
+    shapeFiles.map((f) => [basename(f, ".svg"), read(`shapes/${f}`)]),
+  ),
+  mark: read("mark/civilian.svg"),
 };
 
 const hex: Hex = (path) => {
@@ -57,237 +56,263 @@ const OG = { width: 1200, height: 630 };
 const BANNER = { width: 1600, height: 600 };
 const PROFILE = { width: 1500, height: 500 };
 
-/** File names carry recipe, scheme and seed (G10). */
+function text(
+  letter: string,
+  kind: string,
+  number: string,
+  section: string,
+  title: [string, string],
+  meta: string,
+): TextBlock {
+  return { letter, kind, number, section, title, meta };
+}
+
+/** File names carry layout, scheme, feature and seed (G9). */
 const composed: [string, ComposeOptions][] = [
   [
     "og",
     {
       ...OG,
-      recipe: "corner",
+      layout: "sign",
       scheme: "paper",
-      seed: 7,
-      text: {
-        kicker: "Field notes",
-        title: ["Software for", "the rest of us"],
-        footer: true,
-      },
+      feature: "weave",
+      seed: 11,
+      text: text(
+        "A",
+        "Article",
+        "012",
+        "Field notes",
+        ["A field guide to", "small libraries"],
+        "14 Nov 2026 · 6 min",
+      ),
     },
   ],
   [
     "og",
     {
       ...OG,
-      recipe: "corner",
-      scheme: "press",
-      seed: 12,
-      text: {
-        kicker: "Article",
-        title: ["A field guide to", "small libraries"],
-        footer: true,
-      },
+      layout: "sign",
+      scheme: "paper",
+      feature: "grain",
+      seed: 5,
+      text: text(
+        "L",
+        "Library",
+        "004",
+        "Tools",
+        ["Make it plain,", "make it useful"],
+        "2 Oct 2026 · 4 min",
+      ),
     },
   ],
   [
     "og",
     {
       ...OG,
-      recipe: "corner",
+      layout: "sign",
+      scheme: "paper",
+      feature: "none",
+      seed: 3,
+      text: text(
+        "N",
+        "Notes",
+        "031",
+        "Changelog",
+        ["What changed", "and why"],
+        "30 Sep 2026 · 2 min",
+      ),
+    },
+  ],
+  [
+    "og",
+    {
+      ...OG,
+      layout: "sign",
       scheme: "night",
-      seed: 18,
-      text: {
-        kicker: "Library",
-        title: ["Make it plain,", "make it useful"],
-        footer: true,
-      },
-    },
-  ],
-  [
-    "og",
-    {
-      ...OG,
-      recipe: "tile",
-      scheme: "press",
-      seed: 7,
-      text: {
-        kicker: "Projects",
-        title: ["Things I made", "this year"],
-        footer: true,
-      },
-    },
-  ],
-  [
-    "og",
-    {
-      ...OG,
-      recipe: "tile",
-      scheme: "plum",
-      seed: 12,
-      text: {
-        kicker: "Talk",
-        title: ["Boring tools,", "happy people"],
-        footer: true,
-      },
-    },
-  ],
-  [
-    "og",
-    {
-      ...OG,
-      recipe: "row",
-      scheme: "sun",
-      seed: 12,
-      text: {
-        kicker: "Guide",
-        title: ["Four ways to", "say it simply"],
-        footer: true,
-      },
-    },
-  ],
-  [
-    "og",
-    {
-      ...OG,
-      recipe: "row",
-      scheme: "mint",
-      seed: 7,
-      text: {
-        kicker: "Notes",
-        title: ["One thing", "at a time"],
-        footer: true,
-      },
-    },
-  ],
-  [
-    "og",
-    {
-      ...OG,
-      recipe: "band",
-      scheme: "paper",
+      feature: "weave",
       seed: 9,
-      text: {
-        kicker: "Changelog",
-        title: ["What changed", "and why"],
-        footer: true,
-      },
+      text: text(
+        "T",
+        "Talk",
+        "007",
+        "Talks",
+        ["Boring tools,", "happy people"],
+        "21 Aug 2026 · 25 min",
+      ),
     },
   ],
-  ["banner", { ...BANNER, recipe: "tile", scheme: "night", seed: 8 }],
-  ["banner", { ...BANNER, recipe: "tile", scheme: "paper", seed: 14 }],
-  ["banner", { ...BANNER, recipe: "band", scheme: "press", seed: 14 }],
-  ["banner", { ...BANNER, recipe: "corner", scheme: "sun", seed: 2 }],
-  ["banner", { ...BANNER, recipe: "corner", scheme: "plum", seed: 14 }],
-  ["banner", { ...BANNER, recipe: "corner", scheme: "mint", seed: 10 }],
-  ["banner", { ...BANNER, recipe: "row", scheme: "paper", seed: 21 }],
-  ["banner", { ...BANNER, recipe: "row", scheme: "night", seed: 4 }],
   [
-    "profile",
-    { ...PROFILE, recipe: "tile", scheme: "press", seed: 6, profile: true },
+    "og",
+    {
+      ...OG,
+      layout: "sign",
+      scheme: "night",
+      feature: "grain",
+      seed: 4,
+      text: text(
+        "P",
+        "Project",
+        "018",
+        "Projects",
+        ["Things I made", "this year"],
+        "1 Dec 2026 · 8 min",
+      ),
+    },
+  ],
+  [
+    "og",
+    {
+      ...OG,
+      layout: "ledger",
+      scheme: "concrete",
+      feature: "grain",
+      seed: 5,
+      text: text(
+        "A",
+        "Article",
+        "012",
+        "Field notes",
+        ["A field guide to", "small libraries"],
+        "14 Nov 2026 · 6 min read",
+      ),
+    },
+  ],
+  [
+    "og",
+    {
+      ...OG,
+      layout: "ledger",
+      scheme: "concrete",
+      feature: "weave",
+      seed: 3,
+      text: text(
+        "G",
+        "Guide",
+        "009",
+        "Guides",
+        ["Four ways to", "say it simply"],
+        "9 Jul 2026 · 5 min read",
+      ),
+    },
+  ],
+  [
+    "og",
+    {
+      ...OG,
+      layout: "ledger",
+      scheme: "concrete",
+      feature: "none",
+      seed: 2,
+      text: text(
+        "N",
+        "Notes",
+        "030",
+        "Field notes",
+        ["Software for", "the rest of us"],
+        "12 Jun 2026 · 3 min read",
+      ),
+    },
+  ],
+  [
+    "banner",
+    { ...BANNER, layout: "sign", scheme: "paper", feature: "weave", seed: 14 },
+  ],
+  [
+    "banner",
+    { ...BANNER, layout: "sign", scheme: "paper", feature: "grain", seed: 6 },
+  ],
+  [
+    "banner",
+    { ...BANNER, layout: "sign", scheme: "night", feature: "weave", seed: 8 },
+  ],
+  [
+    "banner",
+    {
+      ...BANNER,
+      layout: "ledger",
+      scheme: "concrete",
+      feature: "weave",
+      seed: 21,
+    },
   ],
   [
     "profile",
-    { ...PROFILE, recipe: "band", scheme: "night", seed: 2, profile: true },
+    {
+      ...PROFILE,
+      layout: "sign",
+      scheme: "paper",
+      feature: "none",
+      seed: 2,
+      profile: true,
+    },
+  ],
+  [
+    "profile",
+    {
+      ...PROFILE,
+      layout: "sign",
+      scheme: "night",
+      feature: "none",
+      seed: 6,
+      profile: true,
+    },
   ],
 ];
 
 const files = new Map<string, string>();
 
-for (const [kind, o] of composed) {
-  const name = `${kind}-${o.recipe}-${o.scheme}-s${o.seed}.svg`;
-  const svg = compose(kit, hex, o);
-  files.set(name, svg);
-  console.log(`  ${name}: ${svg.match(/data-motif="([^"]*)"/)?.[1]}`);
-}
-
-files.set("avatar-press.svg", avatar(kit, hex, { size: 400, scheme: "press" }));
-files.set("avatar-night.svg", avatar(kit, hex, { size: 400, scheme: "night" }));
-
-/** Tint, texture and two-tone motif from one hue: steps 50, 300 and 500. */
-const callouts = [
-  ["salmon", "quarter", 11],
-  ["violet", "rings", 12],
-  ["gold", "stair", 13],
-  ["teal", "arc", 14],
-] as const;
-for (const [hue, motif, seed] of callouts) {
+for (const [prefix, o] of composed) {
   files.set(
-    `callout-${hue}.svg`,
-    calloutBackground(kit, {
-      tint: hex(`${hue}.50`),
-      tone: hex(`${hue}.300`),
-      colors: [hex(`${hue}.500`), hex(`${hue}.300`), hex(`${hue}.500`)],
-      motif,
-      seed,
-    }),
+    `${prefix}-${o.layout}-${o.scheme}-${o.feature}-s${o.seed}.svg`,
+    compose(kit, hex, o),
   );
 }
 
-const paper = resolveInks(hex, "paper");
-const press = resolveInks(hex, "press");
-const night = resolveInks(hex, "night");
-const plum = resolveInks(hex, "plum");
-files.set(
-  "texture-stipple-press.svg",
-  texture({
-    kind: "stipple",
-    ground: press.ground,
-    color: press.tone,
-    ink: press.ink,
-    seed: 31,
-  }),
-);
-files.set(
-  "texture-stipple-night.svg",
-  texture({
-    kind: "stipple",
-    ground: night.ground,
-    color: night.tone,
-    ink: night.ink,
-    seed: 32,
-  }),
-);
-files.set(
-  "texture-grain-paper.svg",
-  texture({
-    kind: "grain",
-    ground: paper.ground,
-    color: paper.tone,
-    ink: paper.ink,
-    seed: 33,
-  }),
-);
-files.set(
-  "texture-grain-plum.svg",
-  texture({
-    kind: "grain",
-    ground: plum.ground,
-    color: plum.tone,
-    ink: hex("base.black"),
-    seed: 34,
-  }),
-);
-const ink = night;
+const hues: Hue[] = ["salmon", "gold", "teal", "violet"];
+hues.forEach((hue, i) => {
+  files.set(`callout-${hue}.svg`, calloutBackground(kit, hex, hue, 11 + i));
+});
 
-// A plain gallery page for reviewing the kit and the examples by eye.
+const textures: [SchemeName, "grain" | "weave", number][] = [
+  ["paper", "grain", 5],
+  ["paper", "weave", 7],
+  ["concrete", "weave", 3],
+  ["night", "weave", 9],
+];
+for (const [scheme, feature, seed] of textures) {
+  files.set(
+    `texture-${feature}-${scheme}.svg`,
+    texture(kit, hex, { scheme, feature, seed }),
+  );
+}
+
+for (const scheme of ["paper", "night"] as const) {
+  files.set(`avatar-${scheme}.svg`, avatar(kit, hex, scheme));
+}
+
+// --- gallery ---------------------------------------------------------------
+
 const names = [...files.keys()];
-const sources = (["shapes", "lines", "patterns"] as const).flatMap((dir) =>
-  Object.keys(kit[dir]).map((name) => `${dir}/${name}`),
-);
-const figures = (prefix: string, cls = "") =>
+const paper = SCHEMES.paper;
+
+const figures = (prefix: string) =>
   names
     .filter((f) => f.startsWith(prefix))
     .map(
       (f) =>
-        `<figure class="${cls}"><img src="${f}" alt=""><figcaption>${f}</figcaption></figure>`,
+        `<figure><img src="${f}" alt=""><figcaption>${f}</figcaption></figure>`,
     )
     .join("\n");
-const fluid = (prefix: string) =>
+
+const fluid = (prefix: string, withText: boolean) =>
   names
     .filter((f) => f.startsWith(prefix))
     .map(
       (f) =>
-        `<figure><div class="fluid${/-(night|plum)\.svg$/.test(f) ? " dark" : ""}" style="background-image:url(${f})"><p>Text sits on the flat part of the ground.</p></div><figcaption>${f}</figcaption></figure>`,
+        `<figure><div class="fluid" style="background-image:url(${f})">${withText ? "<p>Text sits on the flat part of the ground.</p>" : ""}</div><figcaption>${f}</figcaption></figure>`,
     )
     .join("\n");
+
 files.set(
   "index.html",
   `<!doctype html>
@@ -296,17 +321,16 @@ files.set(
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Civilian brand graphics</title>
 <style>
-  body { margin: 0; padding: 48px 6vw 96px; background: ${paper.ground}; color: ${paper.ink}; font: 16px/1.6 "Instrument Sans", system-ui, sans-serif; }
+  body { margin: 0; padding: 48px 6vw 96px; background: ${hex(paper.ground)}; color: ${hex(paper.ink)}; font: 16px/1.6 "Instrument Sans", system-ui, sans-serif; }
   h1, h2 { font-family: Poppins, system-ui, sans-serif; font-weight: 600; letter-spacing: -0.025em; }
-  h2 { margin: 64px 0 16px; }
+  h2 { margin: 64px 0 16px; padding-top: 16px; border-top: 2px solid ${hex(paper.ink)}; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 32px; }
   .wide { display: grid; gap: 32px; }
   figure { margin: 0; }
   figure img { display: block; width: 100%; height: auto; border: 1px solid ${hex("neutral.200")}; }
-  figcaption { margin-top: 8px; font: 12px "Monaspace Xenon", ui-monospace, monospace; color: ${paper.muted}; }
-  .fluid { min-height: 120px; border-radius: 16px; overflow: hidden; background-size: 100% 100%; display: flex; align-items: center; }
+  figcaption { margin-top: 8px; font: 12px "Monaspace Xenon", ui-monospace, monospace; color: ${hex(paper.muted)}; }
+  .fluid { min-height: 120px; border-radius: 8px; overflow: hidden; background-size: 100% 100%; display: flex; align-items: center; }
   .fluid p { margin: 0; padding: 24px; max-width: 55%; }
-  .dark p { color: ${ink.ink}; }
   .kit { display: flex; flex-wrap: wrap; gap: 24px; }
   .kit figure { width: 96px; }
   .kit img { border: 0; height: 72px; object-fit: contain; }
@@ -320,13 +344,13 @@ files.set(
 <h2>Banners</h2>
 <div class="wide">${figures("banner-")}${figures("profile-")}</div>
 <h2>Callout backgrounds</h2>
-<div class="grid">${fluid("callout-")}</div>
+<div class="grid">${fluid("callout-", true)}</div>
 <h2>Textures</h2>
-<div class="grid">${fluid("texture-")}</div>
+<div class="grid">${fluid("texture-", false)}</div>
 <h2>Avatars</h2>
 <div class="avatars">${figures("avatar-")}</div>
 <h2>Kit</h2>
-<div class="kit">${sources.map((s) => `<figure><img src="../src/${s}.svg" alt=""><figcaption>${s}</figcaption></figure>`).join("")}<figure><img src="../src/mark/civilian.svg" alt=""><figcaption>mark/civilian</figcaption></figure></div>
+<div class="kit">${shapeFiles.map((f) => `<figure><img src="../src/shapes/${f}" alt=""><figcaption>${basename(f, ".svg")}</figcaption></figure>`).join("")}<figure><img src="../src/mark/civilian.svg" alt=""><figcaption>civilian</figcaption></figure></div>
 </html>
 `,
 );

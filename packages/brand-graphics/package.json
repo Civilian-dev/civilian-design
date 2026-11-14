@@ -2,7 +2,7 @@
   "name": "@civilian-dev/brand-graphics",
   "version": "0.0.0",
   "private": true,
-  "description": "Civilian brand graphics: magnet shapes, line marks, patterns and a composer for banners and social images",
+  "description": "Civilian brand graphics: a small shape kit and a composer for sign-style banners, social images and backgrounds",
   "license": "MIT",
   "type": "module",
   "scripts": {

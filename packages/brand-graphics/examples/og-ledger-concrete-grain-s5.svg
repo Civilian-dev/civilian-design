@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="ledger" data-scheme="concrete" data-feature="grain" data-seed="5">
+<defs><linearGradient id="g5-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="g5-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#f25855"/><feComposite in2="t" operator="in"/></filter></defs>
+<rect width="1200" height="630" fill="#e0e6e7"/>
+<rect x="849" y="129" width="310" height="373" fill="#fea993"/>
+<rect x="849" y="129" width="310" height="373" fill="url(#g5-g)" filter="url(#g5-f)"/>
+<g transform="translate(954.4 297.4) scale(1.705) rotate(270 60 60)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<g fill="none" stroke="#01343a" stroke-width="2"><rect x="40" y="40" width="1120" height="550"/><path d="M40 128H1160M40 502H1160M848 40V590"/></g>
+<text x="72.03" y="91.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">ARTICLE</text>
+<text x="814.98" y="91.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="end" fill="#01343a">012</text>
+<text x="881.03" y="91.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">CIVILIAN.DEV</text>
+<text x="72.03" y="290.02" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="84" font-weight="600" letter-spacing="-0.025em" fill="#01343a">A field guide to</text>
+<text x="72.03" y="387.98" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="84" font-weight="600" letter-spacing="-0.025em" fill="#01343a">small libraries</text>
+<text x="72.03" y="553.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">14 NOV 2026 · 6 MIN READ</text>
+<text x="881.03" y="553.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">FIELD NOTES</text>
+<rect x="1103.93" y="533.98" width="24.05" height="24.05" fill="#f25855"/>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="sign" data-scheme="paper" data-feature="none" data-seed="3">
+<rect width="1200" height="630" fill="#fdfbf8"/>
+<rect x="0" y="0" width="1200" height="28" fill="#01343a"/>
+<circle cx="108.02" cy="112.04" r="36.02" fill="#f25855"/>
+<text x="108.02" y="127.88" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="43.94" font-weight="600" text-anchor="middle" fill="#fdfbf8">N</text>
+<text x="172.07" y="103.95" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">NOTES</text>
+<text x="172.07" y="131.98" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#404a4b">NO. 031 · CHANGELOG</text>
+<rect x="72" y="180" width="1056" height="2" fill="#01343a"/>
+<rect x="72" y="506" width="1056" height="2" fill="#01343a"/>
+<text x="72" y="311.99" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#01343a">What changed</text>
+<text x="72" y="418.04" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#01343a">and why</text>
+<text x="72" y="565.95" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="26.04" font-weight="600" letter-spacing="-0.01em" fill="#01343a">civilian.dev</text>
+<text x="329.98" y="563.96" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#404a4b">30 SEP 2026 · 2 MIN</text>
+<g transform="translate(975.98 540.02) scale(0.3334)" fill="#01343a"><path d="M0 120V0L120 120Z"/></g>
+<g transform="translate(1031.99 540.02) scale(0.3334)" fill="#f25855"><circle cx="60" cy="60" r="60"/></g>
+<g transform="translate(1088 540.02) scale(0.3334)" fill="#fede8f"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+</svg>
