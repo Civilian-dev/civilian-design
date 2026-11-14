@@ -1,6 +1,6 @@
 {
   "name": "@civilian-dev/design-tokens",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Civilian design tokens, synced from Figma",
   "license": "MIT",
   "type": "module",

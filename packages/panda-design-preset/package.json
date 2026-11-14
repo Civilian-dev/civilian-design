@@ -1,6 +1,6 @@
 {
   "name": "@civilian-dev/panda-design-preset",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Panda CSS preset for the Civilian design system",
   "license": "MIT",
   "type": "module",
