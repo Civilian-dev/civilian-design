@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Civilian Dev
-description: Plain, spacious and useful. A calm printed page with a few solid pieces placed on it, like magnets on a fridge.
+description: Plain, spacious and useful. A public-service sign system in ink on paper, cool and exact, with a few warm solid shapes used as punctuation.
 colors:
   primary: "#1c6b69"
   primary-hover: "#01343a"
@@ -21,21 +21,11 @@ colors:
   tint-gold: "#fcf6e9"
   tint-violet: "#f6f6fe"
   tint-teal: "#f0f9f9"
-  magnet-red: "#f25855"
-  magnet-gold: "#fede8f"
-  magnet-salmon: "#fea993"
-  magnet-violet: "#7366bd"
-  magnet-teal-deep: "#1c6b69"
-  magnet-violet-light: "#c9c4fe"
-  ground-salmon: "#fea993"
-  ground-gold: "#fede8f"
-  ground-mint: "#a8d6d8"
-  ground-plum: "#2e215d"
-  tone-salmon: "#fea993"
-  tone-terracotta: "#d3765f"
-  tone-mustard: "#b68e0a"
-  tone-teal: "#54a2a6"
-  tone-violet: "#7366bd"
+  concrete: "#e0e6e7"
+  accent-red: "#f25855"
+  accent-salmon: "#fea993"
+  accent-gold: "#fede8f"
+  accent-teal: "#54a2a6"
 typography:
   display:
     fontFamily: Poppins
@@ -121,13 +111,13 @@ components:
   card:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 24px
   callout:
     backgroundColor: "{colors.tint-salmon}"
     textColor: "{colors.ink}"
     typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: 24px
   callout-note:
     backgroundColor: "{colors.tint-violet}"
@@ -150,62 +140,66 @@ components:
 
 # Civilian Dev
 
-The brand guide for the Civilian Dev site, articles, profile and generated assets. It follows the [DESIGN.md format](https://github.com/google-labs-code/design.md). The YAML above mirrors `packages/design-tokens` (light theme); Figma is the source of truth, so change values there, never here. Rules have ids (`P1`, `C2`, `G4`) so reviews and agents can cite them.
+The brand guide for the Civilian Dev site, articles, profile and generated assets. It follows the [DESIGN.md format](https://github.com/google-labs-code/design.md). Rules have ids (`P1`, `C2`, `G4`) so reviews and agents can cite them.
+
+**Where values come from.** Figma is the source of truth. `packages/design-tokens` is built from it, and every colour, size and font in a generated asset is read from `@civilian-dev/design-tokens/resolved` at build time. The YAML above is a mirror of those tokens for tools that read this format; it is not a source, and it must be regenerated from the tokens, never edited by hand. The prose below names tokens (`fg.default`, `red.500`) and never gives a hex value, so there is nothing here to drift.
 
 ## Overview
 
-Civilian Dev makes technology for people who would rather get on with their day. The look is a calm printed page: warm paper, one dark ink, a lot of room. On that page sit a few solid, friendly pieces (a disc, a square, a bar, an arc) that can be rearranged like magnets on a fridge. The page is the professional part. The magnets are the human part.
+Civilian Dev makes technology for people who would rather get on with their day. The look is a public-service sign system: ink on paper, a black band, a rule above and below, a label that says where you are. It is clean, professional and roomy. The temperature is cool, close to cold, and the warmth is rationed: one or two small warm accents, placed on purpose.
 
-It should feel like a well-run public service with a sense of humour: a transit map, a good manual, a paperback with a bright cover. It should never feel like a terminal.
+The reference is the 1970 New York City Transit Authority manual: a fixed module, a small kit of parts, strict hierarchy, information only where a decision is made. Push it towards brutalism: structure is shown, not hidden; edges are square; nothing is decoration. The friendly solid shapes (disc, quarter-disc, triangle) survive as punctuation, the way a route bullet does on a sign: small, few, and meaning something.
+
+It should feel like a well-made manual or a transit sign. It should never feel like a terminal, and never like a party.
 
 ### Principles
 
-- **P1 Ground first.** Empty space is the main material. At least 60% of any composition is plain ground. When in doubt, remove a piece and widen a margin.
-- **P2 One job each.** Every element is exactly one of: ground, text, rule, magnet, mark, pattern, texture. If you cannot name its job, delete it.
-- **P3 Pieces, not pictures.** Illustration is assembled from the fixed kit in `packages/brand-graphics`. Pieces stay whole and solid. Nothing is drawn one-off for a single asset.
-- **P4 Few inks, strong pairs.** A composition uses one flat ground, the ink and at most three accent colours. Pair a warm with a cool and a light with a dark so the colours hold each other up; pastel on pastel looks washed out. Colour is printed, not lit: no glow, no gloss, no neon.
-- **P5 Plain speech.** Say it in everyday words, at a readable size, once. Labels tell people where they are; headings tell them what they get.
-- **P6 Bold line, light touch.** Line marks have one weight and round ends. Use at most one burst of energy (a spark, a squiggle) per composition, next to the thing that matters.
-- **P7 Ordered, not scattered.** Pieces sit on a grid and follow one rule a viewer could name: a repeat, a quarter turn, a mirror, a sequence. Nothing is placed at random. A seed only chooses which rule and which colours, and the same recipe, scheme and seed always give the same result.
+- **P1 Ground first.** Empty space is the main material. At least 60% of any composition is plain ground. When in doubt, remove something and widen a margin.
+- **P2 One job each.** Every element is exactly one of: ground, band, rule, text, bullet, key, feature block. If you cannot name its job, delete it.
+- **P3 Structure shows.** Layout is made of bands and rules that run the full width of the content. The grid is visible and it is the design. Do not soften it.
+- **P4 Cold first, warmth rationed.** Ink and paper (or ink and concrete) do almost all the work. A composition adds at most two accent colours, and warm colour covers no more than about 15% of the area. Colour is printed, not lit: no glow, no gloss, no neon.
+- **P5 Shapes are punctuation.** A shape marks, labels or keys something. It is never scattered, never a backdrop, and never the largest thing in the composition except inside the one feature block.
+- **P6 Plain speech.** Say it in everyday words, at a readable size, once. Labels tell people where they are; headings tell them what they get.
+- **P7 One rule, said in a sentence.** Anything that repeats follows one rule a viewer could name. Nothing is placed at random. A seed only chooses among allowed options, and the same inputs always give the same result.
+- **P8 Made to resize.** Assets are built from a module and anchored to edges, so they work at any size. Backgrounds carry no baked-in text.
 
-### Not nerdy
+### Not nerdy, not cheerful
 
 Banned motifs, in any medium: code brackets and `</>` glyphs, terminal windows and prompts, binary, circuit boards, node-and-edge "network" art, robots, glowing gradients on black, isometric server racks, matrix rain, hexagon grids, 3D blobs. Code appears only as actual code in a code block.
 
+Also banned: full-bleed colour grounds (salmon, gold, mint, plum pages), confetti, terrazzo, squiggles, more than two accent colours together, pastel on pastel, and any composition whose first impression is "colourful".
+
 ## Colors
 
-Everything maps to an existing token. Names in brackets are the token paths in `packages/design-tokens`.
+Everything is a token. Names are paths in `packages/design-tokens`.
 
-- **Paper** `#fdfbf8` (`bg.canvas`): the default ground for pages and artwork.
-- **Ink** `#01343a` (`fg.default`, `bg.inverse`): all text on light grounds, all line marks, the inverse ground, and the darkest magnet ink.
-- **Primary** `#1c6b69` (`brand.solid`): links and the main action.
-- **Magnet inks** (the accent colours): red `#f25855` (`red.500`), gold `#fede8f` (`gold.300`), salmon `#fea993` (`salmon.300`), violet `#7366bd` (`violet.500`), deep teal `#1c6b69` (`teal.700`) and the ink. Light violet `#c9c4fe` (`violet.300`) is for dark grounds.
-- **Colour grounds** (artwork only, never page backgrounds): salmon `#fea993`, gold `#fede8f`, mint `#a8d6d8` (`teal.300`), plum `#2e215d` (`violet.900`) and the ink.
-- **Tones** (textures and halos): the ground's own hue one step along, so texture reads as print, not as another colour. Salmon on paper, terracotta `#d3765f` (`salmon.500`) on salmon, mustard `#b68e0a` (`gold.500`) on gold, teal `#54a2a6` (`teal.500`) on mint and ink, violet on plum.
+- **Paper** (`bg.canvas`): the default ground.
+- **Concrete** (`neutral.200`): the alternative light ground, for the `ledger` layout.
+- **Ink** (`fg.default`, `bg.inverse`): all text on light grounds, every band and rule, the dark ground, and the default shape colour.
+- **Primary** (`brand.solid`): links and the main action. Interface only, not artwork.
+- **Accents** (artwork): red (`red.500`), salmon (`salmon.300`), gold (`gold.300`). Cool alternative: teal (`teal.500`). Violet is for focus and info states in the interface only.
 - **Tints** (`*.subtle`): callout and section grounds only.
 
 Rules:
 
-- **C1** Body and heading text is the scheme's ink on its ground: ink on paper, tint, salmon, gold or mint; paper on ink or plum. No coloured text except links (primary) and status messages.
-- **C2** A composition uses exactly one scheme from the table below: a flat ground, the ink, three magnet inks, a block colour and a tone (P4). Do not mix by hand.
-- **C3** Gradients exist only as ground textures (G7). Never on text, magnets, buttons or borders.
-- **C4** Text never sits on a magnet, a pattern, a block or a textured area. Keep it on plain ground, or put a solid plate under it.
-- **C5** Text contrast is at least 4.5:1 (3:1 for display sizes). Every ground in the table passes with its ink. Red is never a text ground (ink on red is about 4:1); it is a block or a magnet only.
-- **C6** Dark theme uses the dark token set. Artwork for dark pages uses the `night` or `plum` schemes, not inverted light artwork.
-- **C7** The first magnet ink in a scheme has the most contrast with the ground and carries the main shape. Never let the main shape be the ink closest to the ground in lightness.
+- **C1** Text is ink on paper or concrete, or paper on ink. No coloured text except links (primary), the muted metadata line (`fg.subtle`) and status messages.
+- **C2** A composition uses one scheme from the table below. Do not mix by hand.
+- **C3** Colour appears in exactly three places: the route bullet, the key, and the feature block. Nowhere else.
+- **C4** Red is the signal colour: the bullet, or one piece in the key. One red element per composition outside the feature block.
+- **C5** Gradients exist only as noise gradients inside the feature block or a section texture (G6). Never smooth, never on text, shapes, buttons or borders.
+- **C6** Text never sits on a shape, a weave or a textured area. Keep it on plain ground.
+- **C7** Text contrast is at least 4.5:1 (3:1 for display sizes).
+- **C8** Dark theme uses the dark token set and the `night` scheme, not inverted light artwork.
 
-Schemes for graphics (each pairs warm with cool and light with dark):
+Schemes for graphics:
 
-| Scheme | Ground | Ink | Magnet inks, most contrast first | Block | On the block | Tone |
-| --- | --- | --- | --- | --- | --- | --- |
-| `paper` | paper | ink | red, deep teal, gold | ink | gold, red | salmon |
-| `press` | salmon | ink | ink, red, gold | red | ink, gold | terracotta |
-| `sun` | gold | ink | violet, ink, red | violet | gold, ink | mustard |
-| `mint` | mint | ink | ink, red, gold | ink | mint, gold | teal |
-| `night` | ink | paper | salmon, gold, red | deep teal | gold, salmon | teal |
-| `plum` | plum | paper | gold, salmon, light violet | violet | gold, plum | violet |
+| Scheme | Ground | Ink (text, rules) | Band | Accents | Feature gradient |
+| --- | --- | --- | --- | --- | --- |
+| `paper` | paper | ink | ink | red, gold | ink to red, or salmon to red |
+| `concrete` | concrete | ink | none (outer frame) | red, salmon | salmon to red, or ink to teal |
+| `night` | ink | paper | teal | red, gold, salmon | salmon to red |
 
-The block is the flat colour behind a tile panel or a band. `paper` is the everyday default; use a colour ground when the artefact is a cover (Open Graph image, banner, avatar).
+`paper` is the everyday default. `concrete` is for `ledger` layouts. `night` is for dark pages. The cool gradient (ink to teal) is the choice when a page already has a warm element near the asset.
 
 ## Typography
 
@@ -213,110 +207,122 @@ Three families, one job each (P2).
 
 - **Poppins** (`fonts.heading`), weight 600: headings and display. Tracking `-0.025em` at `xl` and above. Sentence case. Never all caps, never italic.
 - **Instrument Sans** (`fonts.body`), 400 with 600 for emphasis: everything people read at length. Line height 1.625.
-- **Monaspace Xenon** (`fonts.mono`): code, and the small uppercase label (the kicker) at `xs`, weight 500, tracking `0.1em`. The kicker is the only uppercase text in the system.
+- **Monaspace Xenon** (`fonts.mono`): code, and the small uppercase label at `xs` to `sm`, weight 500, tracking `0.1em`. Labels are the only uppercase text in the system.
 
 Rules:
 
-- **T1** At most three text levels per artefact: kicker, title, supporting line. Pages may add body and code.
-- **T2** Type is left-aligned. Centred text only for a single line in a square format (avatar, sticker).
-- **T3** Prose measure is `sizes.prose` (672px), about 65 to 75 characters.
-- **T4** Use the type scale as given (`xs` to `display`). For artwork, scale display type so the cap height is close to one third of a module (G1); do not invent in-between sizes on pages.
-- **T5** No text effects: no outlines, shadows, gradients or stretched letterforms.
+- **T1** At most three text levels per artefact: label, title, metadata. Pages may add body and code.
+- **T2** Type is left-aligned on the left margin. Centred text only for a single line in a square format (avatar).
+- **T3** The title is the largest thing in the composition after the feature block, and it is big: on a 1200 by 630 card, 84 to 92px on two lines.
+- **T4** Labels carry facts, not slogans: content type, number, section, date, reading time. Separate facts with a middle dot.
+- **T5** Prose measure is `sizes.prose`, about 65 to 75 characters.
+- **T6** No text effects: no outlines, shadows, gradients or stretched letterforms.
 
 ## Layout
 
-A spacious single-column editorial layout with a strict rhythm.
+Two layouts. Both are a strict stack of horizontal zones divided by rules.
 
-- **L1** Space comes from the token scale only (4px base). Related items sit `2` to `4` apart, blocks `8` to `12`, sections `16` to `32`.
-- **L2** Page margins are generous: at least `6` on small screens and `16` from `lg` up. Content does not need to fill the width.
-- **L3** Structure is shown with space first, then a hairline rule (`border.default`), then a tint. Boxes with borders on all four sides are a last resort.
-- **L4** The kicker pattern: a short accent bar (32 by 4px, one magnet ink) above an uppercase mono label, above the title. Use it for article headers, cards and section openers.
-- **L5** Every artefact has a text zone and a graphics zone, and they do not overlap. The text zone is at least half the area and sits top-left or left.
-- **L6** One focal point per view. If a view has a composed graphic, it has no second illustration.
+**`sign`** (default). From the top:
+
+1. A band: ink, full width, flush with the top edge, about 4% of the height.
+2. A header row: one route bullet (a red disc with a single paper letter for the content type) followed by two label lines.
+3. A rule.
+4. The body: title on the left; optionally one feature block on the right, running exactly from the upper rule to the lower rule and flush with the right margin.
+5. A rule.
+6. A footer row: wordmark, then metadata, then the key at the right margin.
+
+**`ledger`**. A 2px ink frame inset from the edges, divided by two horizontal rules and one vertical rule into six cells. Label cells top and bottom, the title in the large cell, the feature block filling the middle-right cell edge to edge, and one small red square as the only marker. Ground is concrete.
+
+Rules:
+
+- **L1** Space comes from the token scale only (4px base). Margins are generous: 6% of the width in artwork; on pages at least `6` on small screens and `16` from `lg` up.
+- **L2** Rules are 2px in ink and run the full content width. Structure is rules first, then space. Do not use tints or shadows to separate zones in artwork.
+- **L3** Everything aligns to the left margin, the right margin, or a rule. Nothing floats.
+- **L4** The text zone is at least 60% of the width. The feature block is at most 30% and never touches text.
+- **L5** One feature block per composition. A composition with no feature block is complete; do not add one to fill space.
+- **L6** On pages, the same grammar applies at lower volume: a rule above a section label, hairlines (`border.default`) between items, space doing most of the work.
 
 ## Elevation & Depth
 
-Flat. Depth is implied by placement and overlap of solid colour, the way magnets sit on a surface.
+Flat.
 
 - **E1** No shadows on artwork, cards, callouts or buttons.
 - **E2** Token shadows (`shadows.md` and up) are for things that float over the page: menus, popovers, dialogs, toasts.
-- **E3** Layering in artwork is by flat overlap only, at most two pieces deep, with no transparency.
+- **E3** In artwork, layering is flat overlap only, one piece over one ground, with no transparency.
 
 ## Shapes
 
-- **S1** Controls use `radii.md` (8px), cards and callouts `radii.lg` (16px), pills and avatars `radii.full`. One radius per component; nested radii shrink by the padding.
-- **S2** Rules and borders are 1px hairlines, 2px for emphasis, 4px for the kicker bar and the callout edge.
-- **S3** Icons are Lucide, stroke 1.5 at 16 to 20px and 2 at 24px and up, in the text colour. Icons are interface, not illustration: never enlarge one to decorate and never place one in a magnet cluster.
+- **S1** Artwork has square corners: bands, rules, blocks, tiles and pieces are not rounded. A disc is a circle; everything else has hard corners.
+- **S2** In the interface, controls use `radii.sm` (4px) and cards, callouts and panels use `radii.md` (8px). `radii.lg` and `radii.xl` are for rare emphasis only. Pills and avatars use `radii.full`.
+- **S3** Rules and borders: 1px hairlines on pages, 2px for rules and frames in artwork, 4px for a callout edge.
+- **S4** Icons are Lucide, stroke 1.5 at 16 to 20px and 2 at 24px and up, in the text colour. Icons are interface, not illustration.
 
 ## Components
 
-- **Button**: primary is solid `brand.solid` with white text; secondary is ink text with a hairline border; one primary per view.
-- **Kicker**: see L4. Colour `fg.subtle`.
-- **Card**: white on paper with a hairline border, `radii.lg`, padding `6`. No shadow (E1). Optional artwork fills the top edge to edge.
-- **Callout**: a tint ground with a 4px left edge in the matching magnet ink, `radii.lg`, padding `6`. Default is salmon; note is violet; tip is gold. It may carry a callout background from `brand-graphics` at the right edge (A4), never behind its text. Callout artwork stays in one hue: the tint (step 50) as ground, step 300 for the texture and step 500 for the motif.
-- **Banner**: one scheme ground with its ink for text and one composed graphic. One per page, at the top.
+- **Button**: primary is solid `brand.solid` with white text; secondary is ink text with a hairline border; `radii.sm`; one primary per view.
+- **Label**: uppercase mono, `fg.default` for the first fact and `fg.subtle` for the rest (T4).
+- **Card**: white on paper with a hairline border, `radii.md`, padding `6`. No shadow (E1). Optional artwork fills the top, edge to edge, above a rule.
+- **Callout**: a tint ground with a 4px left edge in the matching accent, `radii.md`, padding `6`. It may carry a noise gradient at the right edge that fades to the tint before the text (A4), with at most one small piece anchored in the corner.
+- **Banner**: a `sign` or `ledger` composition with no baked-in text; the page sets the title in HTML. One per page, at the top.
 - **Code block**: `bg.subtle`, hairline border, `radii.md`, mono at `sm`. Syntax colours come from the token hues at the 700 step; keep it quiet.
-- **Menu and controls**: hairline borders, `radii.md`, `shadows.md` when floating. Focus ring is 2px `border.focus` with a 2px offset.
+- **Menu and controls**: hairline borders, `radii.sm`, `shadows.md` when floating. Focus ring is 2px `border.focus` with a 2px offset.
 
 ## Graphics
 
 The kit lives in `packages/brand-graphics`. Sources are single-colour SVG using `currentColor`; the composer colours them from tokens.
 
-| Group | Folder | Contents |
-| --- | --- | --- |
-| Magnets | `src/shapes` | Solid pieces: disc, half-disc, quarter-disc, square, bar, pill, triangle, wedge, arc, ring, arch, stair, cross. |
-| Marks | `src/lines` | Line accents in one weight with round ends: squiggle, zigzag, spark, dashes, dots. |
-| Patterns | `src/patterns` | Seamless tiles: dots, plus, hatch, zigzag, waves, confetti, terrazzo. |
-| Mark | `src/mark` | The civilian: disc, square and two bars snapped into a person. |
-| Textures | generated | Noise gradients: `grain` (soft gradient with print grain) and `stipple` (a colour dissolving into the ground in dots). |
-
-Shapes are used the way a transit sign uses them: few, large, aligned and repeated on purpose. Playful shapes do not mean a haphazard layout.
+| Part | What it is |
+| --- | --- |
+| Pieces | Disc, quarter-disc, half-disc, triangle, square. Solid, flat, square-cornered. These are the working set; the other shapes in `src/shapes` are reserve. |
+| Bullet | A disc carrying one letter. Marks the content type. |
+| Key | Two or three pieces of one size on one baseline. |
+| Weave | One piece, small, tiled on a square grid in the ground colour over a noise gradient. |
+| Noise gradient | Two colours dissolving into each other through fine stipple. `grain` runs corner to corner; `stipple` runs from one edge. |
+| The civilian | Disc, square and two bars snapped into a person. The brand mark. |
 
 Rules:
 
-- **G1 Module.** Every composition has a module `u` (the short side divided by 6 unless a recipe says otherwise). Pieces are sized in modules and sit on a grid of square cells. Margins are `u / 2` or more.
-- **G2 Transforms.** A piece may be moved, uniformly scaled, mirrored, and turned in quarter turns. Never tilt, stretch, skew, outline, or round it differently.
-- **G3 On the grid.** Every piece fills a cell or is anchored exactly to a corner or edge of the canvas. Neighbours sit edge to edge with a gap of one thirtieth of the cell. Nothing floats, tilts or half-overlaps.
-- **G4 Anchor and bleed.** A motif may run off the canvas only from an anchor: a quarter-disc's centre sits exactly on the corner, a panel is flush with the edge, a band is centred so both ends crop the same.
-- **G5 One motif.** A composition has one graphic idea: a corner, a row, a panel or a band. Graphics cover at most 40% of a canvas, and an artefact with text keeps at least half its area plain. At most one mark, one pattern and one texture.
-- **G6 Marks.** Stroke weight is `u / 10`, in the scheme's ink. A spark sits next to exactly one piece, and is the only mark in the composition.
-- **G7 Textures.** A texture belongs to the ground: it uses the scheme's tone, starts from an edge or corner, and fades to plain ground before it reaches the text zone. Grain is fine, static and monochrome.
-- **G8 Patterns.** A pattern fills a simple region (a halo behind a corner motif, a cell, a band) in one colour, usually the tone. Prefer the regular tiles (dots, plus); keep tile scale constant within a composition.
-- **G9 The civilian.** The figure is the brand mark. It is always upright and always the same proportions: head, body, two legs. Other pieces never attach to it.
-- **G10 Reproducible.** Generated assets record `recipe`, `scheme` and `seed` (in the file name or metadata). Do not hand-tweak generated output; change the recipe or the seed.
-- **G11 One rule.** A repeat follows one rule that can be said in a sentence: the same piece turning a quarter each step; two pieces alternating; four cells meeting to make one figure; a row of discs like route bullets. Colour follows the same rule (alternate, or one colour per figure). If the rule cannot be said, simplify.
+- **G1 Module.** Every composition has a module `u` (the short side divided by 6). Pieces, tiles, margins and the band are sized in fractions of `u`.
+- **G2 Transforms.** A piece may be moved, uniformly scaled, mirrored and turned in quarter turns. Never tilt, stretch, skew, outline or round it.
+- **G3 The key.** Two or three different pieces, all `u / 2.6` high (40px on a 630px card), on the footer baseline, flush with the right margin, with a gap of a third of their size. First piece ink, then one or two accents. The key is the only place loose shapes appear.
+- **G4 The bullet.** One per composition, in the header row, red with a paper letter. Diameter about `0.7u`.
+- **G5 The feature block.** A rectangle bounded by rules or cell edges. It holds exactly one of:
+  - **grain**: a noise gradient between two colours of one scheme, plus one large piece (a quarter-disc) in ink, anchored exactly in a corner of the block with its centre on that corner; or
+  - **weave**: a noise gradient running top to bottom, covered by one small piece tiled edge to edge in the ground colour, so the gradient shows only through the gaps, like houndstooth. Tiles are a whole number across and down (8 to 12 across); right triangles by default.
+- **G6 Noise gradients.** Always stippled, never smooth. Two colours only: ink into one accent, or a light accent into a darker one of the same family. The grain is fine, static and the same scale everywhere in a composition. Outside a feature block, a noise gradient may be used alone as a section texture or callout edge, starting from an edge and fading to plain ground before any text.
+- **G7 No loose marks.** No squiggles, zigzags, sparks, confetti or terrazzo. The line marks and pattern tiles in the kit are not used in this direction.
+- **G8 The civilian.** Always upright and the same proportions. It appears with the wordmark on profile artefacts and as the avatar. Other pieces never attach to it.
+- **G9 Reproducible.** Generated assets record `layout`, `scheme`, `feature` and `seed` in the file name or metadata. Do not hand-tweak generated output; change the inputs.
 
-Recipes in the composer:
+Composer inputs:
 
-- `corner`: one motif anchored exactly in a corner (a quarter-disc, nested rings, an arc, a stair or a wedge) over a halo of stipple or dots in the tone. The default for Open Graph images, and the same idea as the callout background.
-- `row`: four or five pieces of one size on one baseline, following one rule: discs in different inks, one piece turning a quarter each step, two pieces alternating, or half-discs making a wave.
-- `tile`: a full-height panel on the right edge in the block colour, filled with one symmetric repeat in two inks, like the cover of a paperback. For covers, banners and the profile banner.
-- `band`: a frieze along the bottom edge in the block colour: one two-cell figure repeated and centred. For section headers, footers and the profile banner.
+- `layout`: `sign` or `ledger`.
+- `scheme`: `paper`, `concrete` or `night`.
+- `feature`: `none`, `grain` or `weave`.
+- `seed`: chooses the gradient pair (from the scheme's list), the weave piece and quarter turn, and the order of the key. Never a position or a size.
 
 ## Artefacts
 
-| Id  | Artefact           | Size                  | Notes                                                                                                                                    |
-| --- | ------------------ | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| A1  | Open Graph image   | 1200 by 630           | Kicker, title of up to three lines, `civilian.dev` footer with the mark. Graphics zone is the right 40%. Keep text inside a 60px margin. |
-| A2  | Article banner     | 1600 by 600, scalable | No text baked in; the page sets the title in HTML.                                                                                       |
-| A3 | Profile banner | 1500 by 500 | Wordmark and the civilian with a `tile` panel or a `band`; keep the bottom-left 200px clear for the avatar overlap. |
-| A4  | Callout background | fluid                 | Anchored to the right edge, at most 240px wide, fades to the tint before the text.                                                       |
-| A5  | Avatar             | 400 by 400            | The civilian on a flat ground; survives a circular crop.                                                                                 |
-| A6  | Section texture    | fluid                 | A texture with no pieces, for wide page sections.                                                                                        |
+| Id | Artefact | Size | Notes |
+| --- | --- | --- | --- |
+| A1 | Open Graph image | 1200 by 630 | `sign` or `ledger` with label, title of up to two lines, wordmark and metadata. Feature block optional. Rasterised to PNG with embedded fonts. |
+| A2 | Article banner | 1600 by 600, scalable | The same layout with no text: band, rules, feature block, key. The page sets the title in HTML. |
+| A3 | Profile banner | 1500 by 500 | `sign` with the wordmark as the title and the civilian in place of the feature block. Keep the bottom-left 200px clear for the avatar. |
+| A4 | Callout background | fluid | A `stipple` gradient from the right edge, at most 240px wide, fading to the tint before the text. |
+| A5 | Avatar | 400 by 400 | The civilian on paper or ink; survives a circular crop. |
+| A6 | Section texture | fluid | A noise gradient or a weave with no text and no pieces, for wide page sections. |
 
 ## Do's and Don'ts
 
-- Do start with paper, ink and space, then add one composed graphic.
-- Do pick a named scheme and a recipe, and vary the seed for variety.
-- Do keep text on plain ground with a clear left edge.
-- Do use the kicker pattern to say where the reader is.
-- Do anchor a motif to a corner or an edge and let it run off; it makes the page feel larger.
-- Do pair a warm with a cool and a light with a dark.
-- Don't use more than three magnet inks, or any colour that is not a token.
-- Don't scatter, tilt or stack pieces without a rule. Playful shapes still line up.
-- Don't put pastel on pastel; if the main shape does not stand out from the ground at a glance, change scheme.
-- Don't put gradients, shadows, outlines or transparency on magnets or type.
-- Don't stretch, skew or redraw pieces, or invent a one-off illustration.
-- Don't decorate with icons, code glyphs or anything on the banned list.
+- Do start with paper, ink, a band and two rules, then decide whether anything else is needed.
+- Do let the title be large and the space around it larger.
+- Do keep colour to the bullet, the key and one feature block.
+- Do make every repeat exact: whole tiles, one size, one turn.
+- Do read every value from the tokens.
+- Don't use a colour ground, more than two accents, or anything that reads as cheerful first.
+- Don't scatter, stack or enlarge shapes outside the feature block.
+- Don't use smooth gradients, shadows, outlines, transparency or rounded corners in artwork.
+- Don't put text on a shape, a weave or a gradient.
+- Don't add squiggles, confetti, patterns or icons as decoration.
+- Don't write a hex value in this file's prose, in a composer, or in an agent instruction file.
 - Don't fill space because it is empty.
-- Don't centre body text, set headings in capitals, or use more than three text levels in an artefact.
