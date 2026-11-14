@@ -273,7 +273,7 @@ The kit lives in `packages/brand-graphics`. Sources are single-colour SVG using 
 
 | Part | What it is |
 | --- | --- |
-| Pieces | Disc, quarter-disc, half-disc, triangle, square. Solid, flat, square-cornered. These are the working set; the other shapes in `src/shapes` are reserve. |
+| Pieces | Disc, quarter-disc, half-disc, triangle, square. Solid, flat, square-cornered. These are the working set (`src/shapes`); earlier pieces are kept in `src/reserve` and not used. |
 | Bullet | A disc carrying one letter. Marks the content type. |
 | Key | Two or three pieces of one size on one baseline. |
 | Weave | One piece, small, tiled on a square grid in the ground colour over a noise gradient. |
