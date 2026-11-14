@@ -1,144 +1,145 @@
 ---
+
 version: alpha
 name: Civilian Dev
 description: Plain, spacious and useful. A calm printed page with a few solid pieces placed on it, like magnets on a fridge.
 colors:
-  primary: "#1c6b69"
-  primary-hover: "#01343a"
-  ink: "#01343a"
-  paper: "#fdfbf8"
-  surface: "#ffffff"
-  secondary: "#7366bd"
-  tertiary: "#fea993"
-  highlight: "#fede8f"
-  hot: "#f25855"
-  neutral: "#f9fafb"
-  neutral-muted: "#f0f3f4"
-  border: "#e0e6e7"
-  border-strong: "#aab7b9"
-  text-muted: "#2c3536"
-  text-subtle: "#404a4b"
-  tint-salmon: "#fef4f2"
-  tint-gold: "#fcf6e9"
-  tint-violet: "#f6f6fe"
-  tint-teal: "#f0f9f9"
-  magnet-salmon: "#fea993"
-  magnet-gold: "#fede8f"
-  magnet-violet: "#7366bd"
-  magnet-teal: "#54a2a6"
-  magnet-teal-deep: "#1c6b69"
-  magnet-violet-light: "#c9c4fe"
-  magnet-teal-light: "#a8d6d8"
+primary: "#1c6b69"
+primary-hover: "#01343a"
+ink: "#01343a"
+paper: "#fdfbf8"
+surface: "#ffffff"
+secondary: "#7366bd"
+tertiary: "#fea993"
+highlight: "#fede8f"
+hot: "#f25855"
+neutral: "#f9fafb"
+neutral-muted: "#f0f3f4"
+border: "#e0e6e7"
+border-strong: "#aab7b9"
+text-muted: "#2c3536"
+text-subtle: "#404a4b"
+tint-salmon: "#fef4f2"
+tint-gold: "#fcf6e9"
+tint-violet: "#f6f6fe"
+tint-teal: "#f0f9f9"
+magnet-salmon: "#fea993"
+magnet-gold: "#fede8f"
+magnet-violet: "#7366bd"
+magnet-teal: "#54a2a6"
+magnet-teal-deep: "#1c6b69"
+magnet-violet-light: "#c9c4fe"
+magnet-teal-light: "#a8d6d8"
 typography:
-  display:
-    fontFamily: Poppins
-    fontSize: 2.75rem
-    fontWeight: 600
-    lineHeight: 1.25
-    letterSpacing: -0.025em
-  heading-xl:
-    fontFamily: Poppins
-    fontSize: 1.75rem
-    fontWeight: 600
-    lineHeight: 1.25
-    letterSpacing: -0.025em
-  heading-lg:
-    fontFamily: Poppins
-    fontSize: 1.25rem
-    fontWeight: 600
-    lineHeight: 1.375
-  body-lg:
-    fontFamily: Instrument Sans
-    fontSize: 1.25rem
-    fontWeight: 400
-    lineHeight: 1.625
-  body-md:
-    fontFamily: Instrument Sans
-    fontSize: 1rem
-    fontWeight: 400
-    lineHeight: 1.625
-  body-sm:
-    fontFamily: Instrument Sans
-    fontSize: 0.875rem
-    fontWeight: 400
-    lineHeight: 1.5
-  label:
-    fontFamily: Monaspace Xenon
-    fontSize: 0.75rem
-    fontWeight: 500
-    lineHeight: 1.25
-    letterSpacing: 0.1em
-  code:
-    fontFamily: Monaspace Xenon
-    fontSize: 0.875rem
-    fontWeight: 400
-    lineHeight: 1.625
+display:
+fontFamily: Poppins
+fontSize: 2.75rem
+fontWeight: 600
+lineHeight: 1.25
+letterSpacing: -0.025em
+heading-xl:
+fontFamily: Poppins
+fontSize: 1.75rem
+fontWeight: 600
+lineHeight: 1.25
+letterSpacing: -0.025em
+heading-lg:
+fontFamily: Poppins
+fontSize: 1.25rem
+fontWeight: 600
+lineHeight: 1.375
+body-lg:
+fontFamily: Instrument Sans
+fontSize: 1.25rem
+fontWeight: 400
+lineHeight: 1.625
+body-md:
+fontFamily: Instrument Sans
+fontSize: 1rem
+fontWeight: 400
+lineHeight: 1.625
+body-sm:
+fontFamily: Instrument Sans
+fontSize: 0.875rem
+fontWeight: 400
+lineHeight: 1.5
+label:
+fontFamily: Monaspace Xenon
+fontSize: 0.75rem
+fontWeight: 500
+lineHeight: 1.25
+letterSpacing: 0.1em
+code:
+fontFamily: Monaspace Xenon
+fontSize: 0.875rem
+fontWeight: 400
+lineHeight: 1.625
 rounded:
-  none: 0px
-  sm: 4px
-  md: 8px
-  lg: 16px
-  xl: 32px
-  full: 9999px
+none: 0px
+sm: 4px
+md: 8px
+lg: 16px
+xl: 32px
+full: 9999px
 spacing:
-  "1": 0.25rem
-  "2": 0.5rem
-  "3": 0.75rem
-  "4": 1rem
-  "6": 1.5rem
-  "8": 2rem
-  "12": 3rem
-  "16": 4rem
-  "24": 6rem
-  "32": 8rem
-  "48": 12rem
-  prose: 672px
+"1": 0.25rem
+"2": 0.5rem
+"3": 0.75rem
+"4": 1rem
+"6": 1.5rem
+"8": 2rem
+"12": 3rem
+"16": 4rem
+"24": 6rem
+"32": 8rem
+"48": 12rem
+prose: 672px
 components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.surface}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 12px
-  button-primary-hover:
-    backgroundColor: "{colors.primary-hover}"
-  button-secondary:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.md}"
-    padding: 12px
-  kicker:
-    textColor: "{colors.text-subtle}"
-    typography: "{typography.label}"
-  card:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.lg}"
-    padding: 24px
-  callout:
-    backgroundColor: "{colors.tint-salmon}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-md}"
-    rounded: "{rounded.lg}"
-    padding: 24px
-  callout-note:
-    backgroundColor: "{colors.tint-violet}"
-    textColor: "{colors.ink}"
-  callout-tip:
-    backgroundColor: "{colors.tint-gold}"
-    textColor: "{colors.ink}"
-  banner:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    typography: "{typography.display}"
-    padding: 48px
-  code-block:
-    backgroundColor: "{colors.neutral}"
-    textColor: "{colors.ink}"
-    typography: "{typography.code}"
-    rounded: "{rounded.md}"
-    padding: 16px
+button-primary:
+backgroundColor: "{colors.primary}"
+textColor: "{colors.surface}"
+typography: "{typography.body-md}"
+rounded: "{rounded.md}"
+padding: 12px
+button-primary-hover:
+backgroundColor: "{colors.primary-hover}"
+button-secondary:
+backgroundColor: "{colors.paper}"
+textColor: "{colors.ink}"
+typography: "{typography.body-md}"
+rounded: "{rounded.md}"
+padding: 12px
+kicker:
+textColor: "{colors.text-subtle}"
+typography: "{typography.label}"
+card:
+backgroundColor: "{colors.surface}"
+textColor: "{colors.ink}"
+rounded: "{rounded.lg}"
+padding: 24px
+callout:
+backgroundColor: "{colors.tint-salmon}"
+textColor: "{colors.ink}"
+typography: "{typography.body-md}"
+rounded: "{rounded.lg}"
+padding: 24px
+callout-note:
+backgroundColor: "{colors.tint-violet}"
+textColor: "{colors.ink}"
+callout-tip:
+backgroundColor: "{colors.tint-gold}"
+textColor: "{colors.ink}"
+banner:
+backgroundColor: "{colors.ink}"
+textColor: "{colors.paper}"
+typography: "{typography.display}"
+padding: 48px
+code-block:
+backgroundColor: "{colors.neutral}"
+textColor: "{colors.ink}"
+typography: "{typography.code}"
+rounded: "{rounded.md}"
+padding: 16px
 ---
 
 # Civilian Dev
@@ -187,12 +188,12 @@ Rules:
 
 Named palettes for graphics (ground decides which column to read):
 
-| Palette | On paper | On ink |
-| --- | --- | --- |
-| `sunrise` | salmon, gold, teal | salmon, gold, light teal |
-| `dusk` | violet, salmon, deep teal `#1c6b69` | light violet, salmon, light teal |
-| `harbour` | deep teal, light teal, gold | teal, light teal, gold |
-| `signal` | violet, gold, hot | light violet, gold, hot |
+| Palette   | On paper                            | On ink                           |
+| --------- | ----------------------------------- | -------------------------------- |
+| `sunrise` | salmon, gold, teal                  | salmon, gold, light teal         |
+| `dusk`    | violet, salmon, deep teal `#1c6b69` | light violet, salmon, light teal |
+| `harbour` | deep teal, light teal, gold         | teal, light teal, gold           |
+| `signal`  | violet, gold, hot                   | light violet, gold, hot          |
 
 ## Typography
 
@@ -249,13 +250,13 @@ Flat. Depth is implied by placement and overlap of solid colour, the way magnets
 
 The kit lives in `packages/brand-graphics`. Sources are single-colour SVG using `currentColor`; the composer colours them from tokens.
 
-| Group | Folder | Contents |
-| --- | --- | --- |
-| Magnets | `src/shapes` | Solid pieces: disc, half-disc, quarter-disc, square, bar, pill, triangle, wedge, arc, ring, arch, stair, cross. |
-| Marks | `src/lines` | Line accents in one weight with round ends: squiggle, zigzag, spark, dashes, dots. |
-| Patterns | `src/patterns` | Seamless tiles: dots, plus, hatch, zigzag, waves, confetti, terrazzo. |
-| Mark | `src/mark` | The civilian: disc, square and two bars snapped into a person. |
-| Textures | generated | Noise gradients: `grain` (soft gradient with print grain) and `stipple` (a colour dissolving into the ground in dots). |
+| Group    | Folder         | Contents                                                                                                               |
+| -------- | -------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Magnets  | `src/shapes`   | Solid pieces: disc, half-disc, quarter-disc, square, bar, pill, triangle, wedge, arc, ring, arch, stair, cross.        |
+| Marks    | `src/lines`    | Line accents in one weight with round ends: squiggle, zigzag, spark, dashes, dots.                                     |
+| Patterns | `src/patterns` | Seamless tiles: dots, plus, hatch, zigzag, waves, confetti, terrazzo.                                                  |
+| Mark     | `src/mark`     | The civilian: disc, square and two bars snapped into a person.                                                         |
+| Textures | generated      | Noise gradients: `grain` (soft gradient with print grain) and `stipple` (a colour dissolving into the ground in dots). |
 
 Rules:
 
@@ -279,14 +280,14 @@ Recipes in the composer:
 
 ## Artefacts
 
-| Id | Artefact | Size | Notes |
-| --- | --- | --- | --- |
-| A1 | Open Graph image | 1200 by 630 | Kicker, title of up to three lines, `civilian.dev` footer with the mark. Graphics zone is the right 40%. Keep text inside a 60px margin. |
-| A2 | Article banner | 1600 by 600, scalable | No text baked in; the page sets the title in HTML. |
-| A3 | Profile banner | 1500 by 500 | Wordmark and the civilian; keep the bottom-left 200px clear for the avatar overlap. |
-| A4 | Callout background | fluid | Anchored to the right edge, at most 240px wide, fades to the tint before the text. |
-| A5 | Avatar | 400 by 400 | The civilian on a flat ground; survives a circular crop. |
-| A6 | Section texture | fluid | A texture with no pieces, for wide page sections. |
+| Id  | Artefact           | Size                  | Notes                                                                                                                                    |
+| --- | ------------------ | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| A1  | Open Graph image   | 1200 by 630           | Kicker, title of up to three lines, `civilian.dev` footer with the mark. Graphics zone is the right 40%. Keep text inside a 60px margin. |
+| A2  | Article banner     | 1600 by 600, scalable | No text baked in; the page sets the title in HTML.                                                                                       |
+| A3  | Profile banner     | 1500 by 500           | Wordmark and the civilian; keep the bottom-left 200px clear for the avatar overlap.                                                      |
+| A4  | Callout background | fluid                 | Anchored to the right edge, at most 240px wide, fades to the tint before the text.                                                       |
+| A5  | Avatar             | 400 by 400            | The civilian on a flat ground; survives a circular crop.                                                                                 |
+| A6  | Section texture    | fluid                 | A texture with no pieces, for wide page sections.                                                                                        |
 
 ## Do's and Don'ts
 

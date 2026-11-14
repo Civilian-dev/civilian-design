@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" data-recipe="avatar" data-palette="dusk" data-ground="paper">
+<rect width="400" height="400" fill="#fdfbf8"/>
+<g transform="translate(160.44 80) scale(0.66)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><circle cx="60" cy="60" r="56"/></g>
+<g transform="translate(160.44 161.76) scale(0.66)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="112"/></g>
+<g transform="translate(160.44 243.52) scale(0.64)" fill="#7366bd" stroke="#7366bd" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<g transform="translate(201.32 243.52) scale(0.64)" fill="#1c6b69" stroke="#1c6b69" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+</svg>

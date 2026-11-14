@@ -1,0 +1,20 @@
+{
+  "name": "@civilian-dev/brand-graphics",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Civilian brand graphics: magnet shapes, line marks, patterns and a composer for banners and social images",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@civilian-dev/design-tokens": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  }
+}

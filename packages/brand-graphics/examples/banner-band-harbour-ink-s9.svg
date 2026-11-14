@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" data-recipe="band" data-palette="harbour" data-ground="ink" data-seed="9">
+<defs><pattern id="pat-9-0" width="48" height="24" patternUnits="userSpaceOnUse" patternTransform="translate(705 455) scale(0.6)"><g fill="none" stroke="#fdfbf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M-12 18L0 6L12 18L24 6L36 18L48 6L60 18"/></g></pattern></defs>
+<rect width="1600" height="600" fill="#01343a"/>
+<g transform="translate(1455 455) scale(1.21) rotate(180 60 60)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V84H44V44H84V4H116V116Z"/></g>
+<g transform="translate(1155 455) scale(1.21)" fill="#a8d6d8" stroke="#a8d6d8" stroke-width="8" stroke-linejoin="round"><circle cx="60" cy="60" r="56"/></g>
+<g transform="translate(1155 305) scale(1.21) rotate(90 60 60)" fill="#54a2a6" stroke="#54a2a6" stroke-width="8" stroke-linejoin="round"><path d="M4 116V4.07A116 116 0 0 1 115.93 116Z"/></g>
+<g transform="translate(857.5 455) scale(1.17)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4.14 56A56 56 0 0 1 115.86 56Z"/></g>
+<g transform="translate(857.5 530) scale(1.17) rotate(180 60 30)" fill="#a8d6d8" stroke="#a8d6d8" stroke-width="8" stroke-linejoin="round"><path d="M4.14 56A56 56 0 0 1 115.86 56Z"/></g>
+<rect x="705" y="455" width="145" height="145" rx="4.83" fill="url(#pat-9-0)"/>
+<g transform="translate(689.33 340) scale(0.83)" fill="none" stroke="#fdfbf8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30q19-40 38 0t38 0t38 0t38 0t38 0t38 0"/></g>
+</svg>

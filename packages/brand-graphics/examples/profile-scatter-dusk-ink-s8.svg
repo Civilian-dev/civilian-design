@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" data-recipe="scatter" data-palette="dusk" data-ground="ink" data-seed="8">
+<rect width="1500" height="500" fill="#01343a"/>
+<g transform="translate(1110 109.9) scale(1.07)" fill="#c9c4fe" stroke="#c9c4fe" stroke-width="8" stroke-linejoin="round"><circle cx="60" cy="60" r="56"/></g>
+<g transform="translate(1110 242.79) scale(1.07)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="112"/></g>
+<g transform="translate(1110 375.68) scale(1.04)" fill="#c9c4fe" stroke="#c9c4fe" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<g transform="translate(1176.45 375.68) scale(1.04)" fill="#a8d6d8" stroke="#a8d6d8" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="52" height="112"/></g>
+<text x="450" y="250" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="124.5" letter-spacing="-3.11" fill="#fdfbf8">Civilian<tspan x="450" dy="130.73">.dev</tspan></text>
+<g transform="translate(1242.75 80.85) scale(0.69)" fill="none" stroke="#fdfbf8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M55.3 111.2L102.7 103.7M49.9 94.6L78.4 80M39.6 80.4L73.5 46.5M25.4 70.1L40 41.6M8.8 64.7L16.3 17.3"/></g>
+<g transform="translate(1398.82 211.94) scale(1.31) rotate(195 60 60)" fill="#a8d6d8" stroke="#a8d6d8" stroke-width="8" stroke-linejoin="round"><path d="M4 9.66V116H110.34Z"/></g>
+<g transform="translate(260.56 411.94) scale(1.18) rotate(300 60 30)" fill="#fea993" stroke="#fea993" stroke-width="8" stroke-linejoin="round"><rect x="4" y="4" width="112" height="52" rx="26"/></g>
+<g transform="translate(79.18 50.43) scale(0.83) rotate(240 60 30)" fill="#c9c4fe" stroke="#c9c4fe" stroke-width="8" stroke-linejoin="round"><path d="M4.14 56A56 56 0 0 1 115.86 56Z"/></g>
+<g transform="translate(1319.62 27.33) scale(0.76) rotate(105 60 52)" fill="#a8d6d8" stroke="#a8d6d8" stroke-width="8" stroke-linejoin="round"><path d="M60 8L113.07 100H6.93Z"/></g>
+</svg>

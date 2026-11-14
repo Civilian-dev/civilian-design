@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" data-recipe="callout" data-seed="13">
+<defs><linearGradient id="fade"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.75"/></linearGradient><filter id="stipple" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="13" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#fede8f"/><feComposite in2="t" operator="in"/></filter></defs>
+<rect width="100%" height="100%" fill="#fcf6e9"/>
+<svg x="100%" overflow="visible"><rect x="-240" width="240" height="100%" fill="url(#fade)" filter="url(#stipple)"/></svg>
+<svg x="100%" y="100%" overflow="visible"><g transform="translate(-96 -96) scale(0.8) translate(120 0) scale(-1 1)" fill="#fede8f" stroke="#fede8f" stroke-width="8" stroke-linejoin="round"><path d="M4 116V84H44V44H84V4H116V116Z"/></g></svg>
+</svg>

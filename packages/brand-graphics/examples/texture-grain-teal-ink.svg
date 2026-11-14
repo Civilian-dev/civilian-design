@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" data-recipe="texture-grain" data-seed="34">
+<defs><linearGradient id="fade"><stop offset="0" stop-color="#1c6b69" stop-opacity="0"/><stop offset="0.45" stop-color="#1c6b69" stop-opacity="0.35"/><stop offset="1" stop-color="#1c6b69"/></linearGradient><filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="34" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.55" result="a"/><feFlood flood-color="#000000"/><feComposite in2="a" operator="in"/></filter></defs>
+<rect width="100%" height="100%" fill="#01343a"/>
+<rect width="100%" height="100%" fill="url(#fade)"/>
+<rect width="100%" height="100%" filter="url(#grain)" opacity="0.5"/>
+</svg>
