@@ -10,7 +10,6 @@ import {
 } from "../scripts/build";
 import { normalise } from "../scripts/normalise";
 
-// biome-ignore lint/suspicious/noExplicitAny: raw export is untyped JSON
 type Json = any;
 const raw: Json = JSON.parse(
   readFileSync(new URL("../src/tokens.json", import.meta.url), "utf8"),

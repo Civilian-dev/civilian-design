@@ -13,7 +13,6 @@ import {
   type TokenTree,
 } from "./normalise";
 
-// biome-ignore lint/suspicious/noExplicitAny: DTCG values are heterogeneous JSON
 type Json = any;
 export type Theme = "light" | "dark";
 
