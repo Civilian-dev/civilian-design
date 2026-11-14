@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="sign" data-scheme="paper" data-feature="grain" data-seed="5">
-<defs><linearGradient id="g5-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="g5-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#f25855"/><feComposite in2="t" operator="in"/></filter></defs>
+<defs><linearGradient id="sign-paper-s5-grain-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="sign-paper-s5-grain-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#f25855"/><feComposite in2="t" operator="in"/></filter></defs>
 <rect width="1200" height="630" fill="#fdfbf8"/>
 <rect x="0" y="0" width="1200" height="28" fill="#01343a"/>
 <circle cx="108.02" cy="112.04" r="36.02" fill="#f25855"/>
@@ -7,7 +7,7 @@
 <text x="172.07" y="103.95" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">LIBRARY</text>
 <text x="172.07" y="131.98" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#404a4b">NO. 004 · TOOLS</text>
 <rect x="831" y="182" width="297" height="324" fill="#fea993"/>
-<rect x="831" y="182" width="297" height="324" fill="url(#g5-g)" filter="url(#g5-f)"/>
+<rect x="831" y="182" width="297" height="324" fill="url(#sign-paper-s5-grain-g)" filter="url(#sign-paper-s5-grain-f)"/>
 <g transform="translate(931.98 309.98) scale(1.6335) rotate(270 60 60)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
 <rect x="829" y="180" width="2" height="326" fill="#01343a"/>
 <rect x="72" y="180" width="1056" height="2" fill="#01343a"/>

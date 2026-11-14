@@ -257,6 +257,8 @@ interface Ctx {
   o: ComposeOptions;
   s: { [K in keyof Scheme]: Scheme[K] };
   rng: Rng;
+  /** Prefix for defs ids, unique per set of options. */
+  id: string;
   /** Module (G1). */
   u: number;
   defs: string[];
@@ -284,7 +286,7 @@ function noise(c: Ctx, id: string, b: Box, pair: Pair, dir: Direction): void {
 
 /** Small tiles in the ground colour over a noise gradient (G5 weave). */
 function weave(c: Ctx, b: Box, tile: number): void {
-  const id = `w${c.o.seed}`;
+  const id = `${c.id}-weave`;
   const piece = shape(c, pick(c.rng, WEAVE_PIECES));
   const turn = pick(c.rng, [0, 90, 180, 270] as const);
   noise(c, id, b, pick(c.rng, c.s.weave), "down");
@@ -296,7 +298,7 @@ function weave(c: Ctx, b: Box, tile: number): void {
 
 /** A noise gradient with one quarter-disc anchored in the corner (G5 grain). */
 function grain(c: Ctx, b: Box): void {
-  noise(c, `g${c.o.seed}`, b, pick(c.rng, c.s.grain), "diagonal");
+  noise(c, `${c.id}-grain`, b, pick(c.rng, c.s.grain), "diagonal");
   const r = Math.min(b.w, b.h) * 0.66;
   c.out.push(
     put(
@@ -538,6 +540,7 @@ export function compose(kit: Kit, hex: Hex, o: ComposeOptions): string {
     o,
     s: SCHEMES[o.scheme],
     rng: mulberry32(o.seed),
+    id: `${o.layout}-${o.scheme}-s${o.seed}`,
     u: o.height / 6,
     defs: [],
     out: [],
@@ -579,11 +582,12 @@ export function calloutBackground(
   const piece = kit.shapes["quarter-disc"];
   if (!piece) throw new Error("Unknown shape: quarter-disc");
   const size = 56;
+  const id = `callout-${hue}-s${seed}`;
   return (
     `<svg ${NS} width="100%" height="100%" data-feature="stipple" data-hue="${hue}" data-seed="${seed}">\n` +
-    `<defs><linearGradient id="c-g" ${VECTORS.left}><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/></linearGradient>${stippleFilter("c-f", hex(`${hue}.300`), seed)}</defs>\n` +
+    `<defs><linearGradient id="${id}-g" ${VECTORS.left}><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/></linearGradient>${stippleFilter(`${id}-f`, hex(`${hue}.300`), seed)}</defs>\n` +
     `<rect width="100%" height="100%" fill="${hex(`${hue}.50`)}"/>\n` +
-    `<rect x="60%" width="40%" height="100%" fill="url(#c-g)" filter="url(#c-f)"/>\n` +
+    `<rect x="60%" width="40%" height="100%" fill="url(#${id}-g)" filter="url(#${id}-f)"/>\n` +
     `<svg x="100%" y="100%" overflow="visible">${put(piece, -size, -size, size, hex(`${hue}.500`), 270)}</svg>\n` +
     "</svg>\n"
   );
@@ -598,22 +602,23 @@ export function texture(
   const s = SCHEMES[o.scheme];
   const [from, to] = (o.feature === "weave" ? s.weave : s.grain)[0] as Pair;
   const tile = 32;
+  const id = `texture-${o.scheme}-${o.feature}-s${o.seed}`;
   const triangle = kit.shapes.triangle;
   if (!triangle) throw new Error("Unknown shape: triangle");
   const dir = o.feature === "weave" ? VECTORS.down : VECTORS.left;
   const over =
     o.feature === "weave"
-      ? `<rect width="100%" height="100%" fill="url(#t-p)"/>\n`
+      ? `<rect width="100%" height="100%" fill="url(#${id}-p)"/>\n`
       : "";
   const pattern =
     o.feature === "weave"
-      ? `<pattern id="t-p" patternUnits="userSpaceOnUse" width="${tile}" height="${tile}">${put(triangle, 0, 0, tile, hex(s.ground))}</pattern>`
+      ? `<pattern id="${id}-p" patternUnits="userSpaceOnUse" width="${tile}" height="${tile}">${put(triangle, 0, 0, tile, hex(s.ground))}</pattern>`
       : "";
   return (
     `<svg ${NS} width="100%" height="100%" data-feature="${o.feature}" data-scheme="${o.scheme}" data-seed="${o.seed}">\n` +
-    `<defs><linearGradient id="t-g" ${dir}><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient>${stippleFilter("t-f", hex(to), o.seed)}${pattern}</defs>\n` +
+    `<defs><linearGradient id="${id}-g" ${dir}><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient>${stippleFilter(`${id}-f`, hex(to), o.seed)}${pattern}</defs>\n` +
     `<rect width="100%" height="100%" fill="${hex(from)}"/>\n` +
-    `<rect width="100%" height="100%" fill="url(#t-g)" filter="url(#t-f)"/>\n` +
+    `<rect width="100%" height="100%" fill="url(#${id}-g)" filter="url(#${id}-f)"/>\n` +
     `${over}</svg>\n`
   );
 }

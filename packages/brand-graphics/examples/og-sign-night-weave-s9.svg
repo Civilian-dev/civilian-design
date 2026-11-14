@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="sign" data-scheme="night" data-feature="weave" data-seed="9">
-<defs><linearGradient id="w9-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="w9-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="9" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#f25855"/><feComposite in2="t" operator="in"/></filter><pattern id="w9-p" patternUnits="userSpaceOnUse" x="840" y="182" width="36" height="36"><g transform="translate(0 0) scale(0.3)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g></pattern></defs>
+<defs><linearGradient id="sign-night-s9-weave-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="sign-night-s9-weave-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="9" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="#f25855"/><feComposite in2="t" operator="in"/></filter><pattern id="sign-night-s9-weave-p" patternUnits="userSpaceOnUse" x="840" y="182" width="36" height="36"><g transform="translate(0 0) scale(0.3)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g></pattern></defs>
 <rect width="1200" height="630" fill="#01343a"/>
 <rect x="0" y="0" width="1200" height="28" fill="#54a2a6"/>
 <circle cx="108.02" cy="112.04" r="36.02" fill="#f25855"/>
@@ -7,8 +7,8 @@
 <text x="172.07" y="103.95" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#fdfbf8">TALK</text>
 <text x="172.07" y="131.98" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#a8d6d8">NO. 007 · TALKS</text>
 <rect x="840" y="182" width="288" height="324" fill="#fea993"/>
-<rect x="840" y="182" width="288" height="324" fill="url(#w9-g)" filter="url(#w9-f)"/>
-<rect x="840" y="182" width="288" height="324" fill="url(#w9-p)"/>
+<rect x="840" y="182" width="288" height="324" fill="url(#sign-night-s9-weave-g)" filter="url(#sign-night-s9-weave-f)"/>
+<rect x="840" y="182" width="288" height="324" fill="url(#sign-night-s9-weave-p)"/>
 <rect x="72" y="180" width="1056" height="2" fill="#fdfbf8"/>
 <rect x="72" y="506" width="1056" height="2" fill="#fdfbf8"/>
 <text x="72" y="311.99" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="91.98" font-weight="600" letter-spacing="-0.025em" fill="#fdfbf8">Boring tools,</text>
