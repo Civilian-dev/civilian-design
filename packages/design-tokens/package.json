@@ -4,14 +4,24 @@
   "description": "Civilian design tokens, synced from Figma",
   "license": "MIT",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
     "./css": "./dist/tokens.css",
     "./json": "./dist/tokens.json",
-    "./resolved": { "types": "./dist/resolved.d.ts", "default": "./dist/resolved.js" }
+    "./resolved": {
+      "types": "./dist/resolved.d.ts",
+      "default": "./dist/resolved.js"
+    }
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Civilian-dev/civilian-design.git",
