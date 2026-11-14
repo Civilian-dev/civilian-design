@@ -259,10 +259,15 @@ const composed: [string, ComposeOptions][] = [
   ],
 ];
 
+/** Output files by name. Two outputs with one name is a mistake, not an overwrite. */
 const files = new Map<string, string>();
+const emit = (name: string, content: string): void => {
+  if (files.has(name)) throw new Error(`Duplicate output: ${name}`);
+  files.set(name, content);
+};
 
 for (const [prefix, o] of composed) {
-  files.set(
+  emit(
     `${prefix}-${o.layout}-${o.scheme}-${o.feature}-s${o.seed}.svg`,
     compose(kit, hex, o),
   );
@@ -270,7 +275,7 @@ for (const [prefix, o] of composed) {
 
 const hues: Hue[] = ["salmon", "gold", "teal", "violet"];
 hues.forEach((hue, i) => {
-  files.set(`callout-${hue}.svg`, calloutBackground(kit, hex, hue, 11 + i));
+  emit(`callout-${hue}.svg`, calloutBackground(kit, hex, hue, 11 + i));
 });
 
 const textures: [SchemeName, "grain" | "weave", number][] = [
@@ -280,14 +285,14 @@ const textures: [SchemeName, "grain" | "weave", number][] = [
   ["night", "weave", 9],
 ];
 for (const [scheme, feature, seed] of textures) {
-  files.set(
+  emit(
     `texture-${feature}-${scheme}.svg`,
     texture(kit, hex, { scheme, feature, seed }),
   );
 }
 
 for (const scheme of ["paper", "night"] as const) {
-  files.set(`avatar-${scheme}.svg`, avatar(kit, hex, scheme));
+  emit(`avatar-${scheme}.svg`, avatar(kit, hex, scheme));
 }
 
 // --- gallery ---------------------------------------------------------------
@@ -313,7 +318,7 @@ const fluid = (prefix: string, withText: boolean) =>
     )
     .join("\n");
 
-files.set(
+emit(
   "index.html",
   `<!doctype html>
 <html lang="en">
