@@ -28,7 +28,16 @@ Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/de
 1. **`DESIGN.md` at the repo root is the brand guide.** It follows the DESIGN.md format so agents and the linter can read it. Prose is hand-written. Token values in its front matter mirror `packages/design-tokens/dist/resolved.json` and are never the source of truth: Figma is.
 2. **No new colours or fonts.** The brand is expressed with the tokens that already exist (teal ink, paper, salmon, gold, violet; Poppins, Instrument Sans, Monaspace Xenon). Anything the brand needs that tokens lack is listed under "Token requests" below, to be added in Figma.
 3. **`packages/brand-graphics` owns the artwork.** Hand-authored sources in `src/` (single-colour SVG, `currentColor`), a dependency-free composer in `scripts/`, and committed generated output in `examples/`.
-4. **Variety comes from recombination, not new art.** Every composed asset is reproducible from `(recipe, palette, ground, seed)`.
+4. **Variety comes from recombination, not new art.** Every composed asset is reproducible from `(recipe, scheme, seed)`.
+5. **`DESIGN.md` is excluded from Biome.** Its markdown formatter flattens the YAML front matter, which breaks the format.
+
+## Feedback log
+
+**Round 1 (2026-11-14).** The first examples were good but the colour combinations were washed out and not complementary, and the stacked and scattered shapes looked arbitrary. The corner shapes in the callout backgrounds worked best. Changes made:
+
+- Colour: went back to the Stripe Press book pages, where each page is one saturated flat ground with a single contrasting ink and a cover in two or three strong inks. Replaced the pastel palettes with six schemes that each pair warm with cool and light with dark, and added colour grounds (salmon, gold, mint, plum) alongside paper and ink. All values are still existing tokens.
+- Shapes: removed the `totem` and `scatter` recipes and all random placement and tilt. The recipes are now `corner` (the callout idea, generalised), `row` (same-size pieces on a baseline, like route bullets), `tile` (a symmetric repeat on a panel) and `band` (a frieze). Each follows one rule; the seed only picks the motif and colour order.
+- Not re-read: the NYCTA manual link is a PDF download, so that part of the rework is from memory of the manual (route discs, modular panels, strict alignment and repetition), not a fresh look.
 
 ## Stages
 
@@ -52,7 +61,8 @@ This file.
 Left for a follow-up session (refine and expand):
 
 - Review the shape set by eye in Figma; add or drop pieces; consider a second figure pose.
-- More recipes (for example a full-bleed pattern cover and a two-panel diptych).
+- More recipes (for example a full-bleed pattern cover and a two-panel diptych), and more motifs per recipe.
+- Review the six schemes in Figma next to real pages; consider promoting them to a `graphic` token group (see token requests).
 - A proper wordmark lock-up (the mark here is provisional and redrawn from the first attempt).
 
 ### Stage 3: `AGENTS.md` harness `[ ]`
@@ -82,7 +92,7 @@ Goal: a lower-reasoning model can work on one package without reading the others
 
 ### Stage 6: Storybook documentation `[ ]`
 
-- `apps/storybook`: MDX pages for principles, colour use, typography, layout, graphics system (live composer with seed, palette and recipe controls), then stories for each component, article layouts, callouts, banners, menus and controls.
+- `apps/storybook`: MDX pages for principles, colour use, typography, layout, graphics system (live composer with seed, scheme and recipe controls), then stories for each component, article layouts, callouts, banners, menus and controls.
 - MDX pages quote `DESIGN.md` sections rather than restating them.
 
 ### Stage 7: Claude plugin and skill `[ ]`
@@ -96,5 +106,7 @@ Goal: a lower-reasoning model can work on one package without reading the others
 Nothing here blocks the stages above; the composer carries these as local constants until they exist as tokens.
 
 - `borderWidths`: `hairline` 1px, `rule` 2px, `bold` 4px.
-- A `graphic` colour group aliasing the magnet inks (`graphic.1` to `graphic.4`, `graphic.hot`) per theme, so palettes are not hard-coded by name.
+- A `graphic` colour group holding the schemes (ground, ink, three magnet inks, block, tone), so they are not hard-coded by primitive name in the composer.
+- A true blue hue. Stripe Press leans on deep royal blues and the first banner used blue; the closest tokens today are `violet.900` and `teal.700`.
+- A stronger orange and yellow (the `500` steps of salmon and gold are muted: terracotta and mustard). They work as texture tones but not as bright highlights.
 - Variable descriptions for every semantic role (already noted in the `claude-design-system` README).
