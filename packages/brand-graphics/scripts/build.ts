@@ -2,7 +2,13 @@
  * Generates `examples/` from the sources in `src/` and the design tokens.
  * Output is committed and deterministic; CI fails if it drifts.
  */
-import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolved } from "@civilian-dev/design-tokens/resolved";
@@ -17,7 +23,7 @@ import {
   parsePiece,
   resolveInks,
   texture,
-} from "../src/compose.ts";
+} from "../src/compose";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 
@@ -113,18 +119,53 @@ const composed: [string, ComposeOptions][] = [
       },
     },
   ],
-  ["banner", { ...BANNER, recipe: "band", palette: "sunrise", ground: "paper", seed: 4 }],
-  ["banner", { ...BANNER, recipe: "band", palette: "harbour", ground: "ink", seed: 9 }],
-  ["banner", { ...BANNER, recipe: "field", palette: "dusk", ground: "paper", seed: 5 }],
-  ["banner", { ...BANNER, recipe: "field", palette: "sunrise", ground: "ink", seed: 16 }],
-  ["banner", { ...BANNER, recipe: "scatter", palette: "signal", ground: "paper", seed: 2 }],
   [
-    "profile",
-    { ...PROFILE, recipe: "scatter", palette: "sunrise", ground: "paper", seed: 1, profile: true },
+    "banner",
+    { ...BANNER, recipe: "band", palette: "sunrise", ground: "paper", seed: 4 },
+  ],
+  [
+    "banner",
+    { ...BANNER, recipe: "band", palette: "harbour", ground: "ink", seed: 9 },
+  ],
+  [
+    "banner",
+    { ...BANNER, recipe: "field", palette: "dusk", ground: "paper", seed: 5 },
+  ],
+  [
+    "banner",
+    { ...BANNER, recipe: "field", palette: "sunrise", ground: "ink", seed: 16 },
+  ],
+  [
+    "banner",
+    {
+      ...BANNER,
+      recipe: "scatter",
+      palette: "signal",
+      ground: "paper",
+      seed: 2,
+    },
   ],
   [
     "profile",
-    { ...PROFILE, recipe: "scatter", palette: "dusk", ground: "ink", seed: 8, profile: true },
+    {
+      ...PROFILE,
+      recipe: "scatter",
+      palette: "sunrise",
+      ground: "paper",
+      seed: 1,
+      profile: true,
+    },
+  ],
+  [
+    "profile",
+    {
+      ...PROFILE,
+      recipe: "scatter",
+      palette: "dusk",
+      ground: "ink",
+      seed: 8,
+      profile: true,
+    },
   ],
 ];
 
@@ -135,8 +176,14 @@ for (const [kind, o] of composed) {
   files.set(name, compose(kit, hex, o));
 }
 
-files.set("avatar-sunrise-ink.svg", avatar(kit, hex, { size: 400, palette: "sunrise", ground: "ink" }));
-files.set("avatar-dusk-paper.svg", avatar(kit, hex, { size: 400, palette: "dusk", ground: "paper" }));
+files.set(
+  "avatar-sunrise-ink.svg",
+  avatar(kit, hex, { size: 400, palette: "sunrise", ground: "ink" }),
+);
+files.set(
+  "avatar-dusk-paper.svg",
+  avatar(kit, hex, { size: 400, palette: "dusk", ground: "paper" }),
+);
 
 const callouts = [
   ["salmon", "quarter-disc", 11],
@@ -146,7 +193,12 @@ const callouts = [
 for (const [hue, piece, seed] of callouts) {
   files.set(
     `callout-${hue}.svg`,
-    calloutBackground(kit, { tint: hex(`${hue}.50`), color: hex(`${hue}.300`), piece, seed }),
+    calloutBackground(kit, {
+      tint: hex(`${hue}.50`),
+      color: hex(`${hue}.300`),
+      piece,
+      seed,
+    }),
   );
 }
 
@@ -154,19 +206,43 @@ const paper = resolveInks(hex, "sunrise", "paper");
 const ink = resolveInks(hex, "sunrise", "ink");
 files.set(
   "texture-stipple-teal-paper.svg",
-  texture({ kind: "stipple", ground: paper.ground, color: hex("teal.300"), ink: paper.ink, seed: 31 }),
+  texture({
+    kind: "stipple",
+    ground: paper.ground,
+    color: hex("teal.300"),
+    ink: paper.ink,
+    seed: 31,
+  }),
 );
 files.set(
   "texture-stipple-violet-ink.svg",
-  texture({ kind: "stipple", ground: ink.ground, color: hex("violet.500"), ink: ink.ink, seed: 32 }),
+  texture({
+    kind: "stipple",
+    ground: ink.ground,
+    color: hex("violet.500"),
+    ink: ink.ink,
+    seed: 32,
+  }),
 );
 files.set(
   "texture-grain-salmon-paper.svg",
-  texture({ kind: "grain", ground: paper.ground, color: hex("salmon.300"), ink: paper.ink, seed: 33 }),
+  texture({
+    kind: "grain",
+    ground: paper.ground,
+    color: hex("salmon.300"),
+    ink: paper.ink,
+    seed: 33,
+  }),
 );
 files.set(
   "texture-grain-teal-ink.svg",
-  texture({ kind: "grain", ground: ink.ground, color: hex("teal.700"), ink: hex("base.black"), seed: 34 }),
+  texture({
+    kind: "grain",
+    ground: ink.ground,
+    color: hex("teal.700"),
+    ink: hex("base.black"),
+    seed: 34,
+  }),
 );
 
 // A plain gallery page for reviewing the kit and the examples by eye.
@@ -177,7 +253,10 @@ const sources = (["shapes", "lines", "patterns"] as const).flatMap((dir) =>
 const figures = (prefix: string, cls = "") =>
   names
     .filter((f) => f.startsWith(prefix))
-    .map((f) => `<figure class="${cls}"><img src="${f}" alt=""><figcaption>${f}</figcaption></figure>`)
+    .map(
+      (f) =>
+        `<figure class="${cls}"><img src="${f}" alt=""><figcaption>${f}</figcaption></figure>`,
+    )
     .join("\n");
 const fluid = (prefix: string) =>
   names

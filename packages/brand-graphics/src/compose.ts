@@ -291,7 +291,10 @@ function totem(c: Ctx): void {
   // At most one pair cell keeps the piece count within G5.
   const pair = rng() < 0.6 ? [pick(rng, PAIR_FILLERS)] : [];
   const singles = shuffle(rng, [...SQUARE_FILLERS, ...TURNABLE_FILLERS]);
-  const stack = shuffle(rng, [...pair, ...singles.slice(0, rows - pair.length)]);
+  const stack = shuffle(rng, [
+    ...pair,
+    ...singles.slice(0, rows - pair.length),
+  ]);
   const inkRow = rng() < 0.5 ? Math.floor(rng() * rows) : -1;
   stack.forEach((name, row) => {
     const colour = row === inkRow ? () => c.inks.ink : next;

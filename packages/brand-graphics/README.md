@@ -6,15 +6,15 @@ Private for now. Open [`examples/index.html`](examples/index.html) to see everyt
 
 ## Layout
 
-| Path | What | Edited by |
-| --- | --- | --- |
-| `src/shapes/` | Magnets: solid pieces on a 120-unit module with a 4-unit corner radius | hand (or Figma export) |
-| `src/lines/` | Marks: line accents, 12-unit stroke, round ends | hand |
-| `src/patterns/` | Seamless pattern tiles | hand |
-| `src/mark/` | The civilian figure (provisional brand mark) | hand |
-| `src/compose.ts` | Composer and texture generators | hand |
-| `scripts/build.ts` | Writes `examples/` from the sources and the design tokens | hand |
-| `examples/` | Generated output, committed and drift-checked by CI | `pnpm build` only |
+| Path               | What                                                                   | Edited by              |
+| ------------------ | ---------------------------------------------------------------------- | ---------------------- |
+| `src/shapes/`      | Magnets: solid pieces on a 120-unit module with a 4-unit corner radius | hand (or Figma export) |
+| `src/lines/`       | Marks: line accents, 12-unit stroke, round ends                        | hand                   |
+| `src/patterns/`    | Seamless pattern tiles                                                 | hand                   |
+| `src/mark/`        | The civilian figure (provisional brand mark)                           | hand                   |
+| `src/compose.ts`   | Composer and texture generators                                        | hand                   |
+| `scripts/build.ts` | Writes `examples/` from the sources and the design tokens              | hand                   |
+| `examples/`        | Generated output, committed and drift-checked by CI                    | `pnpm build` only      |
 
 ## Source rules
 
@@ -45,7 +45,7 @@ The fluid examples (`callout-*.svg`, `texture-*.svg`) have no `viewBox`, so they
 ## Composer
 
 ```ts
-import { compose } from "./src/compose.ts";
+import { compose } from "./src/compose";
 
 const svg = compose(kit, hex, {
   width: 1200,
@@ -54,7 +54,11 @@ const svg = compose(kit, hex, {
   palette: "sunrise", // sunrise | dusk | harbour | signal
   ground: "paper", // paper | ink
   seed: 7,
-  text: { kicker: "Field notes", title: ["Software for", "the rest of us"], footer: true },
+  text: {
+    kicker: "Field notes",
+    title: ["Software for", "the rest of us"],
+    footer: true,
+  },
 });
 ```
 
