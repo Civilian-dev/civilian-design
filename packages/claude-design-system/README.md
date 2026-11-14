@@ -2,11 +2,11 @@
 
 Private package. `pnpm build` generates **committed** outputs from `@civilian-dev/design-tokens`; never edit them by hand (CI's drift check enforces this):
 
-| Output | Purpose |
-|---|---|
-| `plugin/` | Claude plugin with the `civilian-design` skill (`SKILL.md`, `references/`) |
+| Output                                  | Purpose                                                                                                                |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `plugin/`                               | Claude plugin with the `civilian-design` skill (`SKILL.md`, `references/`)                                             |
 | `../../.claude-plugin/marketplace.json` | Marketplace pointer to `./packages/claude-design-system/plugin` (read from the default branch, so it has to be in git) |
-| `design-system/project/` | Bundle for the claude.ai **Design System** artifact (`editing: "code"`, so the page is read-only) |
+| `design-system/project/`                | Bundle for the claude.ai **Design System** artifact (`editing: "code"`, so the page is read-only)                      |
 
 Usage text for each colour role comes from the Figma variable descriptions. Figma doesn't have them yet, so the build falls back to naming hints and warns. Once every semantic role has a description, run builds with `STRICT_DESCRIPTIONS=1` (CI) to make a missing description fail the build.
 
