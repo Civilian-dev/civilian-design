@@ -49,6 +49,15 @@ Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/de
 - Brought back from the original brief: cool with rationed warmth, noise gradients as a main material, `sm` and `md` radii as the interface default, tokens as the only source of values (no hex values in the guide's prose), assets that resize.
 - Not done: the `DESIGN.md` front matter is still a hand-kept mirror of the tokens (the build check is in stage 7), and the six old "token requests" for brighter colours no longer apply.
 
+**Round 3 (2026-11-15).** Review of PR #17 found places where `DESIGN.md` and the composer disagreed. Each was rendered as current vs options and decided:
+
+- C4: the red bullet and one red key piece together is the intended look. The rule now allows both.
+- C3: the night top band stays, in gold instead of teal. The rule now allows it.
+- G5: the grain quarter-disc is ink in every scheme. Night drew it in the ground colour, which read as a hole.
+- Open: feature gradient pairs. The scheme table and the composer list different pairs (the composer adds ink to teal for `paper` and ink to salmon for `concrete`), and each set has good and bad results. Decide per scheme which pairs to keep, then make the table and the composer match.
+- Deferred: the key gap is a third of the piece size in G3 and 0.4 in the composer. The difference is barely visible.
+- Later: the pattern tiles in `src/reserve` (confetti, dots, hatch, plus, terrazzo, waves, zigzag) could give more variety in header bands and callout blocks. G7 rules them out for now; revisit once the sign system has settled.
+
 ## Stages
 
 ### Stage 0: research and plan `[x]`
