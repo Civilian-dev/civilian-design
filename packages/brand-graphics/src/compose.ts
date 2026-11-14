@@ -74,7 +74,7 @@ export const SCHEMES = {
     ground: "teal.900",
     ink: "base.paper",
     muted: "teal.300",
-    band: "teal.500",
+    band: "gold.300",
     bullet: "red.500",
     bulletInk: "base.paper",
     key: ["base.paper", "red.500", "gold.300"],

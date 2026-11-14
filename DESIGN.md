@@ -184,7 +184,7 @@ Rules:
 
 - **C1** Text is ink on paper or concrete, or paper on ink. No coloured text except links (primary), the muted metadata line (`fg.subtle`) and status messages.
 - **C2** A composition uses one scheme from the table below. Do not mix by hand.
-- **C3** Colour appears in exactly three places: the route bullet, the key, and the feature block. Nowhere else.
+- **C3** Colour appears in the route bullet, the key and the feature block, plus the top band in `night`. Nowhere else.
 - **C4** Red is the signal colour: the bullet, or one piece in the key. One red element per composition outside the feature block.
 - **C5** Gradients exist only as noise gradients inside the feature block or a section texture (G6). Never smooth, never on text, shapes, buttons or borders.
 - **C6** Text never sits on a shape, a weave or a textured area. Keep it on plain ground.
@@ -197,7 +197,7 @@ Schemes for graphics:
 | --- | --- | --- | --- | --- | --- |
 | `paper` | paper | ink | ink | red, gold | ink to red, or salmon to red |
 | `concrete` | concrete | ink | none (outer frame) | red, salmon | salmon to red, or ink to teal |
-| `night` | ink | paper | teal | red, gold, salmon | salmon to red |
+| `night` | ink | paper | gold | red, gold, salmon | salmon to red |
 
 `paper` is the everyday default. `concrete` is for `ledger` layouts. `night` is for dark pages. The cool gradient (ink to teal) is the choice when a page already has a warm element near the asset.
 
