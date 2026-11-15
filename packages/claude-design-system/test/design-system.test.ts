@@ -52,8 +52,9 @@ describe("bundle", () => {
     expect(index.createdOnFiles).toBeTruthy();
     expect(index.lastChange.via).toMatch(/^CI [0-9a-f]{8}$/);
     for (const f of [
-      "fonts/OFL.txt",
-      "fonts/monaspace-xenon-latin-400-normal.woff2",
+      "fonts/poppins-OFL.txt",
+      "fonts/instrument-sans-OFL.txt",
+      "fonts/monaspace-xenon-OFL.txt",
       "README.md",
       "tokens.json",
     ]) {
@@ -64,6 +65,16 @@ describe("bundle", () => {
     expect(readFileSync(resolve(projectDir, "README.md"), "utf8")).toBe(
       readmeMd(),
     );
+  });
+  it("bundles a file for every family the type styles use", () => {
+    const t = buildTokensJson();
+    const bundled = new Set(
+      t.type.fonts.map((f: { family: string }) => f.family),
+    );
+    for (const stack of Object.values<string>(t.type.families)) {
+      const first = stack.match(/^"([^"]+)"/)?.[1];
+      expect(bundled.has(first), stack).toBe(true);
+    }
   });
   it("every font file named by tokens.json exists", () => {
     const t = JSON.parse(
