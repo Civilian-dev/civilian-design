@@ -28,4 +28,4 @@ Usage text for each colour role comes from the Figma variable descriptions. Figm
 
 - `design-system.json` carries a build-stable placeholder `lastChange.at`; the routine above overwrites it with the real time and release tag.
 - `components/Cover/preview.html` is a best-effort cover: the type's `cover.md` can only be read from an existing artifact, so check it after the first publish.
-- Fonts: Monaspace Xenon (SIL OFL 1.1) is copied from the pinned `@fontsource/monaspace-xenon` with its licence at `design-system/project/fonts/OFL.txt`. Poppins and Instrument Sans are referenced as Google Fonts.
+- Fonts: Poppins, Instrument Sans and Monaspace Xenon (all SIL OFL 1.1, latin, weights 400 to 700) are copied from the pinned `@fontsource/*` packages into `design-system/project/fonts/`, each with its licence as `<family>-OFL.txt`. The page loads them from the bundle, so nothing depends on Google Fonts.
