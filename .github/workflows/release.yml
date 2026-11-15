@@ -18,11 +18,11 @@ jobs:
     if: ${{ vars.RELEASE_APP_ID != '' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4
         with:
           cache: true
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "24"
           registry-url: https://npm.pkg.github.com
@@ -32,11 +32,11 @@ jobs:
       # pass the required `ci` check. Use a GitHub App token when the app is configured
       # (repo variable RELEASE_APP_ID + secret RELEASE_APP_PRIVATE_KEY).
       - id: app
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-      - uses: changesets/action@v1
+      - uses: changesets/action@v2
         with:
           version: pnpm changeset version
           publish: pnpm release
