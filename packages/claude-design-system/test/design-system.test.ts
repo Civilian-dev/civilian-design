@@ -3,6 +3,8 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   buildTokensJson,
+  COVER_ROLES,
+  coverHtml,
   projectDir,
   readmeMd,
 } from "../scripts/design-system";
@@ -71,5 +73,92 @@ describe("bundle", () => {
     );
     for (const f of t.type.fonts)
       expect(existsSync(resolve(projectDir, f.file)), f.file).toBe(true);
+  });
+});
+
+describe("cover", () => {
+  const html = coverHtml();
+  const t = buildTokensJson();
+  const hex = (role: string, theme: "light" | "dark"): string =>
+    t.color.tokens.find((c: { name: string }) => c.name === role).value[theme];
+  const luminance = (h: string) => {
+    const [r, g, b] = [1, 3, 5].map((i) => {
+      const c = Number.parseInt(h.slice(i, i + 2), 16) / 255;
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    }) as [number, number, number];
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a: string, b: string) => {
+    const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [
+      number,
+      number,
+    ];
+    return (hi + 0.05) / (lo + 0.05);
+  };
+
+  it("starts with a dsCard marker, height 240 to 360", () => {
+    const m = html
+      .split("\n")[0]
+      ?.match(/^<!-- @dsCard\b.*\bheight=(\d+) -->$/);
+    expect(m).toBeTruthy();
+    expect(Number(m?.[1])).toBeGreaterThanOrEqual(240);
+    expect(Number(m?.[1])).toBeLessThanOrEqual(360);
+  });
+  it("has no colour literals", () => {
+    expect(html).not.toMatch(/#[0-9a-f]{3,8}\b/i);
+    expect(html).not.toMatch(/\b(rgba?|hsla?|oklch)\(/i);
+  });
+  it("only uses variables the tokens define", () => {
+    const names = new Set<string>([
+      ...t.color.tokens.map((c: { name: string }) => c.name),
+      ...t.spacing.tokens.map((s: { name: string }) => s.name),
+      ...t.radius.tokens.map((r: { name: string }) => r.name),
+      ...Object.keys(t.type.families).map((f) => `font-${f}`),
+    ]);
+    const used = [...html.matchAll(/var\(--([^)]+)\)/g)].map((m) =>
+      (m[1] as string).replace(/\\\./g, "."),
+    );
+    expect(used.length).toBeGreaterThan(0);
+    for (const name of used) expect(names.has(name), name).toBe(true);
+  });
+  it("is not responsive", () => {
+    expect(html).not.toMatch(/@media|@container|\d(vw|vh|cqw|cqh)\b/);
+  });
+  it("has exactly one svg", () => {
+    expect(html.match(/<svg\b/g)).toHaveLength(1);
+  });
+  for (const theme of ["light", "dark"] as const) {
+    it(`text reads at 4.5:1 or more on bg.canvas (${theme})`, () => {
+      const ground = hex(COVER_ROLES.ground, theme);
+      for (const role of Object.values(COVER_ROLES.text))
+        expect(contrast(hex(role, theme), ground), role).toBeGreaterThanOrEqual(
+          4.5,
+        );
+    });
+    it(`every block stands off bg.canvas (${theme})`, () => {
+      const ground = hex(COVER_ROLES.ground, theme);
+      const roles = {
+        ...COVER_ROLES.light,
+        ...(theme === "dark" ? COVER_ROLES.dark : {}),
+      };
+      for (const role of Object.values(roles))
+        expect(contrast(hex(role, theme), ground), role).toBeGreaterThanOrEqual(
+          1.1,
+        );
+    });
+  }
+  it("matches the committed file", () => {
+    expect(
+      readFileSync(
+        resolve(projectDir, "components/Cover/preview.html"),
+        "utf8",
+      ),
+    ).toBe(html);
+  });
+  it("stays a bare cover: no README or types beside it", () => {
+    for (const f of ["README.md", "index.d.ts", "preview.d.ts"])
+      expect(existsSync(resolve(projectDir, "components/Cover", f)), f).toBe(
+        false,
+      );
   });
 });

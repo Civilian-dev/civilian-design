@@ -177,32 +177,88 @@ ${consumption}
 `;
 }
 
+/** `brand.solid` → `var(--brand\.solid)`, as named in the type's compiled tokens.css. */
+const cssVar = (token: string): string =>
+  `var(--${token.replace(/\./g, "\\.")})`;
+
+/**
+ * Colour roles on the cover, by class. The page sets `data-theme` and loads
+ * the tokens, so the cover names roles and never colours. `dark` swaps a role
+ * whose dark value sits too close to `bg.canvas` to read as a block.
+ */
+export const COVER_ROLES = {
+  text: { name: "fg.default", tagline: "fg.muted" },
+  ground: "bg.canvas",
+  light: {
+    teal: "brand.solid",
+    ink: "bg.inverse",
+    salmon: "accent.solid",
+    gold: "highlight.solid",
+    tint: "brand.muted",
+  },
+  dark: { tint: "brand.hover" },
+} as const;
+
+export const COVER_HEIGHT = 320;
+
+/** Quarter-disc from packages/brand-graphics/src/shapes, centre on (cx, cy), turned to `corner`. */
+const quarterDisc = (
+  cx: number,
+  cy: number,
+  r: number,
+  corner: "bottom-left" | "top-right",
+): string =>
+  corner === "bottom-left"
+    ? `M${cx} ${cy}V${cy - r}A${r} ${r} 0 0 1 ${cx + r} ${cy}Z`
+    : `M${cx - r} ${cy}A${r} ${r} 0 0 0 ${cx} ${cy + r}V${cy}Z`;
+
+/**
+ * The Design System page's cover card (the type's cover.md): solid blocks in
+ * the identity colours, one pattern from the brand's own pieces, and the name.
+ * Fixed 960 × COVER_HEIGHT; every size is a spacing step (1rem = 16px).
+ */
 export function coverHtml(): string {
-  const resolved: Json = readJsonFile("resolved.json");
-  const c = resolved.light.colors;
-  const swatches = [
-    c.bg.canvas,
-    c.brand.solid,
-    c.accent.solid,
-    c.highlight.solid,
-    c.secondary.solid,
-    c.fg.default,
-  ]
-    .map((x: { hex: string }) => `<i style="background:${x.hex}"></i>`)
+  const H = COVER_HEIGHT;
+  const tile = 32; // space-8
+  // Weave (G5): one piece tiled edge to edge in whole tiles, one turn.
+  const weave: string[] = [];
+  for (let y = 192; y < H; y += tile)
+    for (let x = 480; x < 672; x += tile)
+      weave.push(quarterDisc(x, y + tile, tile, "bottom-left"));
+  const fills = Object.entries(COVER_ROLES.light)
+    .map(([cls, role]) => `.${cls}{fill:${cssVar(role)}}`)
     .join("");
-  return `<!-- @dsCard group="Cover" height=320 -->
+  const darkFills = Object.entries(COVER_ROLES.dark)
+    .map(([cls, role]) => `[data-theme="dark"] .${cls}{fill:${cssVar(role)}}`)
+    .join("");
+  return `<!-- @dsCard group="Cover" height=${H} -->
 <!doctype html>
 <meta charset="utf-8">
 <style>
-  body { margin: 0; min-height: 100vh; display: grid; align-content: center; gap: 24px; padding: 48px;
-         background: ${c.bg.canvas.hex}; color: ${c.fg.default.hex}; font-family: "Poppins", system-ui, sans-serif; }
-  h1 { margin: 0; font-size: 2.75rem; font-weight: 500; letter-spacing: -0.025em; line-height: 1.25; }
-  p { margin: 0; max-width: 40ch; font-family: "Instrument Sans", system-ui, sans-serif; line-height: 1.625; color: ${c.fg.muted.hex}; }
-  .sw { display: flex; gap: 8px; } .sw i { width: 40px; height: 40px; border-radius: 4px; border: 1px solid ${c.border.default.hex}; }
+  html, body { margin: 0; }
+  body { position: relative; width: 960px; height: ${H}px; overflow: hidden; background: ${cssVar(COVER_ROLES.ground)}; }
+  svg { position: absolute; inset: 0; display: block; }
+  ${fills}
+  ${darkFills}
+  rect { rx: ${cssVar("radius-none")}; }
+  h1, p { position: absolute; left: ${cssVar("space-12")}; margin: 0; max-width: 400px; }
+  h1 { bottom: calc(${cssVar("space-12")} + ${cssVar("space-8")}); font: 600 112px/0.92 ${cssVar("font-heading")}; letter-spacing: -0.025em; color: ${cssVar(COVER_ROLES.text.name)}; }
+  p { bottom: ${cssVar("space-12")}; font: 400 14px/1.4 ${cssVar("font-body")}; color: ${cssVar(COVER_ROLES.text.tagline)}; }
 </style>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="${H}" viewBox="0 0 960 ${H}" aria-hidden="true">
+  <!-- Blocks: brand.solid 288×192 (space-24×3 by space-48), bg.inverse 192×128 (space-48 by space-32), highlight.solid 96×128 (space-24 by space-32), brand.muted 192×128 under the weave (brand.hover in dark), accent.solid quarter-disc r=96 (space-24). -->
+  <!-- Arrangement: blocks share edges on a space-8 grid at x ≥ 480 and bleed off the top, right and bottom; bg.canvas stays open top left so the name owns that side. -->
+  <!-- Pattern: brand.solid quarter-discs from brand-graphics/src/shapes tiled edge to edge in one turn over brand.muted, the G5 weave without its gradient; the accent.solid quarter-disc sits centred on the corner like the G5 grain piece. -->
+  <!-- Steps and radii: space-8 tiles and grid, space-24 / space-32 / space-48 sides, space-12 text inset, radius-none on every rect (pieces keep square corners, G2). -->
+  <rect class="teal" x="672" y="0" width="288" height="192"/>
+  <path class="salmon" d="${quarterDisc(960, 0, 96, "top-right")}"/>
+  <rect class="tint" x="480" y="192" width="192" height="128"/>
+  <path class="teal" d="${weave.join("")}"/>
+  <rect class="ink" x="672" y="192" width="192" height="128"/>
+  <rect class="gold" x="864" y="192" width="96" height="128"/>
+</svg>
 <h1>Civilian</h1>
-<p>Clean, professional and roomy, with warm accents used sparingly.</p>
-<div class="sw">${swatches}</div>
+<p>Clean, professional, roomy, verging on cold.</p>
 `;
 }
 
