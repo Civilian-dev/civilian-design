@@ -84,14 +84,16 @@ Left for a follow-up session (refine and expand):
 - Review the three schemes in Figma next to real pages; consider promoting them to a `graphic` token group (see token requests).
 - A proper wordmark lock-up (the mark here is provisional and redrawn from the first attempt).
 
-### Stage 3: `AGENTS.md` harness `[ ]`
+### Stage 3: `AGENTS.md` harness `[~]`
 
 Goal: a lower-reasoning model can work on one package without reading the others.
 
-- Write `AGENTS.md` at the root: package responsibilities, the dependency direction (`design-tokens` → `panda-design-preset`, `claude-design-system`, `brand-graphics` → apps), what is generated vs hand-written, commands, commit and changeset rules, the release workflow (Changesets fixed group, Version PR, GitHub Packages, the claude.ai routine).
-- Reduce `CLAUDE.md` to `@AGENTS.md` plus anything Claude-specific.
-- Add a short `AGENTS.md` (or README section) per package covering only its inputs, outputs and tests.
+- `[~]` Write `AGENTS.md` at the root: package responsibilities, the dependency direction (`design-tokens` → `panda-design-preset`, `claude-design-system`, `brand-graphics` → apps), what is generated vs hand-written, commands, commit and changeset rules, the release workflow (Changesets fixed group, Version PR, GitHub Packages, the claude.ai routine).
+- `[x]` Reduce `CLAUDE.md` to `@AGENTS.md` plus anything Claude-specific.
+- `[ ]` Add a short `AGENTS.md` (or README section) per package covering only its inputs, outputs and tests.
 - Done when: each package's notes name its inputs, outputs, build command and test command, and the root file links to `DESIGN.md` and this plan.
+- Done so far: the root `AGENTS.md` exists and links to `DESIGN.md` and this plan, `CLAUDE.md` is only `@AGENTS.md`, and the git process (squash merging, PR titles, commits on a branch, picking up a branch) is documented in its "Git and PRs" section (PR #18).
+- Not done: the root file does not yet spell out the dependency direction or the release workflow.
 
 ### Stage 4: harden `brand-graphics` into a package `[ ]`
 
