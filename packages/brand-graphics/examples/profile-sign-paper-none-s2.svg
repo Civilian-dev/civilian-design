@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500" data-layout="sign" data-scheme="paper" data-feature="none" data-seed="2">
+<rect width="1500" height="500" fill="#fdfbf8"/>
+<rect x="0" y="0" width="1500" height="22" fill="#01343a"/>
+<g transform="translate(1293.5 170) scale(0.6236)" fill="#01343a"><circle cx="60" cy="60" r="60"/><rect y="128" width="120" height="112"/><rect y="248" width="56" height="116"/><rect x="64" y="248" width="56" height="116"/></g>
+<rect x="90" y="143" width="1320" height="2" fill="#01343a"/>
+<rect x="90" y="397" width="1320" height="2" fill="#01343a"/>
+<text x="90" y="247.75" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="73" font-weight="600" letter-spacing="-0.025em" fill="#01343a">Civilian</text>
+<text x="90" y="331.92" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="73" font-weight="600" letter-spacing="-0.025em" fill="#01343a">.dev</text>
+<text x="90" y="449.17" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20.67" font-weight="600" letter-spacing="-0.01em" fill="#01343a">civilian.dev</text>
+<g transform="translate(1289.35 428.58) scale(0.2646)" fill="#01343a"><path d="M0 120V0L120 120Z"/></g>
+<g transform="translate(1333.8 428.58) scale(0.2646)" fill="#f25855"><circle cx="60" cy="60" r="60"/></g>
+<g transform="translate(1378.25 428.58) scale(0.2646)" fill="#fede8f"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+</svg>

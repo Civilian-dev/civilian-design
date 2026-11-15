@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-layout="ledger" data-scheme="concrete" data-feature="none" data-seed="2">
+<rect width="1200" height="630" fill="#e0e6e7"/>
+<g fill="none" stroke="#01343a" stroke-width="2"><rect x="40" y="40" width="1120" height="550"/><path d="M40 128H1160M40 502H1160M848 40V590"/></g>
+<text x="72.03" y="91.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">NOTES</text>
+<text x="814.98" y="91.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="end" fill="#01343a">030</text>
+<text x="881.03" y="91.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="17.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">CIVILIAN.DEV</text>
+<text x="72.03" y="290.02" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="84" font-weight="600" letter-spacing="-0.025em" fill="#01343a">Software for</text>
+<text x="72.03" y="387.98" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="84" font-weight="600" letter-spacing="-0.025em" fill="#01343a">the rest of us</text>
+<text x="72.03" y="553.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">12 JUN 2026 · 3 MIN READ</text>
+<text x="881.03" y="553.92" font-family="'Monaspace Xenon', ui-monospace, Menlo, monospace" font-size="15.96" font-weight="500" letter-spacing="0.1em" text-anchor="start" fill="#01343a">FIELD NOTES</text>
+<rect x="1103.93" y="533.98" width="24.05" height="24.05" fill="#f25855"/>
+</svg>
