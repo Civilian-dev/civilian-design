@@ -30,6 +30,16 @@ export const projectDir = resolve(pkgRoot, "design-system/project");
 
 const FONT_WEIGHTS = ["400", "500", "600", "700"];
 
+/** Bundled families (all SIL OFL 1.1), pinned via @fontsource so the page needs no font CDN. */
+const FONTS = [
+  { family: "Poppins", slug: "poppins" },
+  { family: "Instrument Sans", slug: "instrument-sans" },
+  { family: "Monaspace Xenon", slug: "monaspace-xenon" },
+] as const;
+
+const fontFile = (slug: string, weight: string) =>
+  `${slug}-latin-${weight}-normal.woff2`;
+
 const hexWithAlpha = (c: { hex: string; alpha: number }): string =>
   c.alpha < 1
     ? `${c.hex}${Math.round(c.alpha * 255)
@@ -99,11 +109,13 @@ export function buildTokensJson(): Json {
       })),
     },
     type: {
-      fonts: FONT_WEIGHTS.map((w) => ({
-        family: "Monaspace Xenon",
-        file: `fonts/monaspace-xenon-latin-${w}-normal.woff2`,
-        weight: w,
-      })),
+      fonts: FONTS.flatMap(({ family, slug }) =>
+        FONT_WEIGHTS.map((w) => ({
+          family,
+          file: `fonts/${fontFile(slug, w)}`,
+          weight: w,
+        })),
+      ),
       families: {
         heading: '"Poppins", system-ui, sans-serif',
         body: '"Instrument Sans", system-ui, sans-serif',
@@ -301,22 +313,22 @@ export function buildDesignSystem(): void {
   };
   for (const [p, c] of Object.entries(files)) out(p, c);
 
-  // Fonts: Monaspace Xenon (OFL), pinned via @fontsource/monaspace-xenon.
-  const fontDir = dirname(
-    createRequire(import.meta.url).resolve(
-      "@fontsource/monaspace-xenon/package.json",
-    ),
-  );
+  // Fonts: each family's latin woff2 files plus its licence as <slug>-OFL.txt.
   mkdirSync(resolve(projectDir, "fonts"), { recursive: true });
-  const fontFiles = FONT_WEIGHTS.map(
-    (w) => `monaspace-xenon-latin-${w}-normal.woff2`,
-  );
-  for (const f of fontFiles)
-    copyFileSync(resolve(fontDir, "files", f), resolve(projectDir, "fonts", f));
-  copyFileSync(
-    resolve(fontDir, "LICENSE"),
-    resolve(projectDir, "fonts/OFL.txt"),
-  );
+  const require = createRequire(import.meta.url);
+  const fontFiles: string[] = [];
+  for (const { slug } of FONTS) {
+    const dir = dirname(require.resolve(`@fontsource/${slug}/package.json`));
+    for (const w of FONT_WEIGHTS) {
+      const f = fontFile(slug, w);
+      copyFileSync(resolve(dir, "files", f), resolve(projectDir, "fonts", f));
+      fontFiles.push(f);
+    }
+    copyFileSync(
+      resolve(dir, "LICENSE"),
+      resolve(projectDir, `fonts/${slug}-OFL.txt`),
+    );
+  }
 
   const hash = createHash("sha256");
   for (const p of Object.keys(files).sort()) hash.update(files[p] as string);
