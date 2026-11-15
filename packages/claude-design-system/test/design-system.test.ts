@@ -90,8 +90,15 @@ describe("bundle", () => {
 describe("cover", () => {
   const html = coverHtml();
   const t = buildTokensJson();
-  const hex = (role: string, theme: "light" | "dark"): string =>
-    t.color.tokens.find((c: { name: string }) => c.name === role).value[theme];
+  const hex = (role: string, theme: "light" | "dark"): string => {
+    const token = t.color.tokens.find((c: { name: string }) => c.name === role);
+    if (!token) throw new Error(`cover role ${role} is not a colour token`);
+    const value: string = token.value[theme];
+    // Contrast assumes an opaque colour; a translucent role would blend.
+    if (!/^#[0-9a-f]{6}$/i.test(value))
+      throw new Error(`cover role ${role} is not opaque in ${theme}: ${value}`);
+    return value;
+  };
   const luminance = (h: string) => {
     const [r, g, b] = [1, 3, 5].map((i) => {
       const c = Number.parseInt(h.slice(i, i + 2), 16) / 255;

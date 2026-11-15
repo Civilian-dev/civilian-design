@@ -211,8 +211,6 @@ export const COVER_ROLES = {
   dark: { tint: "brand.hover" },
 } as const;
 
-export const COVER_HEIGHT = 320;
-
 /** Quarter-disc from packages/brand-graphics/src/shapes, centre on (cx, cy), turned to `corner`. */
 const quarterDisc = (
   cx: number,
@@ -227,15 +225,17 @@ const quarterDisc = (
 /**
  * The Design System page's cover card (the type's cover.md): solid blocks in
  * the identity colours, one pattern from the brand's own pieces, and the name.
- * Fixed 960 × COVER_HEIGHT; every size is a spacing step (1rem = 16px).
+ * Fixed at 960 × H; every size is a spacing step (1rem = 16px). The bottom
+ * row is a fixed space-32, so only the brand.solid block follows H.
  */
 export function coverHtml(): string {
-  const H = COVER_HEIGHT;
+  const H = 320; // the marker allows 240 to 360
   const tile = 32; // space-8
-  // Weave (G5): one piece tiled edge to edge in whole tiles, one turn.
+  const row = H - 128; // top of the space-32 bottom row
+  // Weave (G5): one piece tiled edge to edge, 8 across and 4 down, one turn.
   const weave: string[] = [];
-  for (let y = 192; y < H; y += tile)
-    for (let x = 480; x < 672; x += tile)
+  for (let y = row; y < H; y += tile)
+    for (let x = 480; x < 736; x += tile)
       weave.push(quarterDisc(x, y + tile, tile, "bottom-left"));
   const fills = Object.entries(COVER_ROLES.light)
     .map(([cls, role]) => `.${cls}{fill:${cssVar(role)}}`)
@@ -258,16 +258,16 @@ export function coverHtml(): string {
   p { bottom: ${cssVar("space-12")}; font: 400 14px/1.4 ${cssVar("font-body")}; color: ${cssVar(COVER_ROLES.text.tagline)}; }
 </style>
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="${H}" viewBox="0 0 960 ${H}" aria-hidden="true">
-  <!-- Blocks: brand.solid 288×192 (space-24×3 by space-48), bg.inverse 192×128 (space-48 by space-32), highlight.solid 96×128 (space-24 by space-32), brand.muted 192×128 under the weave (brand.hover in dark), accent.solid quarter-disc r=96 (space-24). -->
+  <!-- Blocks: brand.solid 288×${row} (space-24×3 wide), brand.muted 256×128 under the weave (brand.hover in dark), bg.inverse 128×128 (space-32), highlight.solid 96×128 (space-24 by space-32), accent.solid quarter-disc r=96 (space-24). -->
   <!-- Arrangement: blocks share edges on a space-8 grid at x ≥ 480 and bleed off the top, right and bottom; bg.canvas stays open top left so the name owns that side. -->
-  <!-- Pattern: brand.solid quarter-discs from brand-graphics/src/shapes tiled edge to edge in one turn over brand.muted, the G5 weave without its gradient; the accent.solid quarter-disc sits centred on the corner like the G5 grain piece. -->
-  <!-- Steps and radii: space-8 tiles and grid, space-24 / space-32 / space-48 sides, space-12 text inset, radius-none on every rect (pieces keep square corners, G2). -->
-  <rect class="teal" x="672" y="0" width="288" height="192"/>
+  <!-- Pattern: 32 brand.solid quarter-discs (brand-graphics/src/shapes) tiled edge to edge, 8 across and 4 down in one turn over brand.muted: the G5 weave in block colours, without its gradient; one accent.solid quarter-disc is centred on the cover's top-right corner. -->
+  <!-- Steps and radii: space-8 tiles and grid, space-24 / space-32 sides, space-12 text inset, radius-none on every rect (pieces keep square corners, G2). -->
+  <rect class="teal" x="672" y="0" width="288" height="${row}"/>
   <path class="salmon" d="${quarterDisc(960, 0, 96, "top-right")}"/>
-  <rect class="tint" x="480" y="192" width="192" height="128"/>
+  <rect class="tint" x="480" y="${row}" width="256" height="128"/>
   <path class="teal" d="${weave.join("")}"/>
-  <rect class="ink" x="672" y="192" width="192" height="128"/>
-  <rect class="gold" x="864" y="192" width="96" height="128"/>
+  <rect class="ink" x="736" y="${row}" width="128" height="128"/>
+  <rect class="gold" x="864" y="${row}" width="96" height="128"/>
 </svg>
 <h1>Civilian</h1>
 <p>Clean, professional, roomy, verging on cold.</p>
