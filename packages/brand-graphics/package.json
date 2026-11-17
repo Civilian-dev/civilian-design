@@ -16,6 +16,10 @@
       "types": "./dist/compose.d.ts",
       "default": "./dist/compose.js"
     },
+    "./raster": {
+      "types": "./dist/raster.d.ts",
+      "default": "./dist/raster.js"
+    },
     "./patterns.css": "./dist/patterns.css",
     "./shapes/*": "./dist/shapes/*",
     "./mark/*": "./dist/mark/*"
@@ -34,7 +38,9 @@
     "typecheck": "tsc -p ."
   },
   "dependencies": {
-    "@civilian-dev/design-tokens": "workspace:^"
+    "@civilian-dev/brand-fonts": "workspace:^",
+    "@civilian-dev/design-tokens": "workspace:^",
+    "@resvg/resvg-js": "2.6.2"
   },
   "devDependencies": {
     "@types/node": "26.6.6",
