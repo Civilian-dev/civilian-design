@@ -12,6 +12,7 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Piece } from "../src/compose";
+import { compose, layout, layoutVars } from "../src/index";
 import { kit } from "../src/kit";
 import {
   type PatternOptions as LibPatternOptions,
@@ -193,12 +194,45 @@ const ARTICLE: Omit<Card, "feature"> = {
 const seed = (id: string, name: string, note: string, html: string) =>
   `<section class="seed" id="${id}"><p class="cv-label">${name}</p><p class="seed-note">${note}</p>${html}</section>`;
 
+const OG = { width: 1200, height: 630 } as const;
+const composed = compose({
+  ...OG,
+  theme: "light",
+  feature: "weave",
+  tile: "triangle",
+  turn: 0,
+  seed: 11,
+  text: {
+    letter: "A",
+    kind: "Article",
+    number: "012",
+    section: "Field notes",
+    title: ["A field guide to", "small libraries"],
+    meta: "14 Nov 2026 · 6 min read",
+  },
+});
+const overlayBackground = compose({
+  ...OG,
+  theme: "light",
+  feature: "weave",
+  tile: "triangle",
+  turn: 0,
+  seed: 12,
+});
+const overlayVars = Object.entries(
+  layoutVars(layout({ ...OG, feature: "weave" })),
+)
+  .map(([name, value]) => `${name}:${value}`)
+  .join(";");
+
 const cardPage = `<main class="cv-main">
 <h1 class="seed-title">Card</h1>
 <p class="seed-note">The one framed component. At 1200 by 630 it is the Open Graph image; at page width it is the top of an article (see the Article page). On its own the top-right cell carries the wordmark.</p>
 ${seed("card-weave", "Weave", "A tile repeated in the card ground, over a crisp noise gradient.", `<div class="seed-wide">${card({ ...ARTICLE, og: true, feature: { tile: "triangle", size: 32 } })}</div>`)}
 ${seed("card-grain", "Grain", "A noise gradient with one ink quarter-disc anchored in the corner.", `<div class="seed-wide">${card({ ...ARTICLE, og: true, feature: { tile: "none", dir: "diagonal" }, style: "--cv-pattern-from:var(--colors-accent-solid)" })}</div>`)}
 ${seed("card-plain", "No feature", "A card with no feature is complete. The title takes the full width.", `<div class="seed-wide">${card({ ...ARTICLE, og: true })}</div>`)}
+${seed("card-composed", "Composed image", "The same card drawn by compose() as one SVG, for social images and anywhere CSS is not available.", `<div class="seed-wide">${composed}</div>`)}
+${seed("card-overlay", "Composed background, HTML title", "compose() with no text, and the title set in HTML on the title cell. Its position and size come only from layout(), as custom properties.", `<div class="seed-wide"><div class="seed-overlay" style="${overlayVars}">${overlayBackground}<h1>A field guide to<br>small libraries</h1></div></div>`)}
 </main>`;
 
 const diagram = `<svg class="cv-diagram" viewBox="0 -20 672 276" role="img" aria-label="A brief becomes a profile, then scores. Three concerns are researched, then one document is written.">

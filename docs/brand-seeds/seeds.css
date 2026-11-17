@@ -646,6 +646,28 @@ header.cv-window nav {
 .seed-wide {
   overflow-x: auto;
 }
+.seed-wide > svg {
+  display: block;
+}
+/* A title set in HTML over a composed card, placed only by layoutVars(). */
+.seed-overlay {
+  position: relative;
+  width: max-content;
+}
+.seed-overlay > svg {
+  display: block;
+}
+.seed-overlay h1 {
+  position: absolute;
+  left: calc(var(--cv-card-title-x) + var(--cv-card-cell-pad));
+  top: var(--cv-card-title-y);
+  width: calc(var(--cv-card-title-w) - var(--cv-card-cell-pad) * 2);
+  height: var(--cv-card-title-h);
+  display: flex;
+  align-items: center;
+  font-size: var(--cv-card-title-size);
+  line-height: 1.1;
+}
 .seed-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 240px);
