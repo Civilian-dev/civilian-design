@@ -1,4 +1,6 @@
-# Brand style seeds
+# Brand style seeds, rounds 1 to 3 (archived)
+
+Superseded by the built specimens in the [parent folder](../README.md), which merge `sign` and `ledger` into one style. Kept as the record of how the direction was chosen.
 
 Hand-made reference images from the review on 14 Nov 2026. They show the direction the brand guide (`DESIGN.md`) now describes. They are references, not generated output: the composer in `packages/brand-graphics` produces the real assets.
 
