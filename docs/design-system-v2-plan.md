@@ -212,11 +212,12 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 
 ### Phase 4: agent surfaces
 
-**PR 9. `feat(claude-design-system)`: skill v2** `[ ]`
+**PR 9. `feat(claude-design-system)`: skill v2** `[x]`
 
-- Ship `DESIGN.md`, the pattern placement table, the theme contract, the seed specimen pages and a short `brand-graphics` API summary. Remove the "coming" line and say where each bundled reference comes from in the repo.
-- Generate the `DESIGN.md` front matter from the tokens between markers, and fail the build if it drifts.
-- Done when: a fresh session using only the installed skill can name the allowed patterns for a callout and find the specimen for an attachments list.
+- The skill ships `DESIGN.md`, the `brand-graphics` README, `patterns.css` and the specimen pages with an index of which page holds each element. `SKILL.md` sends the reader to the guide and the specimens first, carries the pattern placement table word for word from `DESIGN.md`, and says where each reference comes from in the repo. The "coming" line is gone.
+- The whole `DESIGN.md` front matter is generated from the tokens by the `claude-design-system` build, so CI's drift check fails if it falls behind. It now shows the token values: headings at 500 until the Figma change in PR 3, and code at line height 1.5.
+- Done when: tested rather than by a separate session. The tests check that the skill names the patterns allowed in a callout and that its specimen index sends attachments to `article.html`.
+- Changed from the plan: the theme contract stays in `DESIGN.md`, which the skill ships whole, rather than being copied into `SKILL.md`. The decisions page is left out of the skill.
 
 **PR 10. `test`: conformance audit** `[x]`
 

@@ -15,6 +15,7 @@
     "@civilian-dev/design-tokens": "workspace:^"
   },
   "devDependencies": {
+    "@civilian-dev/brand-graphics": "workspace:^",
     "@types/node": "26.6.6",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
