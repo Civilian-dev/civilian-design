@@ -1,16 +1,17 @@
 /**
  * Generates the brand seeds in `docs/brand-seeds/`: specimen pages for the
- * merged style, in light and dark. Output is committed; CI fails on drift.
+ * Civilian style, in light and dark, plus the one list of design decisions.
+ * Output is committed; CI fails on drift.
  *
- * The pages are styled only by tokens.css and the hand-written seeds.css.
+ * Pages are styled only by tokens.css and the hand-written seeds.css.
  * Patterns are inline SVG coloured by custom properties, so one specimen
- * works in both themes. `pattern()` here is the prototype for the pattern
+ * works in both themes. `pattern()` is the prototype for the pattern
  * library in the v2 plan (PR 6).
  */
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { type Piece, parsePiece, stippleFilter } from "../src/compose";
+import { type Piece, parsePiece } from "../src/compose";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const out = fileURLToPath(
@@ -33,7 +34,7 @@ function shape(name: string): Piece {
   return piece;
 }
 
-// --- parts -----------------------------------------------------------------
+// --- pieces ------------------------------------------------------------------
 
 /** One piece as inline SVG. Colour comes from CSS `color`. */
 function piece(name: string, cls = "", turn = 0, colour = ""): string {
@@ -47,8 +48,11 @@ function piece(name: string, cls = "", turn = 0, colour = ""): string {
   return `<svg class="cv-piece ${cls}" viewBox="0 0 ${p.w} ${p.h}" fill="currentColor"${style ? ` style="${style}"` : ""} aria-hidden="true">${p.body}</svg>`;
 }
 
+/** The key: three pieces of one size, ink first (G3). */
 const key = () =>
   `<span class="cv-key">${piece("disc", "", 0, "var(--cv-ink)")}${piece("quarter-disc", "", 0, "var(--cv-key-2)")}${piece("triangle", "", 270, "var(--cv-key-3)")}</span>`;
+
+// --- patterns ------------------------------------------------------------------
 
 type Tile =
   | "none"
@@ -59,30 +63,54 @@ type Tile =
   | "check";
 type Direction = "down" | "diagonal" | "edge";
 
+interface PatternOptions {
+  tile: Tile;
+  turn?: 0 | 90 | 180 | 270;
+  dir?: Direction;
+  /** Tile size in px. */
+  size?: number;
+  /** Soft noise for interface surfaces; crisp noise is for artwork. */
+  soft?: boolean;
+}
+
 const VECTORS: Record<Direction, string> = {
   down: 'x1="0" y1="0" x2="0" y2="1"',
   diagonal: 'x1="0" y1="1" x2="1" y2="0"',
   edge: 'x1="0" y1="0" x2="1" y2="0"',
 };
 
-let patterns = 0;
+let ids = 0;
 
 /**
- * A pattern: one tile repeated on a square grid in the ground colour, over
- * a two-colour noise gradient. Fills its box. `size` is the tile in px.
+ * Noise: thresholds turbulence against the source alpha and floods the
+ * result with the pattern's `to` colour. Crisp gives hard printed dots;
+ * soft leaves partial alpha, so the fade reads as grain, not speckle.
  */
-function pattern(o: {
-  tile: Tile;
-  turn?: 0 | 90 | 180 | 270;
-  dir?: Direction;
-  size?: number;
-}): string {
-  const id = `p${++patterns}`;
+function noise(id: string, soft: boolean): string {
+  const [slope, intercept] = soft ? [3, -1.1] : [14, -6.5];
+  return (
+    `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
+    `<feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="${ids}" result="n"/>` +
+    `<feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/>` +
+    `<feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/>` +
+    `<feComponentTransfer result="t"><feFuncA type="linear" slope="${slope}" intercept="${intercept}"/></feComponentTransfer>` +
+    `<feFlood style="flood-color:var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/>` +
+    "</filter>"
+  );
+}
+
+/**
+ * A pattern: one tile repeated on a square grid in the tile colour, over a
+ * two-colour noise gradient. Fills its box. Colours come from
+ * `--cv-pattern-from`, `--cv-pattern-to` and `--cv-pattern-tile`.
+ */
+function pattern(o: PatternOptions): string {
+  const id = `p${++ids}`;
   const t = o.size ?? 24;
   const dir = o.dir ?? "down";
   const stops =
     dir === "edge"
-      ? '<stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/>'
+      ? '<stop offset="0" stop-opacity="0"/><stop offset="1" style="stop-opacity:var(--cv-noise-max, 0.9)"/>'
       : '<stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/>';
   let cell = "";
   let over = "";
@@ -95,81 +123,89 @@ function pattern(o: {
       `<g transform="translate(${x} ${y}) scale(${s})${spin}">${p.body}</g>`;
     const span = o.tile === "check" ? t * 2 : t;
     const tiles = o.tile === "check" ? one(0, 0) + one(t, t) : one(0, 0);
-    cell = `<pattern id="${id}-p" patternUnits="userSpaceOnUse" width="${span}" height="${span}" style="color:var(--cv-ground)" fill="currentColor">${tiles}</pattern>`;
+    cell = `<pattern id="${id}-p" patternUnits="userSpaceOnUse" width="${span}" height="${span}" style="fill:var(--cv-pattern-tile)">${tiles}</pattern>`;
     over = `<rect width="100%" height="100%" fill="url(#${id}-p)"/>`;
   }
   return (
-    `<svg class="cv-pattern" data-tile="${o.tile}" data-turn="${o.turn ?? 0}" data-direction="${dir}" data-size="${t}" aria-hidden="true">` +
-    `<defs><linearGradient id="${id}-g" ${VECTORS[dir]}>${stops}</linearGradient>${stippleFilter(`${id}-f`, "var(--cv-pattern-to)", patterns)}${cell}</defs>` +
+    `<svg class="cv-pattern" data-tile="${o.tile}" data-turn="${o.turn ?? 0}" data-direction="${dir}" data-size="${t}" data-noise="${o.soft ? "soft" : "crisp"}" aria-hidden="true">` +
+    `<defs><linearGradient id="${id}-g" ${VECTORS[dir]}>${stops}</linearGradient>${noise(`${id}-f`, o.soft ?? false)}${cell}</defs>` +
     `<rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/>` +
     `<rect width="100%" height="100%" fill="url(#${id}-g)" filter="url(#${id}-f)"/>${over}</svg>`
   );
 }
 
-/** The feature: a tiled pattern, or grain with one piece anchored in the corner. */
-function feature(o: Parameters<typeof pattern>[0], style = ""): string {
+/** The card's feature: a tiled pattern, or grain with one anchored piece. */
+function feature(o: PatternOptions, style = ""): string {
   const anchor =
     o.tile === "none" ? piece("quarter-disc", "cv-anchor", 270) : "";
   return `<div class="cv-feature"${style ? ` style="${style}"` : ""}>${pattern(o)}${anchor}</div>`;
 }
 
-type Corner = "top" | "bottom";
-
-/** Callout art: an edge fade from the right, optionally one piece in a corner. */
-function calloutArt(name?: string, corner: Corner = "bottom"): string {
-  const turn = name === "square" ? 0 : corner === "bottom" ? 270 : 180;
-  const one = name ? piece(name, `cv-piece-${corner}`, turn) : "";
-  return `<div class="cv-callout-art">${pattern({ tile: "none", dir: "edge" })}${one}</div>`;
-}
-
 const label = (text: string, quiet = false) =>
   `<span class="cv-label${quiet ? " cv-label-quiet" : ""}">${text}</span>`;
 
-// --- the frame, closed: a card ---------------------------------------------
+// --- the card ------------------------------------------------------------------
 
 interface Card {
-  feature?: Parameters<typeof pattern>[0];
-  cls?: string;
+  /** Open Graph size, 1200 by 630. Otherwise it fills the page width. */
+  og?: boolean;
+  letter: string;
+  kind: string;
+  section: string;
+  /** HTML; break lines with <br> where they should break. */
+  title: string;
+  meta: string;
+  feature?: PatternOptions;
   style?: string;
 }
 
-function card(o: Card = {}): string {
-  const wide = o.feature ? "" : " cv-span";
-  return `<article class="cv-card ${o.cls ?? "cv-standalone"}"${o.style ? ` style="${o.style}"` : ""}>
+/**
+ * The card: the one framed component. The same markup is the Open Graph
+ * image and the top of a page. Only one slot changes: on its own, the
+ * top-right cell carries the wordmark; on a page, where the window header
+ * already has it, that cell carries the section.
+ */
+function card(o: Card): string {
+  const topRight = o.og
+    ? `<span class="cv-wordmark">civilian.dev</span>`
+    : label(o.section);
+  const bottomRight = o.og
+    ? `${label(o.section)}<span class="cv-push">${key()}</span>`
+    : `<span class="cv-push">${key()}</span>`;
+  const cls = ["cv-card", o.og && "cv-card-og", !o.feature && "cv-no-feature"]
+    .filter(Boolean)
+    .join(" ");
+  return `<article class="${cls}" data-seed="card"${o.style ? ` style="${o.style}"` : ""}>
   <div class="cv-frame">
-    <div class="cv-cell"><span class="cv-bullet">A</span>${label("Article")}<span class="cv-push">${label("No. 012")}</span></div>
-    <div class="cv-cell"><span class="cv-wordmark">civilian.dev</span></div>
-    <div class="cv-cell cv-cell-title${wide}"><h1>A field guide to<br>small libraries</h1></div>
-    ${o.feature ? `<div class="cv-cell cv-cell-feature">${feature(o.feature, "width:100%;height:100%")}</div>` : ""}
-    <div class="cv-cell">${label("14 Nov 2026 · 6 min read")}</div>
-    <div class="cv-cell">${label("Field notes")}<span class="cv-push">${key()}</span></div>
+    <div class="cv-cell"><span class="cv-bullet">${o.letter}</span>${label(o.kind)}</div>
+    <div class="cv-cell">${topRight}</div>
+    <div class="cv-cell cv-cell-title"><h1>${o.title}</h1></div>
+    ${o.feature ? `<div class="cv-cell cv-cell-feature">${feature(o.feature)}</div>` : ""}
+    <div class="cv-cell">${label(o.meta, true)}</div>
+    <div class="cv-cell">${bottomRight}</div>
   </div>
 </article>`;
 }
 
-// --- the frame, open: a page header ----------------------------------------
+// --- callouts ------------------------------------------------------------------
 
-function header(o: {
-  letter: string;
-  kind: string;
-  section: string;
-  title: string;
-  meta: string;
-  feature?: Parameters<typeof pattern>[0];
-}): string {
-  return `<header class="cv-header" data-seed="page-header" data-rules="L2 L3 L4 L5 G3 G4 G5">
-  <div class="cv-header-row"><span class="cv-bullet">${o.letter}</span>${label(o.kind)}<span class="cv-push">${label(o.section, true)}</span></div>
-  <div class="cv-header-body"><h1>${o.title}</h1>${o.feature ? feature(o.feature) : ""}</div>
-  <div class="cv-header-row">${label(o.meta, true)}<span class="cv-push">${key()}</span></div>
-</header>`;
+type Hue = "salmon" | "gold" | "teal" | "violet";
+
+/**
+ * A callout: an aside on a tint. Its art is a soft noise fade from the
+ * right edge, covered by a small tile in the tint colour, so the noise only
+ * shows through the gaps. No pieces.
+ */
+function callout(hue: Hue, title: string, text: string, seed = ""): string {
+  const art = pattern({ tile: "triangle", dir: "edge", size: 12, soft: true });
+  return `<aside class="cv-callout cv-callout-${hue}" data-seed="${seed || `callout-${hue}`}"><div class="cv-callout-art">${art}</div><p class="cv-label">${title}</p><p>${text}</p></aside>`;
 }
 
-const footer = `<footer class="cv-footer" data-seed="footer"><span class="cv-wordmark">civilian.dev</span><span class="cv-push">${label("Plain tools for everyday builders", true)}</span></footer>`;
-
-// --- pages ------------------------------------------------------------------
+// --- the window ----------------------------------------------------------------
 
 const PAGES = [
   ["index", "Contents"],
+  ["decisions", "Decisions"],
   ["card", "Card"],
   ["article", "Article"],
   ["listing", "Index page"],
@@ -180,13 +216,24 @@ type Theme = "light" | "dark";
 const file = (name: string, theme: Theme) =>
   `${name}${theme === "dark" ? "-dark" : ""}.html`;
 
-function doc(name: string, title: string, theme: Theme, body: string): string {
+/** Window header: spans the screen, on the page ground. */
+function windowHeader(name: string, theme: Theme): string {
   const other: Theme = theme === "light" ? "dark" : "light";
   const links = PAGES.map(([n, t]) =>
     n === name
-      ? label(t)
+      ? `<a class="cv-label" aria-current="page" href="${file(n, theme)}">${t}</a>`
       : `<a class="cv-label" href="${file(n, theme)}">${t}</a>`,
   ).join("");
+  return `<header class="cv-window" data-seed="window-header"><a class="cv-wordmark" href="${file("index", theme)}">civilian.dev</a><nav>${links}<a class="cv-label cv-label-quiet" href="${file(name, other)}">${other === "dark" ? "Dark" : "Light"}</a></nav></header>`;
+}
+
+/** Window footer: a pattern edge to edge, then a row aligned with the header. */
+const windowFooter = `<footer class="cv-window-foot" data-seed="window-footer">
+  <div class="cv-strip">${pattern({ tile: "quarter-disc" })}</div>
+  <div class="cv-window"><span class="cv-wordmark">civilian.dev</span><nav>${label("Articles")}${label("Projects")}${label("About")}</nav>${label("Plain tools for everyday builders", true)}</div>
+</footer>`;
+
+function doc(name: string, title: string, theme: Theme, body: string): string {
   return `<!doctype html>
 <html lang="en" data-theme="${theme}">
 <meta charset="utf-8">
@@ -194,24 +241,32 @@ function doc(name: string, title: string, theme: Theme, body: string): string {
 <title>${title} · Civilian brand seeds</title>
 <link rel="stylesheet" href="../../packages/design-tokens/dist/tokens.css">
 <link rel="stylesheet" href="seeds.css">
-<nav class="seed-sheet seed-nav" style="padding-bottom:0">${links}<a class="cv-label cv-push" href="${file(name, other)}">Switch to ${other}</a></nav>
+${windowHeader(name, theme)}
 ${body}
+${windowFooter}
 </html>
 `;
 }
 
+// --- specimens -----------------------------------------------------------------
+
+const ARTICLE: Omit<Card, "feature"> = {
+  letter: "A",
+  kind: "Article · No. 012",
+  section: "Field notes",
+  title: "A field guide to<br>small libraries",
+  meta: "14 Nov 2026 · 6 min read",
+};
+
 const seed = (id: string, name: string, note: string, html: string) =>
   `<section class="seed" id="${id}"><p class="cv-label">${name}</p><p class="seed-note">${note}</p>${html}</section>`;
 
-const cardPage = `<main class="seed-sheet">
-<h1>Card</h1>
-<p class="seed-note">The frame, closed. Open Graph size, 1200 by 630. Layout and colour from the ledger; bullet, key, weave and wordmark from the sign.</p>
-${seed("card", "Proposed", "Concrete ground, no band, headings at 600, weave feature.", card({ feature: { tile: "triangle", size: 32 } }))}
-${seed("card-grain", "Grain feature", "A noise gradient with one ink quarter-disc anchored in the corner.", card({ feature: { tile: "none", dir: "diagonal" }, style: "--cv-pattern-from:var(--colors-accent-solid)" }))}
-${seed("card-plain", "No feature", "A card with no feature is complete. The title takes the full width.", card())}
-${seed("d1", "D1 · Heading weight 500", "What the tokens say today. Compare with the proposed card above (600).", card({ feature: { tile: "triangle", size: 32 }, style: "--cv-heading-weight:500" }))}
-${seed("d2", "D2 · With the top band", "The band from the sign, kept above the frame. The proposal drops it.", card({ feature: { tile: "triangle", size: 32 }, cls: "cv-standalone cv-has-band" }))}
-${seed("d9", "D9 · Paper ground", "The same card on the page ground instead of concrete.", card({ feature: { tile: "triangle", size: 32 }, cls: "" }))}
+const cardPage = `<main class="cv-main">
+<h1 class="seed-title">Card</h1>
+<p class="seed-note">The one framed component. At 1200 by 630 it is the Open Graph image; at page width it is the top of an article (see the Article page). On its own the top-right cell carries the wordmark.</p>
+${seed("card-weave", "Weave", "A tile repeated in the card ground, over a crisp noise gradient.", `<div class="seed-wide">${card({ ...ARTICLE, og: true, feature: { tile: "triangle", size: 32 } })}</div>`)}
+${seed("card-grain", "Grain", "A noise gradient with one ink quarter-disc anchored in the corner.", `<div class="seed-wide">${card({ ...ARTICLE, og: true, feature: { tile: "none", dir: "diagonal" }, style: "--cv-pattern-from:var(--colors-accent-solid)" })}</div>`)}
+${seed("card-plain", "No feature", "A card with no feature is complete. The title takes the full width.", `<div class="seed-wide">${card({ ...ARTICLE, og: true })}</div>`)}
 </main>`;
 
 const diagram = `<svg class="cv-diagram" viewBox="0 -20 672 276" role="img" aria-label="A brief becomes a profile, then scores. Three concerns are researched, then one document is written.">
@@ -227,15 +282,22 @@ const diagram = `<svg class="cv-diagram" viewBox="0 -20 672 276" role="img" aria
   <g class="cv-node-out"><rect x="562" y="103" width="110" height="44"/><text x="617" y="130">Document</text></g>
 </svg>`;
 
-const articlePage = `<main class="cv-page" data-seed="article" data-rules="A7 T5 L1 L6">
-${header({ letter: "A", kind: "Article · No. 012", section: "Field notes", title: "A field guide to small libraries", meta: "14 Nov 2026 · 6 min read", feature: { tile: "triangle" } })}
+const tableHtml = `<table class="cv-table" data-seed="table"><thead><tr><th class="cv-label">Library</th><th class="cv-label">Surface</th><th class="cv-label">Weight</th><th class="cv-label">Verdict</th></tr></thead>
+<tbody><tr><td>Hand-written</td><td class="cv-num">1</td><td class="cv-num">0 kB</td><td>Fine until time zones arrive</td></tr><tr><td>Small parser</td><td class="cv-num">4</td><td class="cv-num">2 kB</td><td>The usual answer</td></tr><tr><td>Full toolkit</td><td class="cv-num">200+</td><td class="cv-num">70 kB</td><td>Only if you need most of it</td></tr></tbody></table>`;
+
+const codeHtml = `<pre class="cv-code" data-seed="code"><code>import { parse } from "small-parser";
+
+const date = parse("2026-11-14");</code></pre>`;
+
+const articlePage = `<main class="cv-main" data-seed="article">
+${card({ ...ARTICLE, feature: { tile: "triangle" } })}
+<div class="cv-body">
 <p class="cv-standfirst" data-seed="standfirst">How to pick, read and keep the small pieces of code that most projects are really made of.</p>
 <div class="cv-prose">
   <p>Most software is assembled, not written. The parts that matter are small, and choosing them well is most of the job. This guide covers how to judge a small library before you depend on it, with a <a href="https://civilian.dev">short checklist</a> at the end.</p>
+  ${callout("salmon", "In short", "Read the source before the README. If you cannot read it in one sitting, it is not a small library.", "callout")}
 
-  <aside class="cv-callout" data-seed="callout" data-rules="A4 C6 G6">${calloutArt("quarter-disc")}<p class="cv-label">In short</p><p>Read the source before the README. If you cannot read it in one sitting, it is not a small library.</p></aside>
-
-  <section class="cv-section" data-seed="section" data-rules="L6"><p class="cv-label cv-label-quiet">01</p><h2>What makes a library small?</h2>
+  <section class="cv-section" data-seed="section"><p class="cv-label cv-label-quiet">01</p><h2>What makes a library small?</h2>
   <p>Size is not line count. A small library does one job and says so. It can be described by an unordered list:</p>
   <ul data-seed="list-unordered"><li>One job, named in the first line of the README.</li><li>No settings you do not need on day one.</li><li>Few or no dependencies of its own.</li></ul>
   <p>Or by the order you would check them in:</p>
@@ -248,14 +310,11 @@ ${header({ letter: "A", kind: "Article · No. 012", section: "Field notes", titl
 
   <section class="cv-section"><p class="cv-label cv-label-quiet">02</p><h2>How do they compare?</h2>
   <p>Three ways to parse a date, scored the same way. Use <code>npm ls</code> to check the weight yourself.</p>
-  <table class="cv-table" data-seed="table" data-rules="L2 L6"><thead><tr><th class="cv-label">Library</th><th class="cv-label">Surface</th><th class="cv-label">Weight</th><th class="cv-label">Verdict</th></tr></thead>
-  <tbody><tr><td>Hand-written</td><td class="cv-num">1</td><td class="cv-num">0 kB</td><td>Fine until time zones arrive</td></tr><tr><td>Small parser</td><td class="cv-num">4</td><td class="cv-num">2 kB</td><td>The usual answer</td></tr><tr><td>Full toolkit</td><td class="cv-num">200+</td><td class="cv-num">70 kB</td><td>Only if you need most of it</td></tr></tbody></table>
-  <pre class="cv-code" data-seed="code"><code>import { parse } from "small-parser";
-
-const date = parse("2026-11-14");</code></pre>
-  <aside class="cv-callout cv-callout-tip" data-seed="callout-tip">${calloutArt("triangle", "top")}<p class="cv-label">Tip</p><p>Pin the exact version. A small library can change a lot in a minor release.</p></aside>
-  <aside class="cv-callout cv-callout-note" data-seed="callout-note">${calloutArt()}<p class="cv-label">Note</p><p>A callout may carry the edge fade alone, with no piece.</p></aside>
-  <aside class="cv-callout cv-callout-info" data-seed="callout-info" data-rules="D5"><p class="cv-label">Info</p><p>The info callout uses the interface colour for information, so it carries no art.</p></aside>
+  ${tableHtml}
+  ${codeHtml}
+  ${callout("gold", "Tip", "Pin the exact version. A small library can change a lot in a minor release.", "callout-tip")}
+  ${callout("teal", "Note", "Every callout works the same way, in its own hue.", "callout-note")}
+  ${callout("violet", "Info", "Violet is for information in the interface, so it is a callout hue too.", "callout-info")}
   </section>
 
   <section class="cv-section"><p class="cv-label cv-label-quiet">03</p><h2>How does a choice get made?</h2>
@@ -263,60 +322,199 @@ const date = parse("2026-11-14");</code></pre>
   <figure class="cv-figure" data-seed="diagram">${diagram}<figcaption class="cv-label cv-label-quiet">Fig. 1 · From a brief to a document</figcaption></figure>
   </section>
 
-  <section class="cv-ruled cv-attachments" data-seed="attachments"><p class="cv-label">Attachments · 3</p><ul>
+  <section class="cv-list cv-attachments" data-seed="attachments"><p class="cv-label">Attachments · 3</p><ul>
   <li><a href="#">Benchmarks</a><span class="cv-path">attachments/benchmarks</span></li>
   <li><a href="#">Checklist</a><span class="cv-path">attachments/checklist</span></li>
   <li><a href="#">Example project</a><span class="cv-path">examples/README</span></li></ul></section>
 
-  <section class="cv-footnotes" data-seed="footnotes"><ol><li>Sizes are minified and compressed, measured on 14 Nov 2026.</li></ol></section>
+  <section class="cv-footnotes" data-seed="footnotes"><p class="cv-label cv-label-quiet">Notes</p><ol><li>Sizes are minified and compressed, measured on 14 Nov 2026.</li></ol></section>
 </div>
-
-<section class="seed" id="d10"><p class="cv-label">D10 · Rounded containers</p><p class="seed-note">New question from building these seeds. The current guide rounds callouts and code blocks (S2). The specimens above are square, to match the frame. This is the rounded version for comparison.</p>
-<div class="cv-prose"><aside class="cv-callout cv-rounded">${calloutArt("quarter-disc")}<p class="cv-label">In short</p><p>Read the source before the README.</p></aside><pre class="cv-code cv-rounded"><code>const date = parse("2026-11-14");</code></pre></div></section>
-${footer}
+</div>
 </main>`;
 
 const row = (no: string, title: string, text: string, date: string) =>
   `<li><span class="cv-label cv-label-quiet">${no}</span><div><h3><a href="article.html">${title}</a></h3><p>${text}</p></div>${label(date, true)}</li>`;
 
-const listingPage = `<main class="cv-page" data-seed="index-page">
-${header({ letter: "I", kind: "Index", section: "civilian.dev", title: "Articles", meta: "12 articles · Updated 14 Nov 2026" })}
-<nav class="cv-ruled cv-index" data-seed="index" data-rules="L2 L6 T4" style="margin-top:var(--spacing-16)"><p class="cv-label">Field notes · 3</p><ol>
+const listingPage = `<main class="cv-main" data-seed="index-page">
+${card({ letter: "I", kind: "Index", section: "Field notes", title: "Articles", meta: "12 articles · Updated 14 Nov 2026" })}
+<div class="cv-body">
+<nav class="cv-list cv-index" data-seed="index"><p class="cv-label">Field notes · 3</p><ol>
 ${row("012", "A field guide to small libraries", "How to pick, read and keep the small pieces of code most projects are made of.", "14 Nov 2026")}
 ${row("011", "Boring tools, happy people", "Why the dull choice is usually the kind one.", "02 Nov 2026")}
 ${row("010", "One thing at a time", "A way of working that survives interruptions.", "19 Oct 2026")}
 </ol></nav>
-<div class="cv-texture" data-seed="section-texture" data-rules="A6 G6">${pattern({ tile: "quarter-disc" })}</div>
-${footer}
+</div>
 </main>`;
 
-const swatch = (name: string, o: Parameters<typeof pattern>[0], style = "") =>
-  `<div>${feature(o, style)}${label(name)}</div>`;
+const swatch = (name: string, o: PatternOptions, style = "") =>
+  `<div class="seed-swatch">${feature(o, style)}${label(name)}</div>`;
 
-const patternsPage = `<main class="seed-sheet">
-<h1>Patterns</h1>
-<p class="seed-note">One construction: a tile repeated on a square grid in the ground colour, over a two-colour noise gradient. Everything below is that, with a different dial turned.</p>
+const calloutSwatch = (hue: Hue) =>
+  `<div class="seed-swatch"><div class="cv-callout cv-callout-${hue} seed-callout-art"><div class="cv-callout-art">${pattern({ tile: "triangle", dir: "edge", size: 12, soft: true })}</div></div>${label(hue)}</div>`;
+
+const patternsPage = `<main class="cv-main">
+<h1 class="seed-title">Patterns</h1>
+<p class="seed-note">One construction: a tile repeated on a square grid, over a two-colour noise gradient. Each row turns one dial.</p>
 ${seed("tiles", "Tile", "Which piece is repeated. Grain is the gradient alone, with one anchored piece.", `<div class="seed-grid">${swatch("Triangle", { tile: "triangle" })}${swatch("Quarter-disc", { tile: "quarter-disc" })}${swatch("Half-disc", { tile: "half-disc" })}${swatch("Disc", { tile: "disc" })}${swatch("Check", { tile: "check" })}${swatch("Grain", { tile: "none", dir: "diagonal" })}</div>`)}
 ${seed("turns", "Turn", "Quarter turns only.", `<div class="seed-grid">${swatch("0", { tile: "triangle" })}${swatch("90", { tile: "triangle", turn: 90 })}${swatch("180", { tile: "triangle", turn: 180 })}${swatch("270", { tile: "triangle", turn: 270 })}</div>`)}
-${seed("scales", "Scale", "Fine, regular and coarse. Always whole tiles across the box.", `<div class="seed-grid">${swatch("Fine · 20 across", { tile: "triangle", size: 12 })}${swatch("Regular · 10 across", { tile: "triangle", size: 24 })}${swatch("Coarse · 6 across", { tile: "triangle", size: 40 })}</div>`)}
+${seed("scales", "Scale", "Always whole tiles across the box.", `<div class="seed-grid">${swatch("Fine · 20 across", { tile: "triangle", size: 12 })}${swatch("Regular · 10 across", { tile: "triangle", size: 24 })}${swatch("Coarse · 6 across", { tile: "triangle", size: 40 })}</div>`)}
 ${seed("gradients", "Gradient", "The direction the two colours dissolve in.", `<div class="seed-grid">${swatch("Down", { tile: "quarter-disc", dir: "down" })}${swatch("Diagonal", { tile: "quarter-disc", dir: "diagonal" })}${swatch("From an edge", { tile: "quarter-disc", dir: "edge" })}</div>`)}
-${seed("pairs", "Pair", "The two colours. The default is ink into red; the cool pair is for pages that already have a warm element nearby.", `<div class="seed-grid">${swatch("Ink to red", { tile: "triangle" })}${swatch("Ink to teal", { tile: "triangle" }, "--cv-pattern-to:var(--colors-teal-500)")}${swatch("Salmon to red", { tile: "triangle" }, "--cv-pattern-from:var(--colors-accent-solid)")}</div>`)}
+${seed("pairs", "Pair", "The two colours. Ink into red by default; ink into teal beside other warm colour.", `<div class="seed-grid">${swatch("Ink to red", { tile: "triangle" })}${swatch("Ink to teal", { tile: "triangle" }, "--cv-pattern-to:var(--colors-teal-500)")}${swatch("Salmon to red", { tile: "triangle" }, "--cv-pattern-from:var(--colors-accent-solid)")}</div>`)}
+${seed("noise", "Noise", "Crisp in artwork (the card, the footer strip). Soft on interface surfaces (callouts), where it must not compete with text.", `<div class="seed-grid">${swatch("Crisp", { tile: "triangle", size: 16, dir: "edge" })}${swatch("Soft", { tile: "triangle", size: 16, dir: "edge", soft: true })}</div>`)}
+${seed("callout-art", "Callout art", "Soft noise in the hue's tone, a fine tile in the tint over it.", `<div class="seed-grid">${calloutSwatch("salmon")}${calloutSwatch("gold")}${calloutSwatch("teal")}${calloutSwatch("violet")}</div>`)}
 </main>`;
 
-const indexPage = `<main class="cv-page">
-${header({ letter: "S", kind: "Brand seeds", section: "Round 4", title: "One style", meta: "17 Nov 2026 · Built by pnpm build" })}
-<p class="cv-standfirst">Specimens for the merged style: the ledger's frame and colour, with the sign's bullet, key, weave and wordmark. Each page exists in light and dark.</p>
-<nav class="cv-ruled cv-index" style="margin-top:var(--spacing-16)"><p class="cv-label">Specimens · 4</p><ol>
-<li>${label("01", true)}<div><h3><a href="card.html">Card</a></h3><p>The frame, closed. Includes the comparisons for decisions D1, D2 and D9.</p></div>${label("Open Graph", true)}</li>
-<li>${label("02", true)}<div><h3><a href="article.html">Article</a></h3><p>The frame, open, as a page header. Then every element an article uses: lists, table, callouts, pull quote, code, diagram, attachments, footnotes. Print it to see the print rules.</p></div>${label("Page", true)}</li>
-<li>${label("03", true)}<div><h3><a href="listing.html">Index page</a></h3><p>A header with no feature, an index of articles, and a section texture.</p></div>${label("Page", true)}</li>
-<li>${label("04", true)}<div><h3><a href="patterns.html">Patterns</a></h3><p>Every dial of the one pattern construction: tile, turn, scale, gradient and pair.</p></div>${label("Sheet", true)}</li>
+// --- decisions -----------------------------------------------------------------
+
+interface Option {
+  name: string;
+  html: string;
+}
+
+interface Open {
+  id: string;
+  question: string;
+  options: Option[];
+  /** Index of the recommended option. */
+  pick: number;
+  why: string;
+  /** Where the recommended option appears in full. */
+  see: [href: string, text: string];
+}
+
+const labelsMini = `<div class="seed-mini"><div class="seed-mini-row"><span class="cv-bullet">A</span>${label("Article · No. 012")}</div>${label("14 Nov 2026 · 6 min read", true)}${tableHtml}</div>`;
+
+const cornersMini = `<div class="seed-mini cv-prose">${callout("salmon", "In short", "Read the source before the README.")}${codeHtml}</div>`;
+
+const tilesMini = (tiles: Tile[]) =>
+  `<div class="seed-grid seed-grid-small">${tiles.map((t) => swatch(t === "check" ? "Check" : t[0]?.toUpperCase() + t.slice(1), { tile: t, size: 16 })).join("")}</div>`;
+
+const OPEN: Open[] = [
+  {
+    id: "labels",
+    question: "Which typeface for labels?",
+    options: [
+      { name: "Monaspace Xenon, weight 500", html: labelsMini },
+      {
+        name: "Instrument Sans, weight 600",
+        html: `<div style="--cv-label-family:var(--fonts-body);--cv-label-weight:var(--font-weights-semibold)">${labelsMini}</div>`,
+      },
+    ],
+    pick: 0,
+    why: "A third face for facts keeps labels apart from body text without making them bolder. The tokens say Instrument Sans today, so this needs a change in Figma.",
+    see: ["article.html#table", "Labels throughout the article"],
+  },
+  {
+    id: "corners",
+    question: "Square or rounded corners on callouts and code blocks?",
+    options: [
+      { name: "Square", html: cornersMini },
+      {
+        name: "Rounded (8px)",
+        html: `<div style="--cv-radius:var(--radii-md)">${cornersMini}</div>`,
+      },
+    ],
+    pick: 0,
+    why: "The card, the tiles and the frame are square. Rounded boxes would be the only soft corners on the page.",
+    see: ["article.html#callout", "Callouts in the article"],
+  },
+  {
+    id: "tiles",
+    question: "Which pieces can a pattern repeat?",
+    options: [
+      {
+        name: "Triangle and quarter-disc",
+        html: tilesMini(["triangle", "quarter-disc"]),
+      },
+      {
+        name: "All five",
+        html: tilesMini([
+          "triangle",
+          "quarter-disc",
+          "half-disc",
+          "disc",
+          "check",
+        ]),
+      },
+    ],
+    pick: 1,
+    why: "More variety from the same rule, so pages differ without new artwork. Half-disc, disc and check are drawn square-cornered like the others.",
+    see: ["patterns.html#tiles", "All tiles on the Patterns page"],
+  },
+];
+
+/** Decided items: the question and the answer, newest round first. */
+const DECIDED: [question: string, answer: string, by: string][] = [
+  ["Heading weight", "600", "You, 17 Nov"],
+  ["Top band on the card", "None", "You, 17 Nov"],
+  [
+    "Top of an article",
+    "The card, the same component as the Open Graph image",
+    "You, 17 Nov",
+  ],
+  [
+    "Callout art",
+    "A fine tile in the tint over a soft noise fade. No shapes",
+    "You, 17 Nov",
+  ],
+  [
+    "Rules on pages",
+    "Only in the card frame and in tables. Everything else is separated by space",
+    "You, 17 Nov",
+  ],
+  [
+    "Window header and footer",
+    "Span the screen. The footer pattern runs edge to edge",
+    "You, 17 Nov",
+  ],
+  [
+    "Card ground",
+    "Different from the page so the card sits apart: concrete on paper, a lighter dark on the dark page",
+    "Follows from your note on hierarchy",
+  ],
+  [
+    "Callout hues",
+    "All four work the same way, violet included",
+    "Simplification: one rule instead of an exception",
+  ],
+];
+
+const option = (o: Option, picked: boolean) =>
+  `<div class="seed-option${picked ? " seed-picked" : ""}"><p class="cv-label">${o.name}${picked ? ' <span class="seed-tag">Recommended</span>' : ""}</p>${o.html}</div>`;
+
+const decisionsPage = `<main class="cv-main" data-seed="decisions">
+<h1 class="seed-title">Decisions</h1>
+<p class="seed-note">The one list of design decisions for this round. Open questions first, each with the options side by side. Reply with the option name; anything decided moves to the list at the end.</p>
+${OPEN.map(
+  (d, i) => `<section class="seed-decision" id="${d.id}">
+  <p class="cv-label cv-label-quiet">Open · ${i + 1} of ${OPEN.length}</p>
+  <h2>${d.question}</h2>
+  <div class="seed-options">${d.options.map((o, j) => option(o, j === d.pick)).join("")}</div>
+  <p class="seed-why"><strong>${d.options[d.pick]?.name}.</strong> ${d.why} <a href="${d.see[0]}">${d.see[1]}</a></p>
+</section>`,
+).join("\n")}
+<section class="seed-decision" id="decided"><p class="cv-label cv-label-quiet">Decided · ${DECIDED.length}</p><h2>Already settled</h2>
+<dl class="seed-decided">${DECIDED.map(([q, a, by]) => `<dt>${q}</dt><dd>${a}<span class="cv-label cv-label-quiet">${by}</span></dd>`).join("")}</dl>
+</section>
+</main>`;
+
+const indexPage = `<main class="cv-main">
+${card({ letter: "S", kind: "Brand seeds", section: "Round 5", title: "One style", meta: "17 Nov 2026 · Built by pnpm build" })}
+<div class="cv-body">
+<p class="cv-standfirst">Specimens for the Civilian style. Three layers: the window spans the screen, the card sits apart at the top, and the body is open space for reading.</p>
+<nav class="cv-list cv-index"><p class="cv-label">Pages · 5</p><ol>
+<li>${label("01", true)}<div><h3><a href="decisions.html">Decisions</a></h3><p>The one list of open and settled design decisions, with the options side by side.</p></div>${label("Start here", true)}</li>
+<li>${label("02", true)}<div><h3><a href="card.html">Card</a></h3><p>The one framed component, at Open Graph size.</p></div>${label("Artwork", true)}</li>
+<li>${label("03", true)}<div><h3><a href="article.html">Article</a></h3><p>The card at the top, then every element an article uses. Print it to see the print rules.</p></div>${label("Page", true)}</li>
+<li>${label("04", true)}<div><h3><a href="listing.html">Index page</a></h3><p>A card with no feature, then an index of articles.</p></div>${label("Page", true)}</li>
+<li>${label("05", true)}<div><h3><a href="patterns.html">Patterns</a></h3><p>Every dial of the one pattern construction.</p></div>${label("Sheet", true)}</li>
 </ol></nav>
-${footer}
+</div>
 </main>`;
 
 const pages: [string, string, string][] = [
   ["index", "Contents", indexPage],
+  ["decisions", "Decisions", decisionsPage],
   ["card", "Card", cardPage],
   ["article", "Article", articlePage],
   ["listing", "Index page", listingPage],

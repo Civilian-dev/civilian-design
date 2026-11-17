@@ -1,6 +1,6 @@
 /*
  * Reference stylesheet for the Civilian brand seeds. Hand-written.
- * Every value comes from tokens.css; names follow DESIGN.md.
+ * Every value comes from tokens.css; rule names follow DESIGN.md and docs/design-system-v2-plan.md.
  * Copy from here when building a theme. Do not add values of your own.
  */
 
@@ -41,11 +41,19 @@
     format("woff2");
 }
 
-/* --- the contract: what a theme reads -------------------------------------- */
+/*
+ * Three layers, each with its own job:
+ *   window  the site header and footer. Spans the screen.
+ *   card    the one framed component. Sits apart at the top of a page.
+ *   body    reading space. Separated by space, not rules.
+ */
+
+/* --- the contract: what a theme sets ---------------------------------------- */
 
 :root {
-  /* Embedded artwork takes the page ground. */
   --cv-ground: var(--colors-bg-canvas);
+  /* The card's ground differs from the page so it sits apart. */
+  --cv-card: var(--colors-bg-emphasized);
   --cv-ink: var(--colors-fg-default);
   --cv-muted: var(--colors-fg-subtle);
   /* The signal colour has no semantic role yet (see the plan's token list). */
@@ -53,41 +61,38 @@
   --cv-key-2: var(--colors-red-500);
   --cv-key-3: var(--colors-highlight-solid);
 
-  /* Rule widths, until borderWidths tokens exist. */
+  /* Until borderWidths and an art-size token exist. */
   --cv-hairline: 1px;
   --cv-rule: 2px;
   --cv-edge: 4px;
-  /* The widest a callout's art may be. */
   --cv-art: 240px;
 
-  /* Pattern dials that CSS can set. Tile and turn are set where it is drawn. */
-  --cv-pattern-from: var(--colors-fg-default);
-  --cv-pattern-to: var(--colors-red-500);
+  /* Open decisions: labels and corners. */
+  --cv-label-family: var(--fonts-mono);
+  --cv-label-weight: var(--font-weights-medium);
+  --cv-radius: var(--radii-none);
 
-  --cv-heading-weight: var(--font-weights-semibold);
-  --cv-margin: clamp(var(--spacing-6), 6vw, var(--spacing-16));
+  /* Patterns: a tile in --cv-pattern-tile over noise from -from into -to. */
+  --cv-pattern-from: var(--cv-ink);
+  --cv-pattern-to: var(--cv-signal);
+  --cv-pattern-tile: var(--cv-ground);
+
+  --cv-margin: clamp(var(--spacing-6), 5vw, var(--spacing-16));
 }
 
 :root[data-theme="dark"] {
+  --cv-card: var(--colors-bg-default);
   --cv-pattern-from: var(--colors-accent-solid);
 }
 
-/* Standalone artwork (cards, avatars) sits on concrete in light. */
-.cv-standalone {
-  --cv-ground: var(--colors-bg-emphasized);
-}
-:root[data-theme="dark"] .cv-standalone {
-  --cv-ground: var(--colors-bg-canvas);
-}
-
-/* --- base ----------------------------------------------------------------- */
+/* --- base ------------------------------------------------------------------- */
 
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
-  background: var(--colors-bg-canvas);
+  background: var(--cv-ground);
   color: var(--cv-ink);
   font-family: var(--fonts-body);
   font-size: var(--font-sizes-md);
@@ -97,8 +102,9 @@ h1,
 h2,
 h3 {
   font-family: var(--fonts-heading);
-  font-weight: var(--cv-heading-weight);
+  font-weight: var(--font-weights-semibold);
   line-height: var(--line-heights-tight);
+  letter-spacing: var(--letter-spacings-tight);
   margin: 0;
 }
 a {
@@ -108,18 +114,26 @@ a {
 
 /* The label: the only uppercase text in the system. */
 .cv-label {
-  font-family: var(--fonts-mono);
+  font-family: var(--cv-label-family);
   font-size: var(--font-sizes-xs);
-  font-weight: var(--font-weights-medium);
+  font-weight: var(--cv-label-weight);
   letter-spacing: var(--letter-spacings-widest);
   line-height: var(--line-heights-tight);
   text-transform: uppercase;
-  white-space: nowrap;
   color: var(--cv-ink);
   margin: 0;
 }
 .cv-label-quiet {
   color: var(--cv-muted);
+}
+a.cv-label {
+  text-decoration: none;
+}
+a.cv-label:hover,
+a.cv-label[aria-current] {
+  text-decoration: underline;
+  text-decoration-thickness: var(--cv-rule);
+  text-underline-offset: 0.5em;
 }
 
 .cv-wordmark {
@@ -127,176 +141,219 @@ a {
   font-weight: var(--font-weights-semibold);
   font-size: var(--font-sizes-lg);
   letter-spacing: var(--letter-spacings-tight);
+  color: var(--cv-ink);
+  text-decoration: none;
 }
 
-/* The bullet: one per composition, a disc carrying one letter. */
+/* The bullet: one per page, a disc carrying one letter. */
 .cv-bullet {
   display: inline-grid;
+  flex: none;
   place-items: center;
-  width: var(--spacing-12);
-  height: var(--spacing-12);
+  width: var(--spacing-8);
+  height: var(--spacing-8);
   border-radius: var(--radii-full);
   background: var(--cv-signal);
-  color: var(--cv-ground);
+  color: var(--colors-base-white);
   font-family: var(--fonts-heading);
   font-weight: var(--font-weights-semibold);
-  font-size: var(--font-sizes-lg);
+  font-size: var(--font-sizes-md);
   line-height: 1;
 }
 
-/* The key: two or three pieces of one size on one baseline. */
+/* The key: three pieces of one size on one baseline. */
 .cv-key {
   display: inline-flex;
-  gap: var(--spacing-3);
+  gap: var(--spacing-2);
 }
 .cv-key svg {
-  width: var(--spacing-8);
-  height: var(--spacing-8);
   display: block;
+  width: var(--spacing-6);
+  height: var(--spacing-6);
 }
 
-/* A pattern fills its box. Colours come from the custom properties above. */
 .cv-pattern {
   display: block;
   width: 100%;
   height: 100%;
 }
+.cv-push {
+  margin-left: auto;
+}
+
+/* --- window ----------------------------------------------------------------- */
+
+.cv-window {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4) var(--spacing-8);
+  padding: var(--spacing-6) var(--cv-margin);
+}
+.cv-window nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3) var(--spacing-6);
+}
+header.cv-window nav {
+  margin-left: auto;
+}
+.cv-window-foot {
+  margin-top: var(--spacing-32);
+}
+.cv-window-foot .cv-window {
+  padding-top: var(--spacing-8);
+  padding-bottom: var(--spacing-12);
+}
+.cv-window-foot nav + .cv-label {
+  margin-left: auto;
+}
+/* The strip runs edge to edge: three rows of whole tiles. */
+.cv-strip {
+  height: calc(var(--spacing-6) * 3);
+}
+
+/* --- card ------------------------------------------------------------------- */
+
+.cv-main {
+  max-width: var(--sizes-6xl);
+  margin: 0 auto;
+  padding: var(--spacing-6) var(--cv-margin) 0;
+}
+
+.cv-card {
+  container-type: inline-size;
+  padding: var(--spacing-6);
+  background: var(--cv-card);
+  color: var(--cv-ink);
+  /* Page size: eleven by twelve tiles of 24px. */
+  --cv-tile: var(--spacing-6);
+  --cv-tiles-x: 11;
+  --cv-tiles-y: 12;
+  --cv-pattern-tile: var(--cv-card);
+}
+.cv-frame {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--cv-tile) * var(--cv-tiles-x));
+  grid-template-rows: auto calc(var(--cv-tile) * var(--cv-tiles-y)) auto;
+  /* The rules are the gaps: ink shows between the cells. */
+  gap: var(--cv-rule);
+  padding: var(--cv-rule);
+  background: var(--cv-ink);
+}
+.cv-no-feature .cv-frame {
+  grid-template-rows: auto auto auto;
+}
+.cv-no-feature .cv-cell-title {
+  grid-column: 1 / -1;
+}
+.cv-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  min-height: var(--spacing-16);
+  padding: var(--spacing-3) var(--spacing-6);
+  background: var(--cv-card);
+}
+.cv-cell-title {
+  padding-top: var(--spacing-8);
+  padding-bottom: var(--spacing-8);
+}
+.cv-cell-title h1 {
+  font-size: clamp(var(--font-sizes-xl), 6.5cqi, 4.5rem);
+  line-height: 1.1;
+}
+.cv-cell-feature {
+  padding: 0;
+}
 .cv-feature {
   position: relative;
-  background: var(--cv-ground);
+  height: 100%;
 }
 .cv-feature .cv-anchor {
   position: absolute;
   right: 0;
   bottom: 0;
   width: 66%;
+  height: auto;
   aspect-ratio: 1;
   color: var(--cv-ink);
 }
+/* A narrow card drops its feature. A card with no feature is complete. */
+@container (max-width: 40rem) {
+  .cv-frame {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .cv-cell-feature {
+    display: none;
+  }
+}
 
-/* --- the frame, closed: cards --------------------------------------------- */
-
-.cv-card {
+/* At Open Graph size the card is a fixed 1200 by 630 image. */
+.cv-card-og {
   width: 1200px;
   height: 630px;
   /* Half a rule less than the token, so the feature is exactly twelve tiles high. */
   padding: calc(var(--spacing-8) - var(--cv-rule) / 2)
     calc(var(--spacing-8) + var(--spacing-2));
-  background: var(--cv-ground);
-  color: var(--cv-ink);
-  /* 32px: eleven tiles across the feature, twelve down. */
   --cv-tile: var(--spacing-8);
+  --cv-tiles-x: 11;
+  --cv-tiles-y: 12;
 }
-.cv-card.cv-has-band {
-  border-top: var(--spacing-6) solid var(--cv-ink);
-}
-.cv-frame {
+.cv-card-og .cv-frame {
   height: 100%;
-  display: grid;
-  grid-template-columns: 1fr calc(var(--cv-tile) * 11);
-  grid-template-rows: auto 1fr auto;
-  gap: var(--cv-rule);
-  padding: var(--cv-rule);
-  /* The rules are the gaps: ink shows between cells. */
-  background: var(--cv-ink);
+  grid-template-rows: 1fr calc(var(--cv-tile) * var(--cv-tiles-y)) 1fr;
 }
-.cv-cell {
-  background: var(--cv-ground);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
+.cv-card-og.cv-no-feature .cv-frame {
+  grid-template-rows: 1fr calc(var(--cv-tile) * var(--cv-tiles-y)) 1fr;
+}
+.cv-card-og .cv-cell {
   padding: 0 var(--spacing-8);
-  min-height: calc(var(--spacing-16) + var(--spacing-6));
 }
-.cv-cell .cv-label {
+.cv-card-og .cv-cell-title h1 {
+  font-size: 5.5rem;
+}
+.cv-card-og .cv-label {
   font-size: var(--font-sizes-md);
 }
-.cv-cell-title {
-  padding-top: var(--spacing-6);
-  padding-bottom: var(--spacing-6);
+.cv-card-og .cv-bullet {
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  font-size: var(--font-sizes-lg);
 }
-.cv-cell-title h1 {
-  font-size: 5.5rem;
-  line-height: 1.1;
-  letter-spacing: var(--letter-spacings-tight);
-}
-.cv-cell-feature {
-  padding: 0;
-}
-.cv-push {
-  margin-left: auto;
-}
-.cv-span {
-  grid-column: 1 / -1;
+.cv-card-og .cv-key svg {
+  width: var(--spacing-8);
+  height: var(--spacing-8);
 }
 
-/* --- the frame, open: page headers ----------------------------------------- */
+/* --- body ------------------------------------------------------------------- */
 
-.cv-page {
-  max-width: var(--sizes-6xl);
-  margin: 0 auto;
-  padding: var(--spacing-12) var(--cv-margin) var(--spacing-24);
-  --cv-tile: 24px;
-}
-.cv-header {
-  border-top: var(--cv-rule) solid var(--cv-ink);
-  border-bottom: var(--cv-rule) solid var(--cv-ink);
-}
-.cv-header-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
-  min-height: var(--spacing-16);
-}
-.cv-header-body {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  border-top: var(--cv-rule) solid var(--cv-ink);
-  border-bottom: var(--cv-rule) solid var(--cv-ink);
-}
-.cv-header-body h1 {
-  align-self: center;
-  padding: var(--spacing-8) var(--spacing-8) var(--spacing-8) 0;
-  font-size: var(--font-sizes-display);
-  letter-spacing: var(--letter-spacings-tight);
-}
-.cv-header-body .cv-feature {
-  /* Whole tiles: ten across, eight down. */
-  width: calc(var(--cv-tile) * 10);
-  min-height: calc(var(--cv-tile) * 8);
-  border-left: var(--cv-rule) solid var(--cv-ink);
-}
-@media (max-width: 640px) {
-  /* A header with no feature is complete (L5). */
-  .cv-header-body .cv-feature {
-    display: none;
-  }
+/* Space, not rules, sets the body apart from the card. */
+.cv-body {
+  margin-top: var(--spacing-16);
 }
 .cv-standfirst {
   max-width: var(--sizes-prose);
-  margin: var(--spacing-8) 0 0;
+  margin: 0 0 var(--spacing-8);
   font-size: var(--font-sizes-lg);
+  color: var(--colors-fg-muted);
 }
-
-/* --- prose ----------------------------------------------------------------- */
-
 .cv-prose {
   max-width: var(--sizes-prose);
 }
 .cv-prose > p,
-.cv-prose > ul,
-.cv-prose > ol {
+.cv-section > p,
+.cv-section > ul,
+.cv-section > ol {
   margin: var(--spacing-4) 0 0;
 }
 .cv-section {
-  margin-top: var(--spacing-16);
-  padding-top: var(--spacing-4);
-  border-top: var(--cv-rule) solid var(--cv-ink);
+  margin-top: var(--spacing-24);
 }
 .cv-section h2 {
   margin-top: var(--spacing-2);
   font-size: var(--font-sizes-xl);
-  letter-spacing: var(--letter-spacings-tight);
 }
 .cv-prose code {
   font-family: var(--fonts-mono);
@@ -305,17 +362,17 @@ a {
   padding: 0 var(--spacing-1);
 }
 
-/* Lists: a small square, a mono numeral, or ruled rows. */
-.cv-prose ul,
-.cv-prose ol {
+/* Lists: a small square, a mono numeral, or terms in two columns. */
+.cv-section ul,
+.cv-section ol {
   list-style: none;
   padding-left: var(--spacing-8);
 }
-.cv-prose li {
+.cv-section li {
   position: relative;
   margin-top: var(--spacing-2);
 }
-.cv-prose ul > li::before {
+.cv-section ul > li::before {
   content: "";
   position: absolute;
   left: calc(var(--spacing-6) * -1);
@@ -324,13 +381,13 @@ a {
   height: 6px;
   background: var(--cv-ink);
 }
-.cv-prose ol {
+.cv-section ol {
   counter-reset: item;
 }
-.cv-prose ol > li {
+.cv-section ol > li {
   counter-increment: item;
 }
-.cv-prose ol > li::before {
+.cv-section ol > li::before {
   content: counter(item, decimal-leading-zero);
   position: absolute;
   left: calc(var(--spacing-8) * -1);
@@ -342,49 +399,35 @@ a {
 }
 .cv-terms {
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 9rem 1fr;
+  gap: var(--spacing-3) var(--spacing-6);
   margin: var(--spacing-6) 0 0;
-  border-top: var(--cv-hairline) solid var(--colors-border-emphasized);
-}
-.cv-terms dt,
-.cv-terms dd {
-  margin: 0;
-  padding: var(--spacing-3) 0;
-  border-bottom: var(--cv-hairline) solid var(--colors-border-emphasized);
 }
 .cv-terms dt {
-  padding-top: calc(var(--spacing-3) + 0.3em);
+  padding-top: 0.35em;
+}
+.cv-terms dd {
+  margin: 0;
 }
 
-/* Ruled lists: the index and attachments. A rule, a label, hairlines. */
-.cv-ruled {
-  margin: var(--spacing-12) 0 0;
-  border-top: var(--cv-rule) solid var(--cv-ink);
+/* Lists of links: the index and attachments. A label, then rows in space. */
+.cv-list {
+  margin-top: var(--spacing-24);
 }
-.cv-ruled > .cv-label {
-  padding: var(--spacing-4) 0;
-}
-.cv-ruled ol,
-.cv-ruled ul {
+.cv-list ol,
+.cv-list ul {
   list-style: none;
-  margin: 0;
+  margin: var(--spacing-6) 0 0;
   padding: 0;
 }
-.cv-prose .cv-ruled li::before {
-  content: none;
-}
-.cv-prose .cv-ruled li {
-  margin-top: 0;
-}
-.cv-ruled li {
+.cv-list li {
   display: grid;
   gap: var(--spacing-6);
   align-items: baseline;
-  padding: var(--spacing-4) 0;
-  border-top: var(--cv-hairline) solid var(--colors-border-emphasized);
 }
 .cv-index li {
   grid-template-columns: var(--spacing-8) 1fr auto;
+  margin-top: var(--spacing-8);
 }
 .cv-index h3 {
   font-size: var(--font-sizes-lg);
@@ -392,6 +435,9 @@ a {
 .cv-index h3 a {
   color: inherit;
   text-decoration: none;
+}
+.cv-index h3 a:hover {
+  text-decoration: underline;
 }
 .cv-index p {
   margin: var(--spacing-1) 0 0;
@@ -401,6 +447,7 @@ a {
 }
 .cv-attachments li {
   grid-template-columns: 1fr auto;
+  margin-top: var(--spacing-3);
 }
 .cv-path {
   font-family: var(--fonts-mono);
@@ -408,12 +455,11 @@ a {
   color: var(--cv-muted);
 }
 
-/* Table: rules and hairlines. No fills. */
+/* Table: the one place in the body with rules, because they carry the rows. */
 .cv-table {
   width: 100%;
   margin-top: var(--spacing-6);
   border-collapse: collapse;
-  border-top: var(--cv-rule) solid var(--cv-ink);
   font-size: var(--font-sizes-sm);
 }
 .cv-table th {
@@ -423,78 +469,93 @@ a {
 }
 .cv-table td {
   padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) 0;
-  border-bottom: var(--cv-hairline) solid var(--colors-border-emphasized);
+  border-bottom: var(--cv-hairline) solid var(--colors-border-default);
   vertical-align: top;
 }
 .cv-table .cv-num {
   font-family: var(--fonts-mono);
 }
 
-/* Callout: an aside. Tint, edge, and at most an edge fade with one piece. */
+.cv-code {
+  margin: var(--spacing-6) 0 0;
+  padding: var(--spacing-4);
+  overflow: auto;
+  background: var(--colors-bg-subtle);
+  border: var(--cv-hairline) solid var(--colors-border-default);
+  border-radius: var(--cv-radius);
+  font-family: var(--fonts-mono);
+  font-size: var(--font-sizes-sm);
+  line-height: var(--line-heights-relaxed);
+}
+
+/*
+ * Callout: an aside. A tint, an edge in the hue, and soft art at the right:
+ * noise in the hue's tone under a fine tile in the tint, so the noise only
+ * shows through the gaps. In dark, the ground is neutral and the hue is
+ * only in the edge and the noise.
+ */
 .cv-callout {
-  --cv-tint: var(--colors-accent-subtle);
-  --cv-tone: var(--colors-accent-solid);
+  --cv-tint: var(--colors-salmon-50);
+  --cv-tone: var(--colors-salmon-300);
   position: relative;
   overflow: hidden;
   margin-top: var(--spacing-8);
   padding: var(--spacing-6);
   background: var(--cv-tint);
   border-left: var(--cv-edge) solid var(--cv-tone);
-  /* The art dissolves into the tint, not the page. */
-  --cv-ground: var(--cv-tint);
+  border-radius: var(--cv-radius);
   --cv-pattern-from: var(--cv-tint);
   --cv-pattern-to: var(--cv-tone);
+  --cv-pattern-tile: var(--cv-tint);
 }
-.cv-callout-tip {
-  --cv-tint: var(--colors-highlight-subtle);
-  --cv-tone: var(--colors-highlight-solid);
+.cv-callout-gold {
+  --cv-tint: var(--colors-gold-50);
+  --cv-tone: var(--colors-gold-300);
 }
-.cv-callout-note {
-  --cv-tint: var(--colors-brand-subtle);
-  --cv-tone: var(--colors-brand-solid);
+.cv-callout-teal {
+  --cv-tint: var(--colors-teal-50);
+  --cv-tone: var(--colors-teal-300);
 }
-.cv-callout-info {
-  --cv-tint: var(--colors-info-subtle);
-  --cv-tone: var(--colors-info-solid);
+.cv-callout-violet {
+  --cv-tint: var(--colors-violet-50);
+  --cv-tone: var(--colors-violet-300);
 }
-.cv-callout.cv-rounded {
-  border-radius: var(--radii-md);
+:root[data-theme="dark"] .cv-callout {
+  --cv-noise-max: 0.55;
+  --cv-tint: var(--colors-bg-default);
+  --cv-tone: var(--colors-salmon-700);
 }
-/* Text stops where the art starts (C6). */
-.cv-callout > :not(.cv-callout-art) {
-  position: relative;
-  max-width: calc(100% - min(var(--cv-art), 33%));
+:root[data-theme="dark"] .cv-callout-gold {
+  --cv-tone: var(--colors-gold-700);
 }
-.cv-callout-info > :not(.cv-callout-art) {
-  max-width: none;
+:root[data-theme="dark"] .cv-callout-teal {
+  --cv-tone: var(--colors-teal-700);
 }
-.cv-callout p {
-  margin: var(--spacing-2) 0 0;
+:root[data-theme="dark"] .cv-callout-violet {
+  --cv-tone: var(--colors-violet-700);
 }
 .cv-callout-art {
   position: absolute;
   inset: 0 0 0 auto;
   width: min(var(--cv-art), 33%);
 }
-.cv-callout-art .cv-piece {
-  position: absolute;
-  right: 0;
-  width: var(--spacing-12);
-  height: var(--spacing-12);
-  color: var(--cv-ink);
+/* Text stops where the art starts. */
+.cv-callout > :not(.cv-callout-art) {
+  position: relative;
+  max-width: calc(100% - min(var(--cv-art), 33%));
 }
-.cv-callout-art .cv-piece-bottom {
-  bottom: 0;
+.cv-callout p {
+  margin: var(--spacing-2) 0 0;
 }
-.cv-callout-art .cv-piece-top {
-  top: 0;
+.cv-callout p.cv-label {
+  margin: 0;
 }
 
 /* Pull quote: the author's own words, lifted. Not a callout: no tint, no art. */
 .cv-pullquote {
-  margin: var(--spacing-12) 0 0;
-  padding-left: var(--spacing-8);
   position: relative;
+  margin: var(--spacing-16) 0 0;
+  padding-left: var(--spacing-8);
 }
 .cv-pullquote::before {
   content: "";
@@ -503,7 +564,7 @@ a {
   top: 0.55em;
   width: var(--spacing-3);
   height: var(--spacing-3);
-  background: var(--cv-ink);
+  background: var(--cv-signal);
 }
 .cv-pullquote p {
   margin: 0;
@@ -514,22 +575,7 @@ a {
   letter-spacing: var(--letter-spacings-tight);
 }
 
-/* Code block. */
-.cv-code {
-  margin: var(--spacing-6) 0 0;
-  padding: var(--spacing-4);
-  overflow: auto;
-  background: var(--colors-bg-subtle);
-  border: var(--cv-hairline) solid var(--colors-border-emphasized);
-  font-family: var(--fonts-mono);
-  font-size: var(--font-sizes-sm);
-  line-height: var(--line-heights-relaxed);
-}
-.cv-code.cv-rounded {
-  border-radius: var(--radii-md);
-}
-
-/* Figure and diagram. */
+/* Figure and diagram: ink on ground, 2px rules, square corners. */
 .cv-figure {
   margin: var(--spacing-8) 0 0;
 }
@@ -542,7 +588,7 @@ a {
   margin-top: var(--spacing-3);
 }
 .cv-diagram rect {
-  fill: var(--colors-bg-canvas);
+  fill: var(--cv-ground);
   stroke: var(--cv-ink);
   stroke-width: 2;
 }
@@ -569,10 +615,10 @@ a {
   text-anchor: middle;
 }
 .cv-diagram .cv-node-out text {
-  fill: var(--colors-bg-canvas);
+  fill: var(--cv-ground);
 }
 .cv-diagram .cv-group text {
-  font-family: var(--fonts-mono);
+  font-family: var(--cv-label-family);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -580,86 +626,141 @@ a {
   text-anchor: start;
 }
 
-/* Section texture: a pattern alone, a fixed number of tile rows. */
-.cv-texture {
-  height: calc(var(--cv-tile) * 3);
-  margin-top: var(--spacing-16);
-}
-
-/* Footnotes and footer. */
 .cv-footnotes {
-  margin-top: var(--spacing-16);
-  padding-top: var(--spacing-4);
-  border-top: var(--cv-hairline) solid var(--colors-border-emphasized);
-  font-size: var(--font-sizes-sm);
-}
-.cv-footer {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
   margin-top: var(--spacing-24);
-  padding-top: var(--spacing-4);
-  border-top: var(--cv-rule) solid var(--cv-ink);
-}
-
-/* --- seed sheet chrome (not part of the style) ----------------------------- */
-
-.seed-sheet {
-  padding: var(--spacing-12) var(--cv-margin);
-}
-.seed-sheet > h1 {
-  font-size: var(--font-sizes-xl);
-}
-.seed {
-  margin-top: var(--spacing-12);
-}
-.seed > .cv-label {
-  margin-bottom: var(--spacing-3);
-}
-.seed-note {
-  max-width: var(--sizes-prose);
-  margin: var(--spacing-2) 0 var(--spacing-4);
   font-size: var(--font-sizes-sm);
   color: var(--cv-muted);
 }
-.seed-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, calc(var(--cv-tile) * 10));
-  gap: var(--spacing-8);
-  --cv-tile: 24px;
-}
-.seed-grid .cv-feature {
-  height: calc(var(--cv-tile) * 10);
-  border: var(--cv-rule) solid var(--cv-ink);
-  margin-bottom: var(--spacing-2);
-}
-.seed-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-6);
-  margin-top: var(--spacing-4);
+.cv-footnotes ol {
+  margin: var(--spacing-3) 0 0;
+  padding-left: var(--spacing-6);
 }
 
-/* --- print (proposed Print rules) ------------------------------------------ */
+/* --- seed sheet chrome (not part of the style) ------------------------------ */
+
+.seed-title {
+  font-size: var(--font-sizes-xl);
+}
+.seed {
+  margin-top: var(--spacing-16);
+}
+.seed-note {
+  max-width: var(--sizes-prose);
+  margin: var(--spacing-2) 0 var(--spacing-6);
+  font-size: var(--font-sizes-sm);
+  color: var(--cv-muted);
+}
+.seed-wide {
+  overflow-x: auto;
+}
+.seed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  gap: var(--spacing-8);
+}
+.seed-grid-small {
+  grid-template-columns: repeat(auto-fill, 112px);
+  gap: var(--spacing-4);
+}
+.seed-swatch .cv-feature {
+  height: 240px;
+  margin-bottom: var(--spacing-2);
+  outline: var(--cv-hairline) solid var(--colors-border-default);
+}
+.seed-grid-small .cv-feature {
+  height: 96px;
+}
+.seed-callout-art {
+  height: 120px;
+  margin: 0 0 var(--spacing-2);
+}
+.seed-callout-art .cv-callout-art {
+  width: 100%;
+}
+.seed-decision {
+  margin-top: var(--spacing-16);
+}
+.seed-decision h2 {
+  margin-top: var(--spacing-2);
+  font-size: var(--font-sizes-xl);
+}
+.seed-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: var(--spacing-8);
+  margin-top: var(--spacing-6);
+}
+.seed-option > .cv-label:first-child {
+  margin-bottom: var(--spacing-6);
+}
+.seed-option {
+  padding: var(--spacing-6);
+  outline: var(--cv-hairline) solid var(--colors-border-default);
+}
+.seed-picked {
+  outline: var(--cv-rule) solid var(--cv-ink);
+}
+.seed-tag {
+  margin-left: var(--spacing-2);
+  padding: 0 var(--spacing-1);
+  background: var(--cv-ink);
+  color: var(--cv-ground);
+}
+.seed-mini > * + * {
+  margin-top: var(--spacing-4);
+}
+.seed-mini-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+.seed-why {
+  max-width: var(--sizes-prose);
+  margin: var(--spacing-6) 0 0;
+}
+.seed-decided {
+  display: grid;
+  grid-template-columns: 14rem 1fr;
+  gap: var(--spacing-4) var(--spacing-8);
+  margin: var(--spacing-6) 0 0;
+}
+.seed-decided dt {
+  font-weight: var(--font-weights-semibold);
+}
+.seed-decided dd {
+  margin: 0;
+}
+.seed-decided dd .cv-label {
+  display: block;
+  margin-top: var(--spacing-1);
+}
+
+/* --- print ------------------------------------------------------------------ */
 
 @page {
   size: A4;
   margin: 18mm 16mm 20mm;
 }
 @media print {
-  /* Unprinted paper is the ground. Patterns and tints still print. */
+  /* Unprinted paper is the ground; the card keeps its own. */
   :root {
     --cv-ground: var(--colors-base-white);
-  }
-  body {
-    background: none;
   }
   * {
     print-color-adjust: exact;
   }
-  .cv-page {
+  header.cv-window nav,
+  .cv-strip {
+    display: none;
+  }
+  .cv-main,
+  .cv-window {
     max-width: none;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .cv-window-foot {
+    margin-top: var(--spacing-16);
   }
   h1,
   h2,
@@ -667,21 +768,18 @@ a {
   .cv-label {
     break-after: avoid;
   }
-  .cv-header,
+  .cv-card,
   .cv-callout,
   .cv-pullquote,
   .cv-figure,
   .cv-code,
   .cv-table tr,
-  .cv-ruled li {
+  .cv-list li {
     break-inside: avoid;
   }
   .cv-prose a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-family: var(--fonts-mono);
     font-size: var(--font-sizes-xs);
-  }
-  .seed-nav {
-    display: none;
   }
 }
