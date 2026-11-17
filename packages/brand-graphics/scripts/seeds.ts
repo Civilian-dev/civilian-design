@@ -12,7 +12,11 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Piece } from "../src/compose";
-import { compose, layout, layoutVars } from "../src/index";
+import { compose, layout, layoutVars, mermaidTheme } from "../src/index";
+
+/** The Mermaid release the specimens load, pinned. */
+const MERMAID = "12.3.0";
+
 import { kit } from "../src/kit";
 import {
   type PatternOptions as LibPatternOptions,
@@ -176,9 +180,20 @@ function doc(name: string, title: string, theme: Theme, body: string): string {
 <link rel="stylesheet" href="seeds.css">
 ${windowHeader(name, theme)}
 ${body}
-${windowFooter}
+${windowFooter}${body.includes('class="mermaid"') ? mermaidScript(theme) : ""}
 </html>
 `;
+}
+
+/** Load the pinned Mermaid and start it with the theme for this page. */
+function mermaidScript(theme: Theme): string {
+  const config = JSON.stringify({ startOnLoad: true, ...mermaidTheme(theme) });
+  return `
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@${MERMAID}/dist/mermaid.esm.min.mjs";
+
+mermaid.initialize(${config});
+</script>`;
 }
 
 // --- specimens -----------------------------------------------------------------
@@ -235,18 +250,18 @@ ${seed("card-composed", "Composed image", "The same card drawn by compose() as o
 ${seed("card-overlay", "Composed background, HTML title", "compose() with no text, and the title set in HTML on the title cell. Its position and size come only from layout(), as custom properties.", `<div class="seed-wide"><div class="seed-overlay" style="${overlayVars}">${overlayBackground}<h1>A field guide to<br>small libraries</h1></div></div>`)}
 </main>`;
 
-const diagram = `<svg class="cv-diagram" viewBox="0 -20 672 276" role="img" aria-label="A brief becomes a profile, then scores. Three concerns are researched, then one document is written.">
-  <g class="cv-group"><rect x="420" y="-18" width="130" height="270"/><text x="430" y="-2">Research</text></g>
-  <path d="M110 125H140M250 125H280M390 125H430M390 125H405V42H430M390 125H405V208H430M540 125H562M540 42H551V125M540 208H551V125"/>
-  <path class="cv-head" d="M133 120l7 5-7 5zM273 120l7 5-7 5zM423 120l7 5-7 5zM423 37l7 5-7 5zM423 203l7 5-7 5zM555 120l7 5-7 5z"/>
-  <g><rect x="0" y="103" width="110" height="44"/><text x="55" y="130">Brief</text></g>
-  <g><rect x="140" y="103" width="110" height="44"/><text x="195" y="130">Profile</text></g>
-  <g><rect x="280" y="103" width="110" height="44"/><text x="335" y="130">Scores</text></g>
-  <g><rect x="430" y="20" width="110" height="44"/><text x="485" y="47">Hosting</text></g>
-  <g><rect x="430" y="103" width="110" height="44"/><text x="485" y="130">Data</text></g>
-  <g><rect x="430" y="186" width="110" height="44"/><text x="485" y="213">Sign-in</text></g>
-  <g class="cv-node-out"><rect x="562" y="103" width="110" height="44"/><text x="617" y="130">Document</text></g>
-</svg>`;
+/** Drawn by Mermaid in the browser with mermaidTheme(); see doc(). */
+const diagram = `<pre class="mermaid" aria-label="A brief becomes a profile, then scores. Three concerns are researched, then one document is written.">
+flowchart LR
+  brief[Brief] --> profile[Profile] --> scores[Scores]
+  subgraph research [Research]
+    hosting[Hosting]
+    data[Data]
+    signin[Sign-in]
+  end
+  scores --> hosting & data & signin
+  hosting & data & signin --> doc[Document]:::output
+</pre>`;
 
 const tableHtml = `<table class="cv-table" data-seed="table"><thead><tr><th class="cv-label">Library</th><th class="cv-label">Surface</th><th class="cv-label">Weight</th><th class="cv-label">Verdict</th></tr></thead>
 <tbody><tr><td>Hand-written</td><td class="cv-num">1</td><td class="cv-num">0 kB</td><td>Fine until time zones arrive</td></tr><tr><td>Small parser</td><td class="cv-num">4</td><td class="cv-num">2 kB</td><td>The usual answer</td></tr><tr><td>Full toolkit</td><td class="cv-num">200+</td><td class="cv-num">70 kB</td><td>Only if you need most of it</td></tr></tbody></table>`;

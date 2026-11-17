@@ -203,11 +203,12 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 - Done when: the text-free header seed has its HTML title aligned using only `layout()`. Met by the `card-overlay` specimen on the Card page.
 - Changed from the plan: `layout()` gives the card's geometry, not a page header's. On a page the header is the HTML card from the specimens, so only composed images need it.
 
-**PR 8. `feat(brand-graphics)`: rasters and diagram theme** `[ ]`
+**PR 8. `feat(brand-graphics)`: rasters and diagram theme** `[x]`
 
-- PNG output for Open Graph images with fonts from `brand-fonts`.
-- `mermaidTheme(theme)`: ink on ground, 2px rules, square corners, cluster labels in the label style, one inverse node for the output. The Diagrams section of the guide says to keep graphs to one spine with a single fan-out.
-- Done when: the diagram seed is produced by the exported theme.
+- `toPng()` at `@civilian-dev/brand-graphics/raster`, rendering with `@resvg/resvg-js` and the fonts from `brand-fonts` only.
+- `mermaidTheme(theme)`: ink on ground, 2px rules, square boxes of one width, cluster labels in the label style, a filled box for the node marked `:::output`. The guide's Diagram entry says to use it.
+- Done when: the diagram seed is produced by the exported theme. Met: the Article specimen draws its diagram with Mermaid 12.3.0 and `mermaidTheme()`, in light and dark.
+- Changed from the plan: no PNG examples are committed. The renderer is deterministic, but a byte-level drift check on images across operating systems is a risk not worth taking; tests check size, determinism and that text is drawn.
 
 ### Phase 4: agent surfaces
 
