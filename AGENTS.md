@@ -17,7 +17,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 - `packages/claude-design-system` (private): generates the committed Claude plugin/skill and Design System artifact bundle.
 - `packages/brand-graphics` (private): brand artwork sources (SVG kit), composer, and generated `examples/`.
 - `apps/*`: reserved for later.
-- `DESIGN.md`: the brand guide (rules agents must follow for anything visual). `docs/brand-plan.md`: staged plan for the brand work.
+- `DESIGN.md`: the brand guide (rules agents must follow for anything visual). `docs/brand-plan.md`: how the brand work got here (stages 0 to 3). `docs/design-system-v2-plan.md`: the current plan.
 - `.github/`: workflows, ruleset (`rulesets/main.json`), CODEOWNERS.
 
 ## Commands
