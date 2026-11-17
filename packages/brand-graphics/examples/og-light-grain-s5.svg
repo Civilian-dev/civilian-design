@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-theme="light" data-feature="grain" data-seed="5" data-title-x="42" data-title-y="123" data-title-w="762" data-title-h="384" data-title-size="88">
+<rect width="1200" height="630" fill="#e0e6e7"/>
+<rect x="40" y="31" width="1120" height="568" fill="#01343a"/>
+<rect x="42" y="33" width="762" height="88" fill="#e0e6e7"/>
+<rect x="806" y="33" width="352" height="88" fill="#e0e6e7"/>
+<rect x="42" y="123" width="762" height="384" fill="#e0e6e7"/>
+<rect x="806" y="123" width="352" height="384" fill="#e0e6e7"/>
+<rect x="42" y="509" width="762" height="88" fill="#e0e6e7"/>
+<rect x="806" y="509" width="352" height="88" fill="#e0e6e7"/>
+<svg x="806" y="123" width="352" height="384"><svg class="cv-pattern" data-tile="none" data-turn="0" data-direction="diagonal" data-size="24" data-noise="crisp" aria-hidden="true"><defs><linearGradient id="card-light-grain-s5-grain-g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="card-light-grain-s5-grain-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="5" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood style="flood-color:#f25855"/><feComposite in2="t" operator="in"/></filter></defs><rect width="100%" height="100%" style="fill:#fea993"/><rect width="100%" height="100%" fill="url(#card-light-grain-s5-grain-g)" filter="url(#card-light-grain-s5-grain-f)"/></svg></svg>
+<g transform="translate(925.68 274.68) scale(1.936) rotate(270 60 60)" fill="#01343a"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<circle cx="98" cy="77" r="24" fill="#f25855"/>
+<text x="98" y="84.2" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" text-anchor="middle" fill="#ffffff">L</text>
+<text x="134" y="82.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#01343a">LIBRARY · NO. 004</text>
+<text x="74" y="558.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#404a4b">2 OCT 2026 · 4 MIN READ</text>
+<text x="838" y="558.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#01343a">TOOLS</text>
+<text x="838" y="84.2" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="-0.025em" fill="#01343a">civilian.dev</text>
+<text x="74" y="298.28" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-0.025em" fill="#01343a">Make it plain,</text>
+<text x="74" y="395.08" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-0.025em" fill="#01343a">make it useful</text>
+<g transform="translate(1014 537) scale(0.2667)" fill="#01343a"><rect width="120" height="120"/></g>
+<g transform="translate(1054 537) scale(0.2667)" fill="#f25855"><circle cx="60" cy="60" r="60"/></g>
+<g transform="translate(1094 537) scale(0.2667)" fill="#fede8f"><path d="M0 120V0L120 120Z"/></g>
+</svg>

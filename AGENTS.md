@@ -35,7 +35,7 @@ These rules apply to every agent and surface that commits here (Claude Code, Cla
 ### Merging
 
 - PRs are **squash-merged**. The PR title becomes the commit subject and the PR body becomes the commit body.
-- The PR title is a Conventional Commit with the package as scope, e.g. `feat(brand-graphics): sign and ledger layouts`. The body says what changed and why, in its final state. Update both when the scope of the PR changes.
+- The PR title is a Conventional Commit with the package as scope, e.g. `feat(brand-graphics): pattern library`. The body says what changed and why, in its final state. Update both when the scope of the PR changes.
 - A PR holds one concern. Unrelated work (a process change, a fix in another package) goes in its own PR, even when it comes up mid-task.
 - Changesets are files, so squashing does not affect them. Add one with `pnpm changeset` for any change to a published package.
 

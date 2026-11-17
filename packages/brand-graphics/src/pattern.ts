@@ -31,6 +31,8 @@ export interface Paint {
   to: string;
   /** The tile: the colour of the surface the pattern sits on. */
   tile: string;
+  /** How strong an edge fade ends, 0 to 1. Defaults to 0.9. */
+  strength?: number;
 }
 
 /** Colours from custom properties; see `patterns.css` for their defaults. */
@@ -89,7 +91,7 @@ export function pattern(kit: Kit, o: PatternOptions): string {
   const paint = o.paint ?? CSS_PAINT;
   // An edge fade ends below full strength; a page may lower it further.
   const end = o.paint
-    ? 'stop-opacity="0.9"'
+    ? `stop-opacity="${o.paint.strength ?? 0.9}"`
     : 'style="stop-opacity:var(--cv-noise-max, 0.9)"';
   const stops =
     dir === "edge"

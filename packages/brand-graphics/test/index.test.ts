@@ -38,14 +38,18 @@ describe("hex", () => {
   it("throws on an unknown colour", () => {
     expect(() => hex("nope.500")).toThrow(/Unknown colour/);
   });
+
+  it("resolves semantic roles per theme", () => {
+    expect(hex("bg.canvas", "dark")).not.toBe(hex("bg.canvas", "light"));
+    expect(hex("red.500", "dark")).toBe(hex("red.500", "light"));
+  });
 });
 
 describe("ready-made functions", () => {
   const options: raw.ComposeOptions = {
     width: 1200,
     height: 630,
-    layout: "sign",
-    scheme: "paper",
+    theme: "light",
     feature: "weave",
     seed: 3,
   };
@@ -55,11 +59,10 @@ describe("ready-made functions", () => {
   });
 
   it("avatar, callouts and textures match the raw composer", () => {
-    expect(avatar("night")).toBe(raw.avatar(kit, hex, "night"));
-    expect(calloutBackground("gold", 7)).toBe(
-      raw.calloutBackground(kit, hex, "gold", 7),
-    );
-    const t = { scheme: "concrete", feature: "weave", seed: 2 } as const;
+    expect(avatar("dark")).toBe(raw.avatar(kit, hex, "dark"));
+    const c = { hue: "gold", theme: "dark", seed: 7 } as const;
+    expect(calloutBackground(c)).toBe(raw.calloutBackground(kit, hex, c));
+    const t = { theme: "light", seed: 2 } as const;
     expect(texture(t)).toBe(raw.texture(kit, hex, t));
   });
 });

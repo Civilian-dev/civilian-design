@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-theme="light" data-feature="none" data-seed="3" data-title-x="42" data-title-y="123" data-title-w="1116" data-title-h="384" data-title-size="88">
+<rect width="1200" height="630" fill="#e0e6e7"/>
+<rect x="40" y="31" width="1120" height="568" fill="#01343a"/>
+<rect x="42" y="33" width="762" height="88" fill="#e0e6e7"/>
+<rect x="806" y="33" width="352" height="88" fill="#e0e6e7"/>
+<rect x="42" y="123" width="1116" height="384" fill="#e0e6e7"/>
+<rect x="42" y="509" width="762" height="88" fill="#e0e6e7"/>
+<rect x="806" y="509" width="352" height="88" fill="#e0e6e7"/>
+<circle cx="98" cy="77" r="24" fill="#f25855"/>
+<text x="98" y="84.2" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" text-anchor="middle" fill="#ffffff">N</text>
+<text x="134" y="82.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#01343a">NOTES · NO. 031</text>
+<text x="74" y="558.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#404a4b">30 SEP 2026 · 2 MIN READ</text>
+<text x="838" y="558.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#01343a">CHANGELOG</text>
+<text x="838" y="84.2" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="-0.025em" fill="#01343a">civilian.dev</text>
+<text x="74" y="298.28" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-0.025em" fill="#01343a">What changed</text>
+<text x="74" y="395.08" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-0.025em" fill="#01343a">and why</text>
+<g transform="translate(1014 537) scale(0.2667)" fill="#01343a"><path d="M0 120V0L120 120Z"/></g>
+<g transform="translate(1054 537) scale(0.2667)" fill="#f25855"><circle cx="60" cy="60" r="60"/></g>
+<g transform="translate(1094 537) scale(0.2667)" fill="#fede8f"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+</svg>

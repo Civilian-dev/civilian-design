@@ -257,8 +257,10 @@ header.cv-window nav {
 .cv-cell-feature {
   padding: 0;
 }
+/* Explicit width: as a flex item it would shrink to the SVG's default 300px. */
 .cv-feature {
   position: relative;
+  width: 100%;
   height: 100%;
 }
 .cv-feature .cv-anchor {
@@ -299,7 +301,8 @@ header.cv-window nav {
 .cv-card-og.cv-no-feature .cv-frame {
   grid-template-rows: 1fr calc(var(--cv-tile) * var(--cv-tiles-y)) 1fr;
 }
-.cv-card-og .cv-cell {
+/* Text cells only: the feature always fills its cell edge to edge. */
+.cv-card-og .cv-cell:not(.cv-cell-feature) {
   padding: 0 var(--spacing-8);
 }
 .cv-card-og .cv-cell-title h1 {
@@ -645,6 +648,28 @@ header.cv-window nav {
 }
 .seed-wide {
   overflow-x: auto;
+}
+.seed-wide > svg {
+  display: block;
+}
+/* A title set in HTML over a composed card, placed only by layoutVars(). */
+.seed-overlay {
+  position: relative;
+  width: max-content;
+}
+.seed-overlay > svg {
+  display: block;
+}
+.seed-overlay h1 {
+  position: absolute;
+  left: calc(var(--cv-card-title-x) + var(--cv-card-cell-pad));
+  top: var(--cv-card-title-y);
+  width: calc(var(--cv-card-title-w) - var(--cv-card-cell-pad) * 2);
+  height: var(--cv-card-title-h);
+  display: flex;
+  align-items: center;
+  font-size: var(--cv-card-title-size);
+  line-height: 1.1;
 }
 .seed-grid {
   display: grid;

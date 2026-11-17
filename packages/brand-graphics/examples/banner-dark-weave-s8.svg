@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" data-theme="dark" data-feature="weave" data-seed="8" data-title-x="40" data-title-y="120" data-title-w="1188" data-title-h="360" data-title-size="84">
+<rect width="1600" height="600" fill="#2c3536"/>
+<rect x="38" y="32" width="1524" height="536" fill="#f9fafb"/>
+<rect x="40" y="34" width="1188" height="84" fill="#2c3536"/>
+<rect x="1230" y="34" width="330" height="84" fill="#2c3536"/>
+<rect x="40" y="120" width="1188" height="360" fill="#2c3536"/>
+<rect x="1230" y="120" width="330" height="360" fill="#2c3536"/>
+<rect x="40" y="482" width="1188" height="84" fill="#2c3536"/>
+<rect x="1230" y="482" width="330" height="84" fill="#2c3536"/>
+<svg x="1230" y="120" width="330" height="360"><svg class="cv-pattern" data-tile="disc" data-turn="90" data-direction="down" data-size="30" data-noise="crisp" aria-hidden="true"><defs><linearGradient id="card-dark-weave-s8-weave-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="card-dark-weave-s8-weave-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="8" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood style="flood-color:#f25855"/><feComposite in2="t" operator="in"/></filter><pattern id="card-dark-weave-s8-weave-p" patternUnits="userSpaceOnUse" width="30" height="30" style="fill:#2c3536"><g transform="translate(0 0) scale(0.25) rotate(90 60 60)"><circle cx="60" cy="60" r="60"/></g></pattern></defs><rect width="100%" height="100%" style="fill:#fea993"/><rect width="100%" height="100%" fill="url(#card-dark-weave-s8-weave-g)" filter="url(#card-dark-weave-s8-weave-f)"/><rect width="100%" height="100%" fill="url(#card-dark-weave-s8-weave-p)"/></svg></svg>
+<g transform="translate(1424 509) scale(0.25)" fill="#f9fafb"><path d="M0 120V0L120 120Z"/></g>
+<g transform="translate(1462 509) scale(0.25)" fill="#f25855"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+<g transform="translate(1500 509) scale(0.25)" fill="#fede8f"><circle cx="60" cy="60" r="60"/></g>
+</svg>
