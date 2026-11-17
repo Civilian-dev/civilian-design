@@ -124,17 +124,18 @@ Seeds change from hand-made images to **built specimens**: HTML written against 
 
 Each has a recommendation so work can start; the seeds in PR 1 exist to confirm or overturn them.
 
-| Id  | Decision                                                                          | Recommendation                                                                                                                                                 |
-| --- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| D1  | Heading weight: tokens say 500 for display and h1, the guide and composer say 600 | 600. Change the text styles in Figma                                                                                                                           |
-| D2  | Does the top band survive anywhere?                                               | No. The frame replaces it. Show one seed with it for comparison                                                                                                |
-| D3  | Dark ground for artwork                                                           | The dark `bg.canvas`, so headers join the page. Drop the `night` teal ground                                                                                   |
-| D4  | Label style in tokens                                                             | Change `label.overline` in Figma to Monaspace Xenon 500 with `0.1em` tracking. If Token Forge cannot carry uppercase, the pattern CSS sets it                  |
-| D5  | Violet                                                                            | Interface only, which includes the info callout's tint and edge. No violet in artwork: remove it from the composer's hues, and the info callout carries no art |
-| D6  | `src/reserve`                                                                     | Promote disc (dots) and half-disc as tiles, redrawn square-cornered. Delete the rest; git history keeps it                                                     |
-| D7  | Fonts                                                                             | A new published package `brand-fonts` (files, licences, `@font-face` CSS), which `claude-design-system` then consumes instead of its own copies                |
-| D8  | Element CSS                                                                       | Not a package yet. The seed stylesheet is the reference to copy. Publish it once a second consumer needs it                                                    |
-| D9  | Default standalone ground in light                                                | Concrete, as in `ledger`. Paper only when embedded in a paper page                                                                                             |
+| Id  | Decision                                                                                          | Recommendation                                                                                                                                                 |
+| --- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | Heading weight: tokens say 500 for display and h1, the guide and composer say 600                 | 600. Change the text styles in Figma                                                                                                                           |
+| D2  | Does the top band survive anywhere?                                                               | No. The frame replaces it. Show one seed with it for comparison                                                                                                |
+| D3  | Dark ground for artwork                                                                           | The dark `bg.canvas`, so headers join the page. Drop the `night` teal ground                                                                                   |
+| D4  | Label style in tokens                                                                             | Change `label.overline` in Figma to Monaspace Xenon 500 with `0.1em` tracking. If Token Forge cannot carry uppercase, the pattern CSS sets it                  |
+| D5  | Violet                                                                                            | Interface only, which includes the info callout's tint and edge. No violet in artwork: remove it from the composer's hues, and the info callout carries no art |
+| D6  | `src/reserve`                                                                                     | Promote disc (dots) and half-disc as tiles, redrawn square-cornered. Delete the rest; git history keeps it                                                     |
+| D7  | Fonts                                                                                             | A new published package `brand-fonts` (files, licences, `@font-face` CSS), which `claude-design-system` then consumes instead of its own copies                |
+| D8  | Element CSS                                                                                       | Not a package yet. The seed stylesheet is the reference to copy. Publish it once a second consumer needs it                                                    |
+| D9  | Default standalone ground in light                                                                | Concrete, as in `ledger`. Paper only when embedded in a paper page                                                                                             |
+| D10 | Corners on page containers (callout, code block): the guide rounds them (S2), the frame is square | Square, to match the frame. Raised while building the seeds; both are shown on the Article specimen                                                            |
 
 ## Token changes (Figma)
 
@@ -153,12 +154,15 @@ One concern per PR, squash-merged, in this order. Each is sized for one session 
 
 ### Phase 1: settle the style
 
-**PR 1. `docs(brand-seeds)`: unified style seeds** `[ ]`
+**PR 1. `docs(brand-seeds)`: unified style seeds** `[~]`
 
 - Build specimens with a script (`docs/brand-seeds/build.ts`, output committed): card; page header (light and dark); index; lists; attachments; table; callouts in each hue and in dark; pull quote; code; diagram; a print page.
 - Include the comparisons the decisions need: band or no band (D2), 500 or 600 (D1), concrete or paper (D9).
 - Retire the round 1 to 3 images to an `archive/` folder; rewrite the README table.
-- Done when: you have marked each of D1 to D9 in this file, and every catalogue element has a chosen seed.
+- Done when: you have marked each of D1 to D10 in this file, and every catalogue element has a chosen seed.
+- Built: card, article, index page and patterns, each in light and dark, with images. See [`brand-seeds/README.md`](brand-seeds/README.md) for where each decision can be judged.
+- Changed from the plan: the generator lives in `packages/brand-graphics/scripts/seeds.ts` and runs in that package's `build`, because it needs the shape sources and CI already checks that package's output for drift.
+- Still open: your marks on D1 to D10. No slide or document specimen yet.
 
 **PR 2. `docs`: `DESIGN.md` v2** `[ ]`
 
