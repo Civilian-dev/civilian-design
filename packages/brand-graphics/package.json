@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsx scripts/build.ts",
+    "build": "tsx scripts/build.ts && tsx scripts/seeds.ts",
     "test": "vitest run",
     "typecheck": "tsc -p ."
   },

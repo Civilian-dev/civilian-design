@@ -1,18 +1,17 @@
-# Brand style seeds
+# Brand seeds
 
-Hand-made reference images from the review on 14 Nov 2026. They show the direction the brand guide (`DESIGN.md`) now describes. They are references, not generated output: the composer in `packages/brand-graphics` produces the real assets.
+Specimen pages for the Civilian style, in light and dark. The page is the reference: copy markup and `seeds.css` from it rather than describing it again.
 
-All eight are the same Open Graph card (1200 by 630, rendered at 2x) so they can be compared directly. Titles are set in Poppins 700 and labels in a fallback mono, because Poppins 600 and Monaspace Xenon were not installed where they were rendered.
+**Open them in a PR preview.** Every pull request from this repository gets a preview at `https://civilian-dev.github.io/civilian-design/pr-preview/pr-<number>/`. Start at `decisions.html`: it is the one list of open and settled design decisions, with the options side by side.
 
-| File                         | Round | What it shows                                                                                | Outcome |
-| ---------------------------- | ----- | -------------------------------------------------------------------------------------------- | ------- |
-| `r1-a-sign.png`              | 1     | The `sign` layout: band, route bullet, two rules, key.                                       | Chosen  |
-| `r1-b-ledger.png`            | 1     | The `ledger` layout: ruled frame, six cells, one shape in one cell.                          | Chosen  |
-| `r2-a3-sign-weave.png`       | 2     | `sign` with a weave block: triangles in the ground colour over an ink-to-red noise gradient. | Chosen  |
-| `r2-b2-ledger-grain.png`     | 2     | `ledger` with a grain block: salmon-to-red noise gradient and one quarter-disc.              | Chosen  |
-| `r3-1-sign-weave-fine.png`   | 3     | The weave with finer tiles (11 across).                                                      | Open    |
-| `r3-2-sign-grain.png`        | 3     | The grain block in the `sign` layout, closed by a vertical rule.                             | Open    |
-| `r3-3-ledger-weave-cold.png` | 3     | The weave in the `ledger` cell with a cold ink-to-teal gradient.                             | Open    |
-| `r3-4-night-sign-weave.png`  | 3     | The `night` scheme.                                                                          | Open    |
+Locally: run `python3 -m http.server` at the repo root and open `/docs/brand-seeds/`.
 
-Rejected in round 1 and not kept: a route-line layout and a split colour-block layout.
+| File        | What                                                                                                      | Edited by                                                 |
+| ----------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `seeds.css` | The reference stylesheet. Values are tokens only; the custom properties at the top are what a theme sets. | hand                                                      |
+| `*.html`    | Contents, decisions, card, article, index page, patterns                                                  | `pnpm build` (`packages/brand-graphics/scripts/seeds.ts`) |
+| `archive/`  | Rounds 1 to 3, when `sign` and `ledger` were separate                                                     | not edited                                                |
+
+- Every element in the pages has a `data-seed` attribute naming it, such as `card`, `callout-tip` or `attachments`.
+- The decisions on `decisions.html` are data in `seeds.ts` (`OPEN` and `DECIDED`). Change them there, not in another document.
+- `pattern()` in `seeds.ts` is a prototype for the pattern library (PR 6 of the [v2 plan](../design-system-v2-plan.md)).
