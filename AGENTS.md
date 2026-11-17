@@ -7,7 +7,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 - **Figma is the source of truth.** Never hand-edit token values. `packages/design-tokens/src/tokens.json` is written only by the Token Forge sync.
 - **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/`, `packages/brand-graphics/examples/`, `packages/brand-graphics/src/kit.ts` and the pages in `docs/brand-seeds/*.html`.
 - **One concern per PR.** PRs are squash-merged, so the PR becomes one commit on `main`. See [Git and PRs](#git-and-prs).
-- **Package names say what they are without the scope:** `design-tokens`, `panda-design-preset`, `claude-design-system`, `brand-graphics`, `brand-fonts`. Folder names match package names. Use the package name as the commit scope.
+- **Package names say what they are without the scope:** `design-tokens`, `panda-design-preset`, `claude-design-system`, `brand-graphics`, `brand-fonts`, `brand-audit`. Folder names match package names. Use the package name as the commit scope.
 - Pin exact dependency versions. Node and pnpm come from `mise.toml`.
 
 ## Layout
@@ -17,6 +17,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 - `packages/claude-design-system` (private): generates the committed Claude plugin/skill and Design System artifact bundle.
 - `packages/brand-graphics` (`@civilian-dev/brand-graphics`, published): brand artwork sources (SVG kit), composer compiled to `dist/`, generated `examples/` and the seed pages.
 - `packages/brand-fonts` (`@civilian-dev/brand-fonts`, published): the three typefaces as woff2 with `fonts.css`, and as OpenType files for renderers, built from pinned `@fontsource` packages into a committed `dist/`.
+- `packages/brand-audit` (private): checks rendered pages in Chrome against the fixed part of the theme contract. Its test audits every specimen page, so `pnpm check` needs Google Chrome installed (or `BRAND_AUDIT_CHROME` set). Run it on any page with `pnpm --filter @civilian-dev/brand-audit pages <url>`.
 - `apps/*`: reserved for later.
 - `DESIGN.md`: the brand guide (rules agents must follow for anything visual). `docs/brand-plan.md`: how the brand work got here (stages 0 to 3). `docs/design-system-v2-plan.md`: the current plan.
 - `.github/`: workflows, ruleset (`rulesets/main.json`), CODEOWNERS.
