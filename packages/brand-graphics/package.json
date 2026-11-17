@@ -16,6 +16,7 @@
       "types": "./dist/compose.d.ts",
       "default": "./dist/compose.js"
     },
+    "./patterns.css": "./dist/patterns.css",
     "./shapes/*": "./dist/shapes/*",
     "./mark/*": "./dist/mark/*"
   },

@@ -8,6 +8,7 @@
 import { resolved } from "@civilian-dev/design-tokens/resolved";
 import * as raw from "./compose.js";
 import { kit } from "./kit.js";
+import * as patterns from "./pattern.js";
 
 export type {
   ComposeOptions,
@@ -21,7 +22,28 @@ export type {
   TextBlock,
 } from "./compose.js";
 export { FONTS, parsePiece, SCHEMES, stippleFilter } from "./compose.js";
+export type {
+  CalloutArtOptions,
+  Direction,
+  Paint,
+  PatternOptions,
+  Tile,
+  Turn,
+} from "./pattern.js";
+export { CSS_PAINT, TILES } from "./pattern.js";
 export { kit };
+
+/**
+ * A pattern as an inline SVG string that fills its box: a tile over a
+ * two-colour noise gradient. Coloured by custom properties unless `paint`
+ * is given. Where patterns may go is in DESIGN.md, Patterns.
+ */
+export const pattern = (options: patterns.PatternOptions): string =>
+  patterns.pattern(kit, options);
+
+/** A callout's art: a fine tile over a soft noise fade from the right edge. */
+export const calloutArt = (options?: patterns.CalloutArtOptions): string =>
+  patterns.calloutArt(kit, options);
 
 /** Looks up a primitive colour by token path, such as `salmon.300`. */
 export const hex: raw.Hex = (path) => {

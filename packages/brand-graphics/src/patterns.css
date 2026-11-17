@@ -1,0 +1,33 @@
+/*
+ * Defaults for patterns from @civilian-dev/brand-graphics (`pattern()` and
+ * `calloutArt()`). Load after @civilian-dev/design-tokens/css.
+ *
+ * A pattern reads three custom properties. Set them on the element that
+ * holds the pattern to match the surface it sits on:
+ *   --cv-pattern-from   the ground the noise starts from
+ *   --cv-pattern-to     the noise colour
+ *   --cv-pattern-tile   the tile: the colour of the surface around it
+ * An edge fade also reads --cv-noise-max (0 to 1, default 0.9).
+ */
+
+:root {
+  --cv-pattern-from: var(--colors-fg-default);
+  --cv-pattern-to: var(--colors-red-500);
+  --cv-pattern-tile: var(--colors-bg-canvas);
+}
+
+:root[data-theme="dark"] {
+  --cv-pattern-from: var(--colors-accent-solid);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --cv-pattern-from: var(--colors-accent-solid);
+  }
+}
+
+.cv-pattern {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
