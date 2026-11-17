@@ -224,19 +224,13 @@ importers:
 
   packages/claude-design-system:
     dependencies:
+      '@civilian-dev/brand-fonts':
+        specifier: workspace:^
+        version: link:../brand-fonts
       '@civilian-dev/design-tokens':
         specifier: workspace:^
         version: link:../design-tokens
     devDependencies:
-      '@fontsource/instrument-sans':
-        specifier: 5.3.0
-        version: 5.3.0
-      '@fontsource/monaspace-xenon':
-        specifier: 5.3.0
-        version: 5.3.0
-      '@fontsource/poppins':
-        specifier: 5.3.0
-        version: 5.3.0
       '@types/node':
         specifier: 26.6.6
         version: 26.6.6
