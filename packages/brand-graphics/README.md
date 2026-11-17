@@ -2,18 +2,44 @@
 
 The Civilian brand artwork: a small kit of single-colour SVG pieces and a composer that sets them into sign-style banners, social images and backgrounds. The rules it follows are in [`DESIGN.md`](../../DESIGN.md) (sections Layout, Graphics and Artefacts). Reference images for the direction are in [`docs/brand-seeds`](../../docs/brand-seeds/README.md).
 
-Private for now. Open [`examples/index.html`](examples/index.html) to see everything on one page.
+Published as `@civilian-dev/brand-graphics`. Open [`examples/index.html`](examples/index.html) to see everything on one page.
+
+## Install and use
+
+```ts
+import { compose } from "@civilian-dev/brand-graphics";
+
+const svg = compose({
+  width: 1200,
+  height: 630,
+  layout: "sign",
+  scheme: "paper",
+  feature: "weave",
+  seed: 11,
+});
+```
+
+| Import                                                     | What                                                                                                                                                                      |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@civilian-dev/brand-graphics`                             | `compose`, `avatar`, `calloutBackground` and `texture` with the shape kit and token colours built in; `kit`, `hex`, `SCHEMES`, `BORDER_WIDTHS`, `ART_WIDTH` and the types |
+| `@civilian-dev/brand-graphics/compose`                     | The same functions taking `kit` and `hex` as their first arguments, for a custom kit or colour lookup                                                                     |
+| `@civilian-dev/brand-graphics/shapes/*.svg`, `/mark/*.svg` | The source SVGs, for placing pieces yourself                                                                                                                              |
+
+`BORDER_WIDTHS` and `ART_WIDTH` stand in for design tokens that do not exist yet. Read them from here rather than writing the numbers.
 
 ## Layout
 
-| Path               | What                                                                                                              | Edited by         |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `src/shapes/`      | The working pieces: disc, quarter-disc, half-disc, triangle, square                                               | hand              |
-| `src/mark/`        | The civilian figure (provisional brand mark)                                                                      | hand              |
-| `src/reserve/`     | Earlier pieces, line marks and pattern tiles. Not loaded, not used; kept for later (see the brand plan, round 3). | hand              |
-| `src/compose.ts`   | Composer: layouts, feature blocks, callout backgrounds, textures                                                  | hand              |
-| `scripts/build.ts` | Writes `examples/` from the sources and the design tokens                                                         | hand              |
-| `examples/`        | Generated output, committed and drift-checked by CI                                                               | `pnpm build` only |
+| Path                 | What                                                                                                              | Edited by         |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `src/shapes/`        | The working pieces: disc, quarter-disc, half-disc, triangle, square                                               | hand              |
+| `src/mark/`          | The civilian figure (provisional brand mark)                                                                      | hand              |
+| `src/reserve/`       | Earlier pieces, line marks and pattern tiles. Not loaded, not used; kept for later (see the brand plan, round 3). | hand              |
+| `src/compose.ts`     | Composer: layouts, feature blocks, callout backgrounds, textures                                                  | hand              |
+| `src/index.ts`       | The package entry: the composer with the kit and token colours built in                                           | hand              |
+| `src/kit.ts`         | The shape kit, pre-parsed from `src/shapes` and `src/mark`                                                        | `pnpm build` only |
+| `scripts/prepare.ts` | Writes `src/kit.ts` and copies the SVGs into `dist/` before `tsc` compiles `src`                                  | hand              |
+| `scripts/build.ts`   | Writes `examples/` from the sources and the design tokens                                                         | hand              |
+| `examples/`          | Generated output, committed and drift-checked by CI                                                               | `pnpm build` only |
 
 ## Source rules
 
@@ -26,7 +52,7 @@ Private for now. Open [`examples/index.html`](examples/index.html) to see everyt
 ## Composer
 
 ```ts
-import { compose } from "./src/compose";
+import { compose } from "@civilian-dev/brand-graphics/compose";
 
 const svg = compose(kit, hex, {
   width: 1200,
@@ -68,6 +94,6 @@ The callout backgrounds and textures have no `viewBox`, so they fill any box:
 ## Known gaps
 
 - Titles are wrapped by the caller; the composer does not measure text.
-- Text uses Poppins and Monaspace Xenon by name. Rasterising to PNG for social cards needs the fonts embedded (stage 4 of [`docs/brand-plan.md`](../../docs/brand-plan.md)).
+- Text uses Poppins and Monaspace Xenon by name. Rasterising to PNG for social cards needs the fonts embedded (PR 8 of [`docs/design-system-v2-plan.md`](../../docs/design-system-v2-plan.md), using `@civilian-dev/brand-fonts`).
 - Tests cover parsing, determinism, whole-pixel tiles, ids, the grain disc colour (G5) and red placement (C4). Other `DESIGN.md` rules are not checked yet.
 - The dark scheme reads the light token set, because `night` is an inverse scheme built from primitives. It does not yet use the dark semantic tokens.

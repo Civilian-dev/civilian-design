@@ -175,7 +175,7 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 - Done when: a page that imports only `tokens.css` and `fonts.css` renders all three faces offline. Checked in Chromium: every face loaded from the package, with no other font requests.
 - Changed from the plan: Monaspace Xenon decodes to CFF outlines, so its renderer files are `.otf`; the folder is `opentype/`, not `ttf/`.
 
-**PR 5. `build(brand-graphics)`: publishable build** `[ ]`
+**PR 5. `build(brand-graphics)`: publishable build** `[x]`
 
 - Compile to `dist/` with types; an `exports` map (`.`, `./css`, `./masks/*`, `./shapes/*`); the kit pre-parsed and the token lookup built in, so `compose(options)` needs no setup. Join the fixed version group; changeset.
 - No behaviour change in this PR.

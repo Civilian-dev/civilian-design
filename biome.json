@@ -13,6 +13,7 @@
       "!DESIGN.md",
       "!.changeset",
       "!**/src/preset.ts",
+      "!packages/brand-graphics/src/kit.ts",
       "!**/styled-system",
       "!**/test/fixture/out",
       "!pnpm-lock.yaml"

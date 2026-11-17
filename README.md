@@ -15,6 +15,7 @@ Code and tokens are released under the [MIT licence](LICENSE). Any bundled fonts
 | Package                             | Description                                                                      |
 | ----------------------------------- | -------------------------------------------------------------------------------- |
 | `@civilian-dev/design-tokens`       | Canonical DTCG tokens, CSS variables, typed JS helper, resolved per-theme values |
+| `@civilian-dev/brand-graphics`      | Shape kit and composer for banners, social images and backgrounds                |
 | `@civilian-dev/brand-fonts`         | Poppins, Instrument Sans and Monaspace Xenon for pages and renderers             |
 | `@civilian-dev/panda-design-preset` | Panda CSS preset generated from the tokens                                       |
 

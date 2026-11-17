@@ -1,12 +1,34 @@
 {
   "name": "@civilian-dev/brand-graphics",
-  "version": "0.0.0",
-  "private": true,
-  "description": "Civilian brand graphics: a small shape kit and a composer for sign-style banners, social images and backgrounds",
+  "version": "0.1.0",
+  "description": "Civilian brand graphics: a small shape kit and a composer for banners, social images and backgrounds",
   "license": "MIT",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./compose": {
+      "types": "./dist/compose.d.ts",
+      "default": "./dist/compose.js"
+    },
+    "./shapes/*": "./dist/shapes/*",
+    "./mark/*": "./dist/mark/*"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Civilian-dev/civilian-design.git",
+    "directory": "packages/brand-graphics"
+  },
   "scripts": {
-    "build": "tsx scripts/build.ts && tsx scripts/seeds.ts",
+    "build": "tsx scripts/prepare.ts && tsc -p tsconfig.build.json && tsx scripts/build.ts && tsx scripts/seeds.ts",
     "test": "vitest run",
     "typecheck": "tsc -p ."
   },
