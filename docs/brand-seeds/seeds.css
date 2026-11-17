@@ -72,17 +72,13 @@
   --cv-label-weight: var(--font-weights-semibold);
   --cv-radius: var(--radii-none);
 
-  /* Patterns: a tile in --cv-pattern-tile over noise from -from into -to. */
-  --cv-pattern-from: var(--cv-ink);
-  --cv-pattern-to: var(--cv-signal);
-  --cv-pattern-tile: var(--cv-ground);
+  /* Pattern colours default in patterns.css; surfaces below override them. */
 
   --cv-margin: clamp(var(--spacing-6), 5vw, var(--spacing-16));
 }
 
 :root[data-theme="dark"] {
   --cv-card: var(--colors-bg-default);
-  --cv-pattern-from: var(--colors-accent-solid);
 }
 
 /* --- base ------------------------------------------------------------------- */
@@ -172,11 +168,6 @@ a.cv-label[aria-current] {
   height: var(--spacing-6);
 }
 
-.cv-pattern {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
 .cv-push {
   margin-left: auto;
 }

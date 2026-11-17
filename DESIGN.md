@@ -235,7 +235,7 @@ Each has a specimen with a `data-seed` name in `docs/brand-seeds`.
 
 ## Patterns
 
-A pattern is always the same thing: one tile repeated on a square grid in the colour of the surface it sits on, over a two-colour noise gradient, so the noise shows only through the gaps. See `patterns.html`.
+A pattern is always the same thing: one tile repeated on a square grid in the colour of the surface it sits on, over a two-colour noise gradient, so the noise shows only through the gaps. See `patterns.html`. Make patterns with `pattern()` and `calloutArt()` from `@civilian-dev/brand-graphics` and load its `patterns.css`; never draw one by hand. Its README says how to size and colour each one.
 
 | Dial     | Options                                                                     |
 | -------- | --------------------------------------------------------------------------- |

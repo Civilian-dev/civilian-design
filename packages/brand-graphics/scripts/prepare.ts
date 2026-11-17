@@ -45,6 +45,8 @@ export const kit: Kit = ${JSON.stringify(kit, null, 2)};
 );
 
 rmSync(dist, { recursive: true, force: true });
+mkdirSync(dist, { recursive: true });
+copyFileSync(join(src, "patterns.css"), join(dist, "patterns.css"));
 for (const dir of ["shapes", "mark"]) {
   mkdirSync(join(dist, dir), { recursive: true });
   for (const f of svgs(dir))

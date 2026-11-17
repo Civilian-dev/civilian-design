@@ -25,8 +25,10 @@ jobs:
           mkdir -p preview-site/fonts
           cp -R docs/brand-seeds/. preview-site/
           cp packages/design-tokens/dist/tokens.css preview-site/tokens.css
+          cp packages/brand-graphics/src/patterns.css preview-site/patterns.css
           cp packages/claude-design-system/design-system/project/fonts/*.woff2 preview-site/fonts/
           find preview-site -name '*.html' -exec sed -i 's#\.\./\.\./packages/design-tokens/dist/tokens\.css#tokens.css#g' {} +
+          find preview-site -name '*.html' -exec sed -i 's#\.\./\.\./packages/brand-graphics/src/patterns\.css#patterns.css#g' {} +
           sed -i 's#\.\./\.\./packages/claude-design-system/design-system/project/fonts/#fonts/#g' preview-site/seeds.css
       - uses: rossjrw/pr-preview-action@v1
         with:

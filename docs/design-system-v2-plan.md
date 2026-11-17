@@ -181,18 +181,22 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 - No behaviour change in this PR.
 - Done when: a scratch project installs the packed tarball and composes a card with one import.
 
-**PR 6. `feat(brand-graphics)`: pattern library** `[ ]`
+**PR 6. `feat(brand-graphics)`: pattern library** `[x]`
 
-- Start with the mask rendering check (three engines and print). Record the result here.
-- `pattern(options)` with the dials above; pattern CSS and mask assets; `texture()` and the header feature both built on it, with the seed choosing the pair in both.
-- `calloutArt({ hue, piece, corner, seed, theme })`, the seed choosing among allowed pieces and corners when none is given, so several callouts on a page differ.
-- Delete `src/reserve`; the five tiles are in `src/shapes`.
-- Replace the weave in `claude-design-system`'s cover with the library.
-- Done when: the three weave implementations are one, and the callout and header seeds are rendered by these functions.
+- `pattern()` with the dials above and `calloutArt()`, exported from the package root, plus `patterns.css` with the default colours.
+- The seed pages render every pattern through these functions, byte-identical to before.
+- `texture()` lets the seed choose the colour pair, as `compose()` does.
+- `src/reserve` deleted; the five tiles are in `src/shapes`.
+- Changed from the plan:
+  - **No CSS masks.** Patterns are inline SVG coloured by custom properties. That already gives one set of art for light and dark, without the mask rendering question. Checked in Chromium; Firefox, WebKit and print are not checked.
+  - **`calloutArt()` takes no hue, piece or corner.** Since round 4 callouts have no pieces, and the hue comes from custom properties. Several callouts differ by `tile`, `turn` and `seed`.
+  - **The Design System cover keeps its own weave.** Its card format allows only token variables and one SVG, and the cover's weave is flat block colour with no noise, so the library does not fit it.
+  - **The composer's weave and grain move to the library in PR 7**, when the composer is rewritten for the one card layout.
 
 **PR 7. `feat(brand-graphics)`: one layout, exported geometry** `[ ]`
 
 - The unified frame replaces `sign` and `ledger`; themes replace schemes. Breaking; regenerate examples.
+- The card's feature, the footer strip, `texture()` and `calloutBackground()` are drawn with `pattern()` and `calloutArt()`, so there is one weave in the package.
 - `layout(options)` returns every zone and type size. The same values go on the SVG as `data-` attributes and are available as custom properties, so a page can set its title in HTML on the composer's grid.
 - Export `put`, `rect`, `Box` and the constants. A `wordmark` option.
 - `defineTheme()` with the bounded choices typed.

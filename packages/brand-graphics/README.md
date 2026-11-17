@@ -19,27 +19,52 @@ const svg = compose({
 });
 ```
 
-| Import                                                     | What                                                                                                                                                                      |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@civilian-dev/brand-graphics`                             | `compose`, `avatar`, `calloutBackground` and `texture` with the shape kit and token colours built in; `kit`, `hex`, `SCHEMES`, `BORDER_WIDTHS`, `ART_WIDTH` and the types |
-| `@civilian-dev/brand-graphics/compose`                     | The same functions taking `kit` and `hex` as their first arguments, for a custom kit or colour lookup                                                                     |
-| `@civilian-dev/brand-graphics/shapes/*.svg`, `/mark/*.svg` | The source SVGs, for placing pieces yourself                                                                                                                              |
+| Import                                                     | What                                                                                                                                                                                                                        |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@civilian-dev/brand-graphics`                             | `pattern` and `calloutArt`; `compose`, `avatar`, `calloutBackground` and `texture` with the shape kit and token colours built in; `kit`, `hex`, `TILES`, `CSS_PAINT`, `SCHEMES`, `BORDER_WIDTHS`, `ART_WIDTH` and the types |
+| `@civilian-dev/brand-graphics/patterns.css`                | Default pattern colours as custom properties                                                                                                                                                                                |
+| `@civilian-dev/brand-graphics/compose`                     | The same functions taking `kit` and `hex` as their first arguments, for a custom kit or colour lookup                                                                                                                       |
+| `@civilian-dev/brand-graphics/shapes/*.svg`, `/mark/*.svg` | The source SVGs, for placing pieces yourself                                                                                                                                                                                |
 
 `BORDER_WIDTHS` and `ART_WIDTH` stand in for design tokens that do not exist yet. Read them from here rather than writing the numbers.
 
+## Patterns
+
+Every pattern is one tile repeated over a two-colour noise gradient, made by `pattern()` or `calloutArt()`. They return an inline SVG that fills its box and is coloured by CSS custom properties, so the same markup works in light and dark. Load the defaults once:
+
+```css
+@import "@civilian-dev/design-tokens/css";
+@import "@civilian-dev/brand-graphics/patterns.css";
+```
+
+Patterns go in three places only ([`DESIGN.md`](../../DESIGN.md), Patterns):
+
+| Where        | Call                                                                                        | Box                                                                                                                 | Colours                                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Card feature | `pattern({ tile: "triangle" })`, or `tile: "none"` for grain with one anchored quarter-disc | The feature cell, a whole number of tiles each way (tiles are 24px unless `size` is set)                            | `--cv-pattern-tile` set to the card's ground                                               |
+| Footer strip | `pattern({ tile: "quarter-disc" })`                                                         | Full screen width, three tiles high                                                                                 | The defaults                                                                               |
+| Callout      | `calloutArt()`                                                                              | Absolutely placed at the callout's right edge, full height, `min(ART_WIDTH px, 33%)` wide; the text stops before it | `--cv-pattern-from` and `--cv-pattern-tile` set to the tint, `--cv-pattern-to` to the tone |
+
+Nothing else in a page gets a pattern. Copy the surrounding markup from the specimens in [`docs/brand-seeds`](../../docs/brand-seeds/README.md) (card, article, patterns).
+
+- **Dials:** `tile` (`TILES`, or `none`), `turn` in quarter turns, `size` in px, `dir` (`down`, `diagonal`, `edge`), and `soft` noise for interface surfaces. `seed` changes the grain only.
+- **Ids:** pass a unique `id` when a page has more than one pattern with the same options.
+- **Without CSS** (rasters, PDFs): pass `paint: { from, to, tile }` with colours from `hex()`.
+
 ## Layout
 
-| Path                 | What                                                                                                              | Edited by         |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `src/shapes/`        | The working pieces: disc, quarter-disc, half-disc, triangle, square                                               | hand              |
-| `src/mark/`          | The civilian figure (provisional brand mark)                                                                      | hand              |
-| `src/reserve/`       | Earlier pieces, line marks and pattern tiles. Not loaded, not used; kept for later (see the brand plan, round 3). | hand              |
-| `src/compose.ts`     | Composer: layouts, feature blocks, callout backgrounds, textures                                                  | hand              |
-| `src/index.ts`       | The package entry: the composer with the kit and token colours built in                                           | hand              |
-| `src/kit.ts`         | The shape kit, pre-parsed from `src/shapes` and `src/mark`                                                        | `pnpm build` only |
-| `scripts/prepare.ts` | Writes `src/kit.ts` and copies the SVGs into `dist/` before `tsc` compiles `src`                                  | hand              |
-| `scripts/build.ts`   | Writes `examples/` from the sources and the design tokens                                                         | hand              |
-| `examples/`          | Generated output, committed and drift-checked by CI                                                               | `pnpm build` only |
+| Path                 | What                                                                             | Edited by         |
+| -------------------- | -------------------------------------------------------------------------------- | ----------------- |
+| `src/shapes/`        | The working pieces: disc, quarter-disc, half-disc, triangle, square              | hand              |
+| `src/mark/`          | The civilian figure (provisional brand mark)                                     | hand              |
+| `src/pattern.ts`     | The pattern library: `pattern()` and `calloutArt()`                              | hand              |
+| `src/patterns.css`   | Default pattern colours as custom properties, and the `.cv-pattern` box          | hand              |
+| `src/compose.ts`     | Composer: layouts, feature blocks, callout backgrounds, textures                 | hand              |
+| `src/index.ts`       | The package entry: the composer with the kit and token colours built in          | hand              |
+| `src/kit.ts`         | The shape kit, pre-parsed from `src/shapes` and `src/mark`                       | `pnpm build` only |
+| `scripts/prepare.ts` | Writes `src/kit.ts` and copies the SVGs into `dist/` before `tsc` compiles `src` | hand              |
+| `scripts/build.ts`   | Writes `examples/` from the sources and the design tokens                        | hand              |
+| `examples/`          | Generated output, committed and drift-checked by CI                              | `pnpm build` only |
 
 ## Source rules
 
@@ -47,7 +72,6 @@ const svg = compose({
 - `parsePiece` checks these rules, so a source that breaks them fails the build.
 - Pieces fill their `viewBox` edge to edge and have square corners (S1). No strokes.
 - To add a piece, drop a file in `src/shapes` and rebuild. It only appears in compositions once it is added to `KEY_PIECES` or `WEAVE_PIECES` in `src/compose.ts`, and those lists take pieces with square bounds only.
-- Files in `src/reserve` keep the earlier rounded style and do not follow these rules.
 
 ## Composer
 
