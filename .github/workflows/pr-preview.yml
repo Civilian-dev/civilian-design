@@ -1,0 +1,25 @@
+name: pr-preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    # Pages previews need write access, so fork PRs (read-only token) are skipped.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: docs/brand-seeds
+          wait-for-pages-deployment: true
