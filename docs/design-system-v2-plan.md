@@ -110,7 +110,7 @@ Technical calls, made without asking:
 - **Fonts:** a new published package, `brand-fonts`, with the files, their licences and an `@font-face` stylesheet. `claude-design-system` uses it instead of its own copies.
 - **Element CSS:** stays the seeds' reference stylesheet until a second site needs it as a package.
 - **Dark grounds:** no `night` scheme. Artwork reads the dark semantic tokens.
-- **`src/reserve`:** whichever pieces the tiles decision keeps are redrawn square-cornered in `src/shapes`; the folder is then deleted.
+- **`src/reserve`:** all five pattern tiles are already in `src/shapes`, so the folder is deleted in PR 6.
 
 ## Review, round 4
 
@@ -130,7 +130,7 @@ What stays: the brutalist card, ink and paper doing the work, rationed warmth, s
 
 Only you can make these; the sync PR follows. Until then `brand-graphics` exports constants with the same names.
 
-- Text styles: `heading.display` and `heading.h1` to weight 600 (decided); `label.overline` family, weight and tracking (open: see the decisions page).
+- Text styles: `heading.display` and `heading.h1` to weight 600. Labels need no change: `label.overline` is already Instrument Sans 600 with `0.1em` tracking, and CSS sets the uppercase.
 - `borderWidths`: `hairline` 1px, `rule` 2px, `edge` 4px.
 - `sizes.art`: the callout art cap (240px today).
 - A description on every semantic role, so the skill stops falling back to naming hints.
@@ -143,7 +143,7 @@ One concern per PR, squash-merged, in this order. Each is sized for one session 
 
 ### Phase 1: settle the style
 
-**PR 1. `docs(brand-seeds)`: unified style seeds** `[~]`
+**PR 1. `docs(brand-seeds)`: unified style seeds** `[x]`
 
 - Specimen pages built by `packages/brand-graphics/scripts/seeds.ts`, in light and dark: contents, decisions, card, article, index page, patterns. Previewed on every PR; no rendered images.
 - Round 4 review applied (see above).
@@ -161,7 +161,7 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 
 ### Phase 2: tokens
 
-**PR 3. `feat(design-tokens)`: weights, label style, border widths** `[ ]`
+**PR 3. `feat(design-tokens)`: heading weights and border widths** `[ ]`
 
 - The Token Forge sync after the Figma changes above. Needs a changeset.
 - Done when: `resolved.json` carries the new values and `panda-design-preset` rebuilds.
@@ -185,7 +185,7 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 - Start with the mask rendering check (three engines and print). Record the result here.
 - `pattern(options)` with the dials above; pattern CSS and mask assets; `texture()` and the header feature both built on it, with the seed choosing the pair in both.
 - `calloutArt({ hue, piece, corner, seed, theme })`, the seed choosing among allowed pieces and corners when none is given, so several callouts on a page differ.
-- Redraw the tiles the decisions page keeps; delete `src/reserve`.
+- Delete `src/reserve`; the five tiles are in `src/shapes`.
 - Replace the weave in `claude-design-system`'s cover with the library.
 - Done when: the three weave implementations are one, and the callout and header seeds are rendered by these functions.
 
@@ -200,7 +200,7 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 **PR 8. `feat(brand-graphics)`: rasters and diagram theme** `[ ]`
 
 - PNG output for Open Graph images with fonts from `brand-fonts`.
-- `mermaidTheme(theme)`: ink on ground, 2px rules, square corners, mono uppercase cluster labels, one inverse node for the output. The Diagrams section of the guide says to keep graphs to one spine with a single fan-out.
+- `mermaidTheme(theme)`: ink on ground, 2px rules, square corners, cluster labels in the label style, one inverse node for the output. The Diagrams section of the guide says to keep graphs to one spine with a single fan-out.
 - Done when: the diagram seed is produced by the exported theme.
 
 ### Phase 4: agent surfaces
@@ -238,7 +238,7 @@ Feedback items from the article build, and where each is handled.
 | 9    | `night` ground is not the dark page ground | PR 7                                     |
 | 10   | Wordmark baked in                          | PR 7                                     |
 | 11   | Heading weight                             | PR 3                                     |
-| 12   | Label styles                               | PR 3                                     |
+| 12   | Label styles                               | Decided: Instrument Sans, as the tokens  |
 | 13   | Violet                                     | Decided: a callout hue like the others   |
 | 14   | `src/reserve`                              | PR 6                                     |
 | 15   | No rule-width or art-size tokens           | PR 3, with interim constants in PR 5     |
