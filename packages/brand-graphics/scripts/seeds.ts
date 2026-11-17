@@ -3,33 +3,28 @@
  * Civilian style, in light and dark, plus the one list of design decisions.
  * Output is committed; CI fails on drift.
  *
- * Pages are styled only by tokens.css and the hand-written seeds.css.
+ * Pages are styled only by tokens.css, the package's patterns.css and the
+ * hand-written seeds.css.
  * Patterns are inline SVG coloured by custom properties, so one specimen
- * works in both themes. `pattern()` is the prototype for the pattern
- * library in the v2 plan (PR 6).
+ * works in both themes. Patterns come from the package's pattern library.
  */
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { basename, join } from "node:path";
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { type Piece, parsePiece } from "../src/compose";
+import type { Piece } from "../src/compose";
+import { kit } from "../src/kit";
+import {
+  type PatternOptions as LibPatternOptions,
+  calloutArt as libCalloutArt,
+  pattern as libPattern,
+} from "../src/pattern";
 
-const root = fileURLToPath(new URL("..", import.meta.url));
 const out = fileURLToPath(
   new URL("../../../docs/brand-seeds/", import.meta.url),
 );
 
-const shapes: Record<string, Piece> = Object.fromEntries(
-  readdirSync(join(root, "src", "shapes"))
-    .filter((f) => f.endsWith(".svg"))
-    .sort()
-    .map((f) => [
-      basename(f, ".svg"),
-      parsePiece(readFileSync(join(root, "src", "shapes", f), "utf8"), f),
-    ]),
-);
-
 function shape(name: string): Piece {
-  const piece = shapes[name];
+  const piece = kit.shapes[name];
   if (!piece) throw new Error(`Unknown shape: ${name}`);
   return piece;
 }
@@ -54,84 +49,20 @@ const key = () =>
 
 // --- patterns ------------------------------------------------------------------
 
-type Tile =
-  | "none"
-  | "triangle"
-  | "quarter-disc"
-  | "half-disc"
-  | "disc"
-  | "check";
-type Direction = "down" | "diagonal" | "edge";
-
-interface PatternOptions {
-  tile: Tile;
-  turn?: 0 | 90 | 180 | 270;
-  dir?: Direction;
-  /** Tile size in px. */
-  size?: number;
-  /** Soft noise for interface surfaces; crisp noise is for artwork. */
-  soft?: boolean;
-}
-
-const VECTORS: Record<Direction, string> = {
-  down: 'x1="0" y1="0" x2="0" y2="1"',
-  diagonal: 'x1="0" y1="1" x2="1" y2="0"',
-  edge: 'x1="0" y1="0" x2="1" y2="0"',
-};
+type PatternOptions = Omit<LibPatternOptions, "id" | "seed" | "paint">;
 
 let ids = 0;
 
-/**
- * Noise: thresholds turbulence against the source alpha and floods the
- * result with the pattern's `to` colour. Crisp gives hard printed dots;
- * soft leaves partial alpha, so the fade reads as grain, not speckle.
- */
-function noise(id: string, soft: boolean): string {
-  const [slope, intercept] = soft ? [3, -1.1] : [14, -6.5];
-  return (
-    `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
-    `<feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="${ids}" result="n"/>` +
-    `<feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/>` +
-    `<feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/>` +
-    `<feComponentTransfer result="t"><feFuncA type="linear" slope="${slope}" intercept="${intercept}"/></feComponentTransfer>` +
-    `<feFlood style="flood-color:var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/>` +
-    "</filter>"
-  );
+/** A pattern from the library, numbered so ids are unique across the pages. */
+function pattern(o: PatternOptions): string {
+  const n = ++ids;
+  return libPattern(kit, { ...o, id: `p${n}`, seed: n });
 }
 
-/**
- * A pattern: one tile repeated on a square grid in the tile colour, over a
- * two-colour noise gradient. Fills its box. Colours come from
- * `--cv-pattern-from`, `--cv-pattern-to` and `--cv-pattern-tile`.
- */
-function pattern(o: PatternOptions): string {
-  const id = `p${++ids}`;
-  const t = o.size ?? 24;
-  const dir = o.dir ?? "down";
-  const stops =
-    dir === "edge"
-      ? '<stop offset="0" stop-opacity="0"/><stop offset="1" style="stop-opacity:var(--cv-noise-max, 0.9)"/>'
-      : '<stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/>';
-  let cell = "";
-  let over = "";
-  if (o.tile !== "none") {
-    const name = o.tile === "check" ? "square" : o.tile;
-    const p = shape(name);
-    const s = Math.round((t / p.w) * 10000) / 10000;
-    const spin = o.turn ? ` rotate(${o.turn} ${p.w / 2} ${p.h / 2})` : "";
-    const one = (x: number, y: number) =>
-      `<g transform="translate(${x} ${y}) scale(${s})${spin}">${p.body}</g>`;
-    const span = o.tile === "check" ? t * 2 : t;
-    const tiles = o.tile === "check" ? one(0, 0) + one(t, t) : one(0, 0);
-    cell = `<pattern id="${id}-p" patternUnits="userSpaceOnUse" width="${span}" height="${span}" style="fill:var(--cv-pattern-tile)">${tiles}</pattern>`;
-    over = `<rect width="100%" height="100%" fill="url(#${id}-p)"/>`;
-  }
-  return (
-    `<svg class="cv-pattern" data-tile="${o.tile}" data-turn="${o.turn ?? 0}" data-direction="${dir}" data-size="${t}" data-noise="${o.soft ? "soft" : "crisp"}" aria-hidden="true">` +
-    `<defs><linearGradient id="${id}-g" ${VECTORS[dir]}>${stops}</linearGradient>${noise(`${id}-f`, o.soft ?? false)}${cell}</defs>` +
-    `<rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/>` +
-    `<rect width="100%" height="100%" fill="url(#${id}-g)" filter="url(#${id}-f)"/>${over}</svg>`
-  );
+/** Callout art from the library, numbered the same way. */
+function calloutArt(): string {
+  const n = ++ids;
+  return libCalloutArt(kit, { id: `p${n}`, seed: n });
 }
 
 /** The card's feature: a tiled pattern, or grain with one anchored piece. */
@@ -197,7 +128,7 @@ type Hue = "salmon" | "gold" | "teal" | "violet";
  * shows through the gaps. No pieces.
  */
 function callout(hue: Hue, title: string, text: string, seed = ""): string {
-  const art = pattern({ tile: "triangle", dir: "edge", size: 12, soft: true });
+  const art = calloutArt();
   return `<aside class="cv-callout cv-callout-${hue}" data-seed="${seed || `callout-${hue}`}"><div class="cv-callout-art">${art}</div><p class="cv-label">${title}</p><p>${text}</p></aside>`;
 }
 
@@ -240,6 +171,7 @@ function doc(name: string, title: string, theme: Theme, body: string): string {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title} · Civilian brand seeds</title>
 <link rel="stylesheet" href="../../packages/design-tokens/dist/tokens.css">
+<link rel="stylesheet" href="../../packages/brand-graphics/src/patterns.css">
 <link rel="stylesheet" href="seeds.css">
 ${windowHeader(name, theme)}
 ${body}
@@ -350,7 +282,7 @@ const swatch = (name: string, o: PatternOptions, style = "") =>
   `<div class="seed-swatch">${feature(o, style)}${label(name)}</div>`;
 
 const calloutSwatch = (hue: Hue) =>
-  `<div class="seed-swatch"><div class="cv-callout cv-callout-${hue} seed-callout-art"><div class="cv-callout-art">${pattern({ tile: "triangle", dir: "edge", size: 12, soft: true })}</div></div>${label(hue)}</div>`;
+  `<div class="seed-swatch"><div class="cv-callout cv-callout-${hue} seed-callout-art"><div class="cv-callout-art">${calloutArt()}</div></div>${label(hue)}</div>`;
 
 const patternsPage = `<main class="cv-main">
 <h1 class="seed-title">Patterns</h1>
