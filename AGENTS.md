@@ -5,7 +5,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 ## Ground rules
 
 - **Figma is the source of truth.** Never hand-edit token values. `packages/design-tokens/src/tokens.json` is written only by the Token Forge sync.
-- **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/` and `packages/brand-graphics/examples/`.
+- **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/`, `packages/brand-graphics/examples/` and the pages in `docs/brand-seeds/*.html`.
 - **One concern per PR.** PRs are squash-merged, so the PR becomes one commit on `main`. See [Git and PRs](#git-and-prs).
 - **Package names say what they are without the scope:** `design-tokens`, `panda-design-preset`, `claude-design-system`, `brand-graphics`. Folder names match package names. Use the package name as the commit scope.
 - Pin exact dependency versions. Node and pnpm come from `mise.toml`.
@@ -60,3 +60,15 @@ A branch may be started by one session and continued by another.
 ### Exploration
 
 Design rounds and experiments can iterate freely on a branch, since squashing drops the intermediate commits. Before marking the PR ready, delete superseded files and outputs so the final tree holds only what is being merged.
+
+## Asking for design decisions
+
+A decision is only as good as the user's ability to compare the options. These rules apply whenever work needs the user to choose.
+
+- **One list, one place.** Keep open decisions in a single list and link to it. Never copy it into a plan, README or PR description as well. For brand work the list is `docs/brand-seeds/decisions.html`, built from `OPEN` and `DECIDED` in `packages/brand-graphics/scripts/seeds.ts`.
+- **Show, side by side.** Put each option on screen next to the others, rendered, in the PR preview (`https://civilian-dev.github.io/civilian-design/pr-preview/pr-<number>/`). Link to the exact page and anchor. A description of what an option looks like is not a substitute.
+- **Ask a plain question.** Name things by what they are or look like ("the strip at the top of the card"), not by rule ids, decision numbers or internal names.
+- **One recommendation, one reason.** Mark the recommended option and give the single reason that matters most. Leave out anything that is true whichever way the user chooses, such as how it will be implemented or that history is kept.
+- **Only ask what needs the user.** Taste and priorities are theirs. Technical calls (package layout, file locations, tooling) are yours: make them and record the reason in the plan.
+- **Few at a time.** Ask the few questions that block the next step. Settle what follows from earlier answers yourself, and mark it on the list as following from that answer so it can be overridden.
+- **Move answers, don't restate them.** When the user answers, move the item to the decided part of the same list with the answer and who decided it.
