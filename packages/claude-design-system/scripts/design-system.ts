@@ -10,9 +10,9 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { fontPath, fonts } from "@civilian-dev/brand-fonts";
 import {
   aesthetic,
   consumption,
@@ -28,17 +28,11 @@ type Json = any;
 const pkgRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const projectDir = resolve(pkgRoot, "design-system/project");
 
-const FONT_WEIGHTS = ["400", "500", "600", "700"];
-
-/** Bundled families (all SIL OFL 1.1), pinned via @fontsource so the page needs no font CDN. */
-const FONTS = [
-  { family: "Poppins", slug: "poppins" },
-  { family: "Instrument Sans", slug: "instrument-sans" },
-  { family: "Monaspace Xenon", slug: "monaspace-xenon" },
-] as const;
-
-const fontFile = (slug: string, weight: string) =>
-  `${slug}-latin-${weight}-normal.woff2`;
+/** Bundled faces (all SIL OFL 1.1) from @civilian-dev/brand-fonts, so the page needs no font CDN. */
+const FONTS = fonts.map((face) => ({
+  ...face,
+  file: face.woff2.slice("woff2/".length),
+}));
 
 const hexWithAlpha = (c: { hex: string; alpha: number }): string =>
   c.alpha < 1
@@ -109,13 +103,11 @@ export function buildTokensJson(): Json {
       })),
     },
     type: {
-      fonts: FONTS.flatMap(({ family, slug }) =>
-        FONT_WEIGHTS.map((w) => ({
-          family,
-          file: `fonts/${fontFile(slug, w)}`,
-          weight: w,
-        })),
-      ),
+      fonts: FONTS.map(({ family, file, weight }) => ({
+        family,
+        file: `fonts/${file}`,
+        weight: String(weight),
+      })),
       families: {
         heading: '"Poppins", system-ui, sans-serif',
         body: '"Instrument Sans", system-ui, sans-serif',
@@ -313,21 +305,16 @@ export function buildDesignSystem(): void {
   };
   for (const [p, c] of Object.entries(files)) out(p, c);
 
-  // Fonts: each family's latin woff2 files plus its licence as <slug>-OFL.txt.
+  // Fonts: each face's woff2 file plus each family's licence as <slug>-OFL.txt.
   mkdirSync(resolve(projectDir, "fonts"), { recursive: true });
-  const require = createRequire(import.meta.url);
   const fontFiles: string[] = [];
-  for (const { slug } of FONTS) {
-    const dir = dirname(require.resolve(`@fontsource/${slug}/package.json`));
-    for (const w of FONT_WEIGHTS) {
-      const f = fontFile(slug, w);
-      copyFileSync(resolve(dir, "files", f), resolve(projectDir, "fonts", f));
-      fontFiles.push(f);
-    }
-    copyFileSync(
-      resolve(dir, "LICENSE"),
-      resolve(projectDir, `fonts/${slug}-OFL.txt`),
-    );
+  for (const face of FONTS) {
+    copyFileSync(fontPath(face.woff2), resolve(projectDir, "fonts", face.file));
+    fontFiles.push(face.file);
+  }
+  for (const licence of new Set(FONTS.map((face) => face.licence))) {
+    const name = licence.slice("licences/".length);
+    copyFileSync(fontPath(licence), resolve(projectDir, "fonts", name));
   }
 
   const hash = createHash("sha256");

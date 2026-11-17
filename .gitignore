@@ -153,6 +153,7 @@ vite.config.ts.timestamp-*
 
 # generated outputs are committed (drift-checked in CI)
 !packages/design-tokens/dist
+!packages/brand-fonts/dist
 
 # panda fixture output
 test/fixture/styled-system
