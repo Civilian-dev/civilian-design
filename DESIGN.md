@@ -27,13 +27,13 @@ typography:
   display:
     fontFamily: Poppins
     fontSize: 2.75rem
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1.25
     letterSpacing: -0.025em
   heading-xl:
     fontFamily: Poppins
     fontSize: 1.75rem
-    fontWeight: 600
+    fontWeight: 500
     lineHeight: 1.25
     letterSpacing: -0.025em
   heading-lg:
@@ -66,7 +66,7 @@ typography:
     fontFamily: Monaspace Xenon
     fontSize: 0.875rem
     fontWeight: 400
-    lineHeight: 1.625
+    lineHeight: 1.5
 rounded:
   none: 0px
   sm: 4px
@@ -137,7 +137,7 @@ The brand guide for the Civilian Dev site, articles, profile and generated asset
 
 **How to read it.** Three sources, one job each:
 
-- **Tokens** (`packages/design-tokens`, built from Figma) hold every value. This guide names tokens and never gives a value; the YAML above is a mirror for tools that read this format, and is never edited by hand.
+- **Tokens** (`packages/design-tokens`, built from Figma) hold every value. This guide names tokens and never gives a value; the YAML above is generated from the tokens by `pnpm build` for tools that read this format, and is never edited by hand.
 - **This guide** holds intent and limits: what each thing is for, and how far it may go.
 - **The specimens** (`docs/brand-seeds`) show how everything looks, in light and dark. Copy markup and `seeds.css` from them instead of rebuilding from this text. Open them in any PR preview, or locally with `python3 -m http.server` at the repo root.
 
