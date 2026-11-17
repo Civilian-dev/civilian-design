@@ -240,7 +240,7 @@ const overlayVars = Object.entries(
   .map(([name, value]) => `${name}:${value}`)
   .join(";");
 
-const cardPage = `<main class="cv-main">
+const cardPage = `<main class="cv-main" data-audit="sheet">
 <h1 class="seed-title">Card</h1>
 <p class="seed-note">The one framed component. At 1200 by 630 it is the Open Graph image; at page width it is the top of an article (see the Article page). On its own the top-right cell carries the wordmark.</p>
 ${seed("card-weave", "Weave", "A tile repeated in the card ground, over a crisp noise gradient.", `<div class="seed-wide">${card({ ...ARTICLE, og: true, feature: { tile: "triangle", size: 32 } })}</div>`)}
@@ -333,7 +333,7 @@ const swatch = (name: string, o: PatternOptions, style = "") =>
 const calloutSwatch = (hue: Hue) =>
   `<div class="seed-swatch"><div class="cv-callout cv-callout-${hue} seed-callout-art"><div class="cv-callout-art">${calloutArt()}</div></div>${label(hue)}</div>`;
 
-const patternsPage = `<main class="cv-main">
+const patternsPage = `<main class="cv-main" data-audit="sheet">
 <h1 class="seed-title">Patterns</h1>
 <p class="seed-note">One construction: a tile repeated on a square grid, over a two-colour noise gradient. Each row turns one dial.</p>
 ${seed("tiles", "Tile", "Which piece is repeated. Grain is the gradient alone, with one anchored piece.", `<div class="seed-grid">${swatch("Triangle", { tile: "triangle" })}${swatch("Quarter-disc", { tile: "quarter-disc" })}${swatch("Half-disc", { tile: "half-disc" })}${swatch("Disc", { tile: "disc" })}${swatch("Check", { tile: "check" })}${swatch("Grain", { tile: "none", dir: "diagonal" })}</div>`)}
@@ -416,7 +416,7 @@ const DECIDED: [question: string, answer: string, by: string][] = [
 const option = (o: Option, picked: boolean) =>
   `<div class="seed-option${picked ? " seed-picked" : ""}"><p class="cv-label">${o.name}${picked ? ' <span class="seed-tag">Recommended</span>' : ""}</p>${o.html}</div>`;
 
-const decisionsPage = `<main class="cv-main" data-seed="decisions">
+const decisionsPage = `<main class="cv-main" data-seed="decisions" data-audit="sheet">
 <h1 class="seed-title">Decisions</h1>
 <p class="seed-note">The one list of design decisions for this round. Open questions first, each with the options side by side. Reply with the option name; anything decided moves to the list at the end.</p>
 ${OPEN.length ? "" : '<p class="seed-why"><strong>No open questions.</strong> Everything in this round is settled.</p>'}
