@@ -43,104 +43,94 @@ The same weave now has three separate implementations: the composer, the site's 
 
 The numbered feedback (items 1 to 19) from the session that built an article theme is addressed item by item in [Traceability](#traceability). What it said worked is kept as is: semantic roles per theme, `resolved.json`, determinism with inputs in the file name, the scheme table mapping to custom properties, and `sizes.prose`.
 
-## The v2 design in brief
+## The v2 design
 
-These are proposals until the seeds in PR 1 have been reviewed by eye.
+Settled in review on 17 Nov 2026. Open questions are not listed here: they are on the decisions page (see [Decisions](#decisions)).
 
-### One style
+### Three layers
 
-`sign` and `ledger` merge into one. There is no layout option and no layout name: there is just the frame.
+| Layer      | What it is                                                                                                                                                                            | Its job       |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **Window** | The site header and footer. They span the screen on the page ground. The footer ends with a pattern strip running edge to edge.                                                       | Where you are |
+| **Card**   | The one framed component: a 2px ink frame of cells, on its own ground (concrete in light, a lighter dark in dark). The same markup is the Open Graph image and the top of every page. | What this is  |
+| **Body**   | Reading space at prose measure, left-aligned with the card. Separated by space; the only rules are in tables.                                                                         | The content   |
 
-- **From `ledger` (layout and colour):** a 2px ink frame divided by rules into cells; label cells top and bottom; the title in the large cell; the feature filling its cell edge to edge; concrete as the standalone ground; ink doing almost all the work.
-- **From `sign` (highlights):** the route bullet in the first label cell; the key in the last cell, replacing the single red square; the weave as the default feature; the wordmark set in the heading face.
-- **Dropped:** the top band, the `layout` input, and the names `sign` and `ledger` everywhere (guide, composer, file names, seeds).
+Structure is concentrated in the window and the card so the body can be open. Hierarchy comes from the contrast between the three, not from rules everywhere.
 
-On a page, the same frame opens out: rules above and below, cells becoming rows. The seeds show exactly how, so a page header is specified rather than adapted from a card.
-
-### Grounds follow the page
-
-A piece of artwork takes the ground it sits on.
-
-- **Embedded** (page header, callout art, section texture): the page's `bg.canvas`, in either theme. The header reads as the top of the page.
-- **Standalone** (Open Graph image, profile banner, avatar): concrete in light, the dark canvas in dark.
-
-Schemes shrink to a theme (`light` or `dark`) plus a placement (`page` or `standalone`), resolved from semantic tokens. This removes the mismatch between `night` and the dark page, and the README's note that the dark scheme reads the light token set.
+The card takes its layout and colour from `ledger` (frame, cells, concrete, ink doing the work) and its highlights from `sign` (bullet, key, weave feature, wordmark). There is no top band. One cell changes with context: on its own the top-right cell carries the wordmark; on a page, where the window already has it, the section.
 
 ### Patterns are one idea with a few dials
 
-Today `weave`, `grain` and `stipple` are three separate things. In v2 a pattern is always the same construction:
+A pattern is always the same construction:
 
-> one tile, repeated on a square grid in the ground colour, over a two-colour noise gradient.
+> one tile, repeated on a square grid in the colour of the surface it sits on, over a two-colour noise gradient, so the noise shows only through the gaps.
 
-| Dial     | Options                                                                            |
-| -------- | ---------------------------------------------------------------------------------- |
-| Tile     | none (plain grain), triangle, quarter-disc, half-disc, square (check), disc (dots) |
-| Turn     | quarter turns only                                                                 |
-| Scale    | fine, regular, coarse (whole tiles across the region)                              |
-| Gradient | down, diagonal, from one edge (fade to ground)                                     |
-| Pair     | from the theme's list of allowed colour pairs                                      |
+| Dial     | Options                                                                               |
+| -------- | ------------------------------------------------------------------------------------- |
+| Tile     | none (grain, with one anchored piece), triangle, quarter-disc, half-disc, check, disc |
+| Turn     | quarter turns only                                                                    |
+| Scale    | fine, regular, coarse (whole tiles across the region)                                 |
+| Gradient | down, diagonal, from one edge                                                         |
+| Pair     | from the theme's list of allowed colour pairs                                         |
+| Noise    | crisp in artwork (card, footer strip); soft on interface surfaces (callouts)          |
 
-That gives real variety from one rule (P7). The seed chooses among allowed dial settings, never a position or a size.
-
-Patterns ship two ways:
-
-- **A function** for anything rendered without a browser (Open Graph rasters, PDFs): returns SVG with resolved colours.
-- **CSS** for pages: colour-free mask assets plus a small stylesheet driven by custom properties (`from`, `to`, `ground`, `tile`). Because the colours come from semantic tokens, dark mode needs no second set of art.
-
-The mask approach depends on SVG filters rendering inside CSS masks in Chromium, Firefox and WebKit, and in print. PR 6 starts with that check; the fallback is pre-rendered noise masks.
+The seed chooses among allowed settings, never a position or a size. Patterns ship as a function for rasters and PDFs, and as CSS driven by custom properties for pages, so dark mode needs no second set of art. The seeds already work this way with inline SVG; PR 6 checks whether CSS masks render the noise in all three browser engines and in print.
 
 ### Where patterns go
 
-This table is the "clear and prominent guideline". It goes at the top of the Graphics section of `DESIGN.md`, in the package README and in the Claude skill, word for word.
+This table goes at the top of the Graphics section of `DESIGN.md`, in the package README and in the Claude skill, word for word.
 
-| Element                                                    | Pattern allowed                                                              | Extent                                                                       | Never                                          |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------- |
-| Page header, card                                          | One feature cell: any tiled pattern, or grain with one anchored piece        | The feature cell only: at most 30% of the width, the full height of its cell | A second feature; a pattern behind text        |
-| Callout                                                    | An edge fade from the right, optionally one small piece anchored in a corner | At most the art-width token (240px today), gone before the text              | A tiled pattern; art on a callout with no tint |
-| Section texture                                            | Any pattern, no pieces                                                       | Full width, a fixed number of tile rows                                      | Text over it                                   |
-| Pull quote, table, list, index, attachments, code, diagram | None                                                                         |                                                                              | Any pattern or piece                           |
-
-One feature per view still holds (L5): a page with a patterned header does not also get a section texture in the first screen.
+| Element                   | Pattern                                                                          | Extent                                                         | Never                 |
+| ------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------------------- |
+| Card                      | One feature cell: a tiled pattern, or grain with one anchored piece. Crisp noise | The feature cell, whole tiles                                  | A pattern behind text |
+| Footer                    | One strip. Crisp noise                                                           | Three tile rows, edge to edge                                  | Content over it       |
+| Callout                   | A fine tile in the tint over a soft noise fade from the right edge               | At most 240px and a third of the callout, gone before the text | Pieces                |
+| Anything else in the body | None                                                                             |                                                                | Any pattern or piece  |
 
 ### A theme contract
 
-`DESIGN.md` gains a short section that sorts every decision a derivative theme can face into three groups, so an agent knows what it may change.
+`DESIGN.md` sorts every choice a derivative theme can face into three groups, so an agent knows what it may change. The same contract becomes a typed `defineTheme()` in `brand-graphics`.
 
-| Group       | Meaning                   | Examples                                                                                                                |
-| ----------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Fixed**   | Never changes             | Type roles, ink on ground, rule widths, square corners in artwork, label style, one feature per view, where patterns go |
-| **Bounded** | Choose from a stated list | Theme, pattern dials, callout hue, corner piece, bullet letter                                                          |
-| **Free**    | Yours                     | Content, wordmark text, section names, which elements a page uses                                                       |
+| Group       | Meaning                   | Examples                                                                                                 |
+| ----------- | ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Fixed**   | Never changes             | The three layers, type roles, ink on ground, rule widths, square artwork, label style, where patterns go |
+| **Bounded** | Choose from a stated list | Theme, pattern dials, callout hue, bullet letter                                                         |
+| **Free**    | Yours                     | Content, wordmark text, section names, which elements a page uses                                        |
 
-The same contract becomes a typed `defineTheme()` in `brand-graphics`, so bounded choices are checked by the compiler and a theme is a small object, not a stylesheet written from scratch.
+### Specimens, not descriptions
 
-### An element catalogue with seeds
+Every element a page can contain has a built specimen in `docs/brand-seeds`, previewed on every PR, and each element carries a `data-seed` name. The specimen is the reference for appearance: the guide states intent and limits and links to it, rather than describing it in words.
 
-Every element a page can contain gets an entry in the guide (anatomy, tokens, rules) and a seed. New in v2: page header, standfirst, index (list of articles), ordered, unordered and definition lists, attachments, table, pull quote, figure, diagram, footnotes, and print.
+## Decisions
 
-Seeds change from hand-made images to **built specimens**: HTML written against `tokens.css` and the pattern CSS, generated by a script, with a rendered image beside each. The image is for judging by eye; the HTML is what an agent copies from. Each seed lists the rule ids it shows.
+**Design questions live in one list:** `decisions.html` in the seeds, with the options side by side, previewed on every PR. Its source is `OPEN` and `DECIDED` in `packages/brand-graphics/scripts/seeds.ts`. Do not copy the list into this file or a PR description; link to it.
 
-## Decisions needed
+Technical calls, made without asking:
 
-Each has a recommendation so work can start; the seeds in PR 1 exist to confirm or overturn them.
+- **Fonts:** a new published package, `brand-fonts`, with the files, their licences and an `@font-face` stylesheet. `claude-design-system` uses it instead of its own copies.
+- **Element CSS:** stays the seeds' reference stylesheet until a second site needs it as a package.
+- **Dark grounds:** no `night` scheme. Artwork reads the dark semantic tokens.
+- **`src/reserve`:** all five pattern tiles are already in `src/shapes`, so the folder is deleted in PR 6.
 
-| Id  | Decision                                                                          | Recommendation                                                                                                                                                 |
-| --- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| D1  | Heading weight: tokens say 500 for display and h1, the guide and composer say 600 | 600. Change the text styles in Figma                                                                                                                           |
-| D2  | Does the top band survive anywhere?                                               | No. The frame replaces it. Show one seed with it for comparison                                                                                                |
-| D3  | Dark ground for artwork                                                           | The dark `bg.canvas`, so headers join the page. Drop the `night` teal ground                                                                                   |
-| D4  | Label style in tokens                                                             | Change `label.overline` in Figma to Monaspace Xenon 500 with `0.1em` tracking. If Token Forge cannot carry uppercase, the pattern CSS sets it                  |
-| D5  | Violet                                                                            | Interface only, which includes the info callout's tint and edge. No violet in artwork: remove it from the composer's hues, and the info callout carries no art |
-| D6  | `src/reserve`                                                                     | Promote disc (dots) and half-disc as tiles, redrawn square-cornered. Delete the rest; git history keeps it                                                     |
-| D7  | Fonts                                                                             | A new published package `brand-fonts` (files, licences, `@font-face` CSS), which `claude-design-system` then consumes instead of its own copies                |
-| D8  | Element CSS                                                                       | Not a package yet. The seed stylesheet is the reference to copy. Publish it once a second consumer needs it                                                    |
-| D9  | Default standalone ground in light                                                | Concrete, as in `ledger`. Paper only when embedded in a paper page                                                                                             |
+## Review, round 4
+
+The first unified seeds (17 Nov) were judged against the brand's intent: simple, spacious, professional, not nerdy. Some problems were the direction; others were rules that stopped the right direction.
+
+| Problem                                         | Cause                                                                               | Change                                                                                            |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Article headers less striking than the card     | The frame was "opened out" into rules for pages, losing the card                    | The card is the header, everywhere                                                                |
+| Pages read like a table                         | The guide required full-width rules on pages too (P3, L6)                           | Rules live in the card and tables; the body uses space                                            |
+| Callouts noisy and the shapes looked accidental | The guide allowed one loose piece in a callout; noise only came crisp and saturated | No pieces in callouts; a fine tile in the tint over soft noise; dark callouts on a neutral ground |
+| No clear hierarchy                              | Header, sections and footer were all made the same way                              | Three layers, each made differently                                                               |
+| Decisions hard to judge                         | The same list in three places, with ids and abstract wording                        | One decisions page with the options side by side                                                  |
+
+What stays: the brutalist card, ink and paper doing the work, rationed warmth, square artwork. The tension between "verging on brutalist" and "spacious and calm" is resolved by giving each to a different layer rather than averaging them everywhere.
 
 ## Token changes (Figma)
 
 Only you can make these; the sync PR follows. Until then `brand-graphics` exports constants with the same names.
 
-- Text styles: `heading.display` and `heading.h1` weight (D1); `label.overline` family, weight and tracking (D4).
+- Text styles: `heading.display` and `heading.h1` to weight 600. Labels need no change: `label.overline` is already Instrument Sans 600 with `0.1em` tracking, and CSS sets the uppercase.
 - `borderWidths`: `hairline` 1px, `rule` 2px, `edge` 4px.
 - `sizes.art`: the callout art cap (240px today).
 - A description on every semantic role, so the skill stops falling back to naming hints.
@@ -153,23 +143,25 @@ One concern per PR, squash-merged, in this order. Each is sized for one session 
 
 ### Phase 1: settle the style
 
-**PR 1. `docs(brand-seeds)`: unified style seeds** `[ ]`
+**PR 1. `docs(brand-seeds)`: unified style seeds** `[x]`
 
-- Build specimens with a script (`docs/brand-seeds/build.ts`, output committed): card; page header (light and dark); index; lists; attachments; table; callouts in each hue and in dark; pull quote; code; diagram; a print page.
-- Include the comparisons the decisions need: band or no band (D2), 500 or 600 (D1), concrete or paper (D9).
-- Retire the round 1 to 3 images to an `archive/` folder; rewrite the README table.
-- Done when: you have marked each of D1 to D9 in this file, and every catalogue element has a chosen seed.
+- Specimen pages built by `packages/brand-graphics/scripts/seeds.ts`, in light and dark: contents, decisions, card, article, index page, patterns. Previewed on every PR; no rendered images.
+- Round 4 review applied (see above).
+- Done when: the decisions page has no open questions.
 
 **PR 2. `docs`: `DESIGN.md` v2** `[ ]`
 
-- One style; the theme contract; the element catalogue; the pattern placement table; a Print section; a Diagrams section; an `article` artefact (A7) with the page margin tied to the header margin, so title and body share a left edge.
-- Open with "How to read this guide": precedence (tokens for values, the guide for usage, seeds for appearance), and what to do when something is not covered (use the nearest element, do not invent, report the gap).
-- Remove every mention of `sign`, `ledger`, the band and `src/reserve`.
-- Done when: every seed's rule ids exist in the guide, and no rule contradicts a token or the composer.
+The aim is a shorter guide that is easier to follow. The current one has about 330 lines and 50 numbered rules, and several of them pulled against each other (structure everywhere against space; rationed colour against a callout piece). An agent weighing that many rules guesses.
+
+- **Budget:** about 150 lines of prose and at most 12 numbered rules. A rule earns a number only if a test or a review cites it.
+- **Order:** how to read the guide (tokens for values, the guide for intent and limits, the seeds for appearance; when something is not covered, use the nearest specimen and report the gap); the three layers; colour; type; patterns (the dials and the placement table); the theme contract; artefact sizes.
+- **One place per fact:** no values in prose (the front matter is generated, PR 9); no description of what a specimen shows; the README, the skill and this plan link to the guide instead of restating it.
+- **Remove:** `sign`, `ledger`, the band, schemes, `src/reserve`, the banned-motif list beyond one line, and rules that only restate a token.
+- Done when: it is within budget, every rule a seed shows exists in it, and no rule contradicts a token, a specimen or the composer.
 
 ### Phase 2: tokens
 
-**PR 3. `feat(design-tokens)`: weights, label style, border widths** `[ ]`
+**PR 3. `feat(design-tokens)`: heading weights and border widths** `[ ]`
 
 - The Token Forge sync after the Figma changes above. Needs a changeset.
 - Done when: `resolved.json` carries the new values and `panda-design-preset` rebuilds.
@@ -193,13 +185,13 @@ One concern per PR, squash-merged, in this order. Each is sized for one session 
 - Start with the mask rendering check (three engines and print). Record the result here.
 - `pattern(options)` with the dials above; pattern CSS and mask assets; `texture()` and the header feature both built on it, with the seed choosing the pair in both.
 - `calloutArt({ hue, piece, corner, seed, theme })`, the seed choosing among allowed pieces and corners when none is given, so several callouts on a page differ.
-- Promote the D6 tiles; delete `src/reserve`.
+- Delete `src/reserve`; the five tiles are in `src/shapes`.
 - Replace the weave in `claude-design-system`'s cover with the library.
 - Done when: the three weave implementations are one, and the callout and header seeds are rendered by these functions.
 
 **PR 7. `feat(brand-graphics)`: one layout, exported geometry** `[ ]`
 
-- The unified frame replaces `sign` and `ledger`; themes replace schemes (D3, D9). Breaking; regenerate examples.
+- The unified frame replaces `sign` and `ledger`; themes replace schemes. Breaking; regenerate examples.
 - `layout(options)` returns every zone and type size. The same values go on the SVG as `data-` attributes and are available as custom properties, so a page can set its title in HTML on the composer's grid.
 - Export `put`, `rect`, `Box` and the constants. A `wordmark` option.
 - `defineTheme()` with the bounded choices typed.
@@ -208,14 +200,14 @@ One concern per PR, squash-merged, in this order. Each is sized for one session 
 **PR 8. `feat(brand-graphics)`: rasters and diagram theme** `[ ]`
 
 - PNG output for Open Graph images with fonts from `brand-fonts`.
-- `mermaidTheme(theme)`: ink on ground, 2px rules, square corners, mono uppercase cluster labels, one inverse node for the output. The Diagrams section of the guide says to keep graphs to one spine with a single fan-out.
+- `mermaidTheme(theme)`: ink on ground, 2px rules, square corners, cluster labels in the label style, one inverse node for the output. The Diagrams section of the guide says to keep graphs to one spine with a single fan-out.
 - Done when: the diagram seed is produced by the exported theme.
 
 ### Phase 4: agent surfaces
 
 **PR 9. `feat(claude-design-system)`: skill v2** `[ ]`
 
-- Ship `DESIGN.md`, the pattern placement table, the theme contract, the seeds (images and specimen HTML) and a short `brand-graphics` API summary. Remove the "coming" line and say where each bundled reference comes from in the repo.
+- Ship `DESIGN.md`, the pattern placement table, the theme contract, the seed specimen pages and a short `brand-graphics` API summary. Remove the "coming" line and say where each bundled reference comes from in the repo.
 - Generate the `DESIGN.md` front matter from the tokens between markers, and fail the build if it drifts.
 - Done when: a fresh session using only the installed skill can name the allowed patterns for a callout and find the specimen for an attachments list.
 
@@ -236,19 +228,19 @@ Feedback items from the article build, and where each is handled.
 | Item | Summary                                    | Handled in                               |
 | ---- | ------------------------------------------ | ---------------------------------------- |
 | 1    | `brand-graphics` unpublished, no `exports` | PR 5                                     |
-| 2    | Fonts not distributed                      | PR 4 (D7)                                |
+| 2    | Fonts not distributed                      | PR 4                                     |
 | 3    | Skill behind the repo                      | PR 9                                     |
 | 4    | No exported geometry                       | PR 7                                     |
 | 5    | `put()` private                            | PR 7                                     |
 | 6    | Callout art varies only by hue             | PR 6                                     |
 | 7    | `texture()` ignores the seed for colour    | PR 6                                     |
 | 8    | Callout art light-only                     | PR 6 (pattern CSS reads semantic tokens) |
-| 9    | `night` ground is not the dark page ground | D3, PR 7                                 |
+| 9    | `night` ground is not the dark page ground | PR 7                                     |
 | 10   | Wordmark baked in                          | PR 7                                     |
-| 11   | Heading weight                             | D1, PR 3                                 |
-| 12   | Label styles                               | D4, PR 3                                 |
-| 13   | Violet                                     | D5, PR 2 and PR 6                        |
-| 14   | `src/reserve`                              | D6, PR 6                                 |
+| 11   | Heading weight                             | PR 3                                     |
+| 12   | Label styles                               | Decided: Instrument Sans, as the tokens  |
+| 13   | Violet                                     | Decided: a callout hue like the others   |
+| 14   | `src/reserve`                              | PR 6                                     |
 | 15   | No rule-width or art-size tokens           | PR 3, with interim constants in PR 5     |
 | 16   | No pull quote                              | PR 1, PR 2                               |
 | 17   | No print rules                             | PR 1, PR 2                               |
@@ -258,5 +250,5 @@ Feedback items from the article build, and where each is handled.
 ## Not in v2
 
 - The component library and Storybook (stages 5 and 6 of the old plan). They should follow v2, built on the element catalogue.
-- A published element stylesheet (D8).
-- A final wordmark lock-up, and any new shapes beyond the D6 tiles.
+- A published element stylesheet.
+- A final wordmark lock-up, and any new shapes beyond the pattern tiles.

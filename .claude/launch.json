@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4173", "--directory", "packages/brand-graphics"],
       "port": 4173
+    },
+    {
+      "name": "brand-seeds",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4311"],
+      "port": 4311
     }
   ]
 }
