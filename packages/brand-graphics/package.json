@@ -1,6 +1,6 @@
 {
   "name": "@civilian-dev/brand-graphics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Civilian brand graphics: a small shape kit and a composer for banners, social images and backgrounds",
   "license": "MIT",
   "type": "module",
