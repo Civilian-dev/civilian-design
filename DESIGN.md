@@ -230,7 +230,7 @@ Each has a specimen with a `data-seed` name in `docs/brand-seeds`.
 - **Index and attachments** (`index`, `attachments`): a label, then rows separated by space. Paths in the code face.
 - **Table** (`table`): label heads over a 2px rule, hairlines between rows, figures in tabular numerals. No fills.
 - **Code block** (`code`): `bg.subtle` with a hairline border.
-- **Diagram** (`diagram`): ink boxes with 2px strokes on the ground, square corners, one filled box for the output. Keep to one line of steps with a single place where it fans out.
+- **Diagram** (`diagram`): ink boxes with 2px strokes on the ground, square corners, one filled box for the output. Keep to one line of steps with a single place where it fans out. Draw it with Mermaid and `mermaidTheme()` from `@civilian-dev/brand-graphics`, and mark the output `:::output`.
 - **Buttons and controls:** the primary is `brand.solid` with its contrast text, one per view; the secondary is ink text with a hairline.
 
 ## Patterns

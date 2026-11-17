@@ -22,6 +22,7 @@ const svg = compose({
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@civilian-dev/brand-graphics`                             | `compose`, `layout`, `layoutVars`, `pattern`, `calloutArt`, `avatar`, `calloutBackground` and `texture` with the shape kit and token colours built in; `defineTheme`, `put`, `rect`, `kit`, `hex`, `THEMES`, `TILES`, `CSS_PAINT`, `BORDER_WIDTHS`, `ART_WIDTH` and the types |
 | `@civilian-dev/brand-graphics/patterns.css`                | Default pattern colours as custom properties                                                                                                                                                                                                                                  |
+| `@civilian-dev/brand-graphics/raster`                      | `toPng()`: any SVG from this package as a PNG, with the brand fonts                                                                                                                                                                                                           |
 | `@civilian-dev/brand-graphics/compose`                     | The same functions taking `kit` and `hex` as their first arguments, for a custom kit or colour lookup                                                                                                                                                                         |
 | `@civilian-dev/brand-graphics/shapes/*.svg`, `/mark/*.svg` | The source SVGs, for placing pieces yourself                                                                                                                                                                                                                                  |
 
@@ -131,6 +132,49 @@ The Card specimen in `docs/brand-seeds` has the full markup (`card-overlay`).
 
 `put()` places a piece from `kit` by its top-left corner at a height, in one colour and a quarter turn; `rect()` draws a box. They are the only drawing primitives the composer uses, so an artefact built with them keeps to the same rules.
 
+## PNG output
+
+Social cards, PDFs and slides often cannot take SVG. `toPng()` renders any SVG from this package with the brand fonts from `@civilian-dev/brand-fonts`, and never with system fonts, so the image is the same on every machine.
+
+```ts
+import { compose } from "@civilian-dev/brand-graphics";
+import { toPng } from "@civilian-dev/brand-graphics/raster";
+
+const png = toPng(
+  compose({
+    width: 1200,
+    height: 630,
+    theme: "light",
+    feature: "weave",
+    seed: 11,
+    text,
+  }),
+);
+const sharp = toPng(svg, { width: 2400 }); // twice the size, for high-density screens
+```
+
+It is a separate entry point because the renderer is native code (`@resvg/resvg-js`); importing the package root never loads it.
+
+## Diagrams
+
+`mermaidTheme()` returns Mermaid options for a theme: ink on the page ground, 2px strokes, square boxes of one width, cluster labels in the label style, and a filled box for the node marked `:::output`.
+
+```ts
+import mermaid from "mermaid";
+import { mermaidTheme } from "@civilian-dev/brand-graphics";
+
+mermaid.initialize({ startOnLoad: true, ...mermaidTheme("light") });
+```
+
+```text
+flowchart LR
+  brief[Brief] --> scores[Scores]
+  scores --> a[Hosting] & b[Data]
+  a & b --> doc[Document]:::output
+```
+
+Keep a diagram to one line of steps with a single place where it fans out. The colours are resolved values, not custom properties, so initialise again with the other theme when the page theme changes. The Article specimen loads Mermaid 12.3.0.
+
 ## Using the fluid pieces
 
 The callout backgrounds and textures have no `viewBox`, so they fill any box:
@@ -146,5 +190,5 @@ On a page with CSS, prefer `calloutArt()` and `patterns.css` (see Patterns): the
 ## Known gaps
 
 - Titles are wrapped by the caller; the composer does not measure text.
-- Text uses Poppins and Instrument Sans by name. Rasterising to PNG for social cards needs the fonts embedded (PR 8 of [`docs/design-system-v2-plan.md`](../../docs/design-system-v2-plan.md), using `@civilian-dev/brand-fonts`).
+- Text in an SVG uses Poppins and Instrument Sans by name, so a page showing the SVG needs the fonts loaded (`@civilian-dev/brand-fonts/fonts.css`). `toPng()` embeds them itself.
 - Tests cover parsing, layout geometry at many sizes, whole tiles, determinism, themes, red placement, ids and `defineTheme`. Contrast and label style are not checked yet (plan PR 10).
