@@ -1,0 +1,43 @@
+{
+  "name": "@civilian-dev/brand-fonts",
+  "version": "0.1.0",
+  "description": "Civilian brand fonts: Poppins, Instrument Sans and Monaspace Xenon as woff2 for pages and OpenType files for renderers, with an @font-face stylesheet",
+  "license": "(MIT AND OFL-1.1)",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./fonts.css": "./dist/fonts.css",
+    "./woff2/*": "./dist/woff2/*",
+    "./opentype/*": "./dist/opentype/*",
+    "./licences/*": "./dist/licences/*"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Civilian-dev/civilian-design.git",
+    "directory": "packages/brand-fonts"
+  },
+  "scripts": {
+    "build": "tsx scripts/build.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "@fontsource/instrument-sans": "5.3.0",
+    "@fontsource/monaspace-xenon": "5.3.0",
+    "@fontsource/poppins": "5.3.0",
+    "@types/node": "26.6.6",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0",
+    "wawoff2": "2.0.1"
+  }
+}
