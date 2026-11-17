@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Article · Civilian brand seeds</title>
+<link rel="stylesheet" href="../../packages/design-tokens/dist/tokens.css">
+<link rel="stylesheet" href="seeds.css">
+<nav class="seed-sheet seed-nav" style="padding-bottom:0"><a class="cv-label" href="index-dark.html">Contents</a><a class="cv-label" href="card-dark.html">Card</a><span class="cv-label">Article</span><a class="cv-label" href="listing-dark.html">Index page</a><a class="cv-label" href="patterns-dark.html">Patterns</a><a class="cv-label cv-push" href="article.html">Switch to light</a></nav>
+<main class="cv-page" data-seed="article" data-rules="A7 T5 L1 L6">
+<header class="cv-header" data-seed="page-header" data-rules="L2 L3 L4 L5 G3 G4 G5">
+  <div class="cv-header-row"><span class="cv-bullet">A</span><span class="cv-label">Article · No. 012</span><span class="cv-push"><span class="cv-label cv-label-quiet">Field notes</span></span></div>
+  <div class="cv-header-body"><h1>A field guide to small libraries</h1><div class="cv-feature"><svg class="cv-pattern" data-tile="triangle" data-turn="0" data-direction="down" data-size="24" aria-hidden="true"><defs><linearGradient id="p6-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="p6-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="6" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/></filter><pattern id="p6-p" patternUnits="userSpaceOnUse" width="24" height="24" style="color:var(--cv-ground)" fill="currentColor"><g transform="translate(0 0) scale(0.2)"><path d="M0 120V0L120 120Z"/></g></pattern></defs><rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/><rect width="100%" height="100%" fill="url(#p6-g)" filter="url(#p6-f)"/><rect width="100%" height="100%" fill="url(#p6-p)"/></svg></div></div>
+  <div class="cv-header-row"><span class="cv-label cv-label-quiet">14 Nov 2026 · 6 min read</span><span class="cv-push"><span class="cv-key"><svg class="cv-piece " viewBox="0 0 120 120" fill="currentColor" style="color:var(--cv-ink)" aria-hidden="true"><circle cx="60" cy="60" r="60"/></svg><svg class="cv-piece " viewBox="0 0 120 120" fill="currentColor" style="color:var(--cv-key-2)" aria-hidden="true"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></svg><svg class="cv-piece " viewBox="0 0 120 120" fill="currentColor" style="color:var(--cv-key-3);transform:rotate(270deg)" aria-hidden="true"><path d="M0 120V0L120 120Z"/></svg></span></span></div>
+</header>
+<p class="cv-standfirst" data-seed="standfirst">How to pick, read and keep the small pieces of code that most projects are really made of.</p>
+<div class="cv-prose">
+  <p>Most software is assembled, not written. The parts that matter are small, and choosing them well is most of the job. This guide covers how to judge a small library before you depend on it, with a <a href="https://civilian.dev">short checklist</a> at the end.</p>
+
+  <aside class="cv-callout" data-seed="callout" data-rules="A4 C6 G6"><div class="cv-callout-art"><svg class="cv-pattern" data-tile="none" data-turn="0" data-direction="edge" data-size="24" aria-hidden="true"><defs><linearGradient id="p7-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/></linearGradient><filter id="p7-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/></filter></defs><rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/><rect width="100%" height="100%" fill="url(#p7-g)" filter="url(#p7-f)"/></svg><svg class="cv-piece cv-piece-bottom" viewBox="0 0 120 120" fill="currentColor" style="transform:rotate(270deg)" aria-hidden="true"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></svg></div><p class="cv-label">In short</p><p>Read the source before the README. If you cannot read it in one sitting, it is not a small library.</p></aside>
+
+  <section class="cv-section" data-seed="section" data-rules="L6"><p class="cv-label cv-label-quiet">01</p><h2>What makes a library small?</h2>
+  <p>Size is not line count. A small library does one job and says so. It can be described by an unordered list:</p>
+  <ul data-seed="list-unordered"><li>One job, named in the first line of the README.</li><li>No settings you do not need on day one.</li><li>Few or no dependencies of its own.</li></ul>
+  <p>Or by the order you would check them in:</p>
+  <ol data-seed="list-ordered"><li>Open the source and count the files.</li><li>Read the tests to see what it promises.</li><li>Check when it last changed, and why.</li></ol>
+  <p>And these are the terms used in the rest of the guide:</p>
+  <dl class="cv-terms" data-seed="list-terms"><dt class="cv-label">Surface</dt><dd>Everything you can call. Smaller is better.</dd><dt class="cv-label">Weight</dt><dd>What it adds to an install, including its own dependencies.</dd><dt class="cv-label">Upkeep</dt><dd>How often you will have to think about it again.</dd></dl>
+  </section>
+
+  <blockquote class="cv-pullquote" data-seed="pull-quote"><p>If you cannot read it in one sitting, it is not a small library.</p></blockquote>
+
+  <section class="cv-section"><p class="cv-label cv-label-quiet">02</p><h2>How do they compare?</h2>
+  <p>Three ways to parse a date, scored the same way. Use <code>npm ls</code> to check the weight yourself.</p>
+  <table class="cv-table" data-seed="table" data-rules="L2 L6"><thead><tr><th class="cv-label">Library</th><th class="cv-label">Surface</th><th class="cv-label">Weight</th><th class="cv-label">Verdict</th></tr></thead>
+  <tbody><tr><td>Hand-written</td><td class="cv-num">1</td><td class="cv-num">0 kB</td><td>Fine until time zones arrive</td></tr><tr><td>Small parser</td><td class="cv-num">4</td><td class="cv-num">2 kB</td><td>The usual answer</td></tr><tr><td>Full toolkit</td><td class="cv-num">200+</td><td class="cv-num">70 kB</td><td>Only if you need most of it</td></tr></tbody></table>
+  <pre class="cv-code" data-seed="code"><code>import { parse } from "small-parser";
+
+const date = parse("2026-11-14");</code></pre>
+  <aside class="cv-callout cv-callout-tip" data-seed="callout-tip"><div class="cv-callout-art"><svg class="cv-pattern" data-tile="none" data-turn="0" data-direction="edge" data-size="24" aria-hidden="true"><defs><linearGradient id="p8-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/></linearGradient><filter id="p8-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="8" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/></filter></defs><rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/><rect width="100%" height="100%" fill="url(#p8-g)" filter="url(#p8-f)"/></svg><svg class="cv-piece cv-piece-top" viewBox="0 0 120 120" fill="currentColor" style="transform:rotate(180deg)" aria-hidden="true"><path d="M0 120V0L120 120Z"/></svg></div><p class="cv-label">Tip</p><p>Pin the exact version. A small library can change a lot in a minor release.</p></aside>
+  <aside class="cv-callout cv-callout-note" data-seed="callout-note"><div class="cv-callout-art"><svg class="cv-pattern" data-tile="none" data-turn="0" data-direction="edge" data-size="24" aria-hidden="true"><defs><linearGradient id="p9-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/></linearGradient><filter id="p9-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="9" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/></filter></defs><rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/><rect width="100%" height="100%" fill="url(#p9-g)" filter="url(#p9-f)"/></svg></div><p class="cv-label">Note</p><p>A callout may carry the edge fade alone, with no piece.</p></aside>
+  <aside class="cv-callout cv-callout-info" data-seed="callout-info" data-rules="D5"><p class="cv-label">Info</p><p>The info callout uses the interface colour for information, so it carries no art.</p></aside>
+  </section>
+
+  <section class="cv-section"><p class="cv-label cv-label-quiet">03</p><h2>How does a choice get made?</h2>
+  <p>The same steps every time. Keep diagrams to one line of steps with a single place where it fans out.</p>
+  <figure class="cv-figure" data-seed="diagram"><svg class="cv-diagram" viewBox="0 -20 672 276" role="img" aria-label="A brief becomes a profile, then scores. Three concerns are researched, then one document is written.">
+  <g class="cv-group"><rect x="420" y="-18" width="130" height="270"/><text x="430" y="-2">Research</text></g>
+  <path d="M110 125H140M250 125H280M390 125H430M390 125H405V42H430M390 125H405V208H430M540 125H562M540 42H551V125M540 208H551V125"/>
+  <path class="cv-head" d="M133 120l7 5-7 5zM273 120l7 5-7 5zM423 120l7 5-7 5zM423 37l7 5-7 5zM423 203l7 5-7 5zM555 120l7 5-7 5z"/>
+  <g><rect x="0" y="103" width="110" height="44"/><text x="55" y="130">Brief</text></g>
+  <g><rect x="140" y="103" width="110" height="44"/><text x="195" y="130">Profile</text></g>
+  <g><rect x="280" y="103" width="110" height="44"/><text x="335" y="130">Scores</text></g>
+  <g><rect x="430" y="20" width="110" height="44"/><text x="485" y="47">Hosting</text></g>
+  <g><rect x="430" y="103" width="110" height="44"/><text x="485" y="130">Data</text></g>
+  <g><rect x="430" y="186" width="110" height="44"/><text x="485" y="213">Sign-in</text></g>
+  <g class="cv-node-out"><rect x="562" y="103" width="110" height="44"/><text x="617" y="130">Document</text></g>
+</svg><figcaption class="cv-label cv-label-quiet">Fig. 1 · From a brief to a document</figcaption></figure>
+  </section>
+
+  <section class="cv-ruled cv-attachments" data-seed="attachments"><p class="cv-label">Attachments · 3</p><ul>
+  <li><a href="#">Benchmarks</a><span class="cv-path">attachments/benchmarks</span></li>
+  <li><a href="#">Checklist</a><span class="cv-path">attachments/checklist</span></li>
+  <li><a href="#">Example project</a><span class="cv-path">examples/README</span></li></ul></section>
+
+  <section class="cv-footnotes" data-seed="footnotes"><ol><li>Sizes are minified and compressed, measured on 14 Nov 2026.</li></ol></section>
+</div>
+
+<section class="seed" id="d10"><p class="cv-label">D10 · Rounded containers</p><p class="seed-note">New question from building these seeds. The current guide rounds callouts and code blocks (S2). The specimens above are square, to match the frame. This is the rounded version for comparison.</p>
+<div class="cv-prose"><aside class="cv-callout cv-rounded"><div class="cv-callout-art"><svg class="cv-pattern" data-tile="none" data-turn="0" data-direction="edge" data-size="24" aria-hidden="true"><defs><linearGradient id="p10-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-opacity="0"/><stop offset="1" stop-opacity="0.9"/></linearGradient><filter id="p10-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="10" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood flood-color="var(--cv-pattern-to)"/><feComposite in2="t" operator="in"/></filter></defs><rect width="100%" height="100%" style="fill:var(--cv-pattern-from)"/><rect width="100%" height="100%" fill="url(#p10-g)" filter="url(#p10-f)"/></svg><svg class="cv-piece cv-piece-bottom" viewBox="0 0 120 120" fill="currentColor" style="transform:rotate(270deg)" aria-hidden="true"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></svg></div><p class="cv-label">In short</p><p>Read the source before the README.</p></aside><pre class="cv-code cv-rounded"><code>const date = parse("2026-11-14");</code></pre></div></section>
+<footer class="cv-footer" data-seed="footer"><span class="cv-wordmark">civilian.dev</span><span class="cv-push"><span class="cv-label cv-label-quiet">Plain tools for everyday builders</span></span></footer>
+</main>
+</html>
