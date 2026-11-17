@@ -1,0 +1,687 @@
+/*
+ * Reference stylesheet for the Civilian brand seeds. Hand-written.
+ * Every value comes from tokens.css; names follow DESIGN.md.
+ * Copy from here when building a theme. Do not add values of your own.
+ */
+
+@font-face {
+  font-family: Poppins;
+  font-weight: 500;
+  src: url("../../packages/claude-design-system/design-system/project/fonts/poppins-latin-500-normal.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: Poppins;
+  font-weight: 600;
+  src: url("../../packages/claude-design-system/design-system/project/fonts/poppins-latin-600-normal.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-weight: 400;
+  src: url("../../packages/claude-design-system/design-system/project/fonts/instrument-sans-latin-400-normal.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Instrument Sans";
+  font-weight: 600;
+  src: url("../../packages/claude-design-system/design-system/project/fonts/instrument-sans-latin-600-normal.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Monaspace Xenon";
+  font-weight: 400;
+  src: url("../../packages/claude-design-system/design-system/project/fonts/monaspace-xenon-latin-400-normal.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Monaspace Xenon";
+  font-weight: 500;
+  src: url("../../packages/claude-design-system/design-system/project/fonts/monaspace-xenon-latin-500-normal.woff2")
+    format("woff2");
+}
+
+/* --- the contract: what a theme reads -------------------------------------- */
+
+:root {
+  /* Embedded artwork takes the page ground. */
+  --cv-ground: var(--colors-bg-canvas);
+  --cv-ink: var(--colors-fg-default);
+  --cv-muted: var(--colors-fg-subtle);
+  /* The signal colour has no semantic role yet (see the plan's token list). */
+  --cv-signal: var(--colors-red-500);
+  --cv-key-2: var(--colors-red-500);
+  --cv-key-3: var(--colors-highlight-solid);
+
+  /* Rule widths, until borderWidths tokens exist. */
+  --cv-hairline: 1px;
+  --cv-rule: 2px;
+  --cv-edge: 4px;
+  /* The widest a callout's art may be. */
+  --cv-art: 240px;
+
+  /* Pattern dials that CSS can set. Tile and turn are set where it is drawn. */
+  --cv-pattern-from: var(--colors-fg-default);
+  --cv-pattern-to: var(--colors-red-500);
+
+  --cv-heading-weight: var(--font-weights-semibold);
+  --cv-margin: clamp(var(--spacing-6), 6vw, var(--spacing-16));
+}
+
+:root[data-theme="dark"] {
+  --cv-pattern-from: var(--colors-accent-solid);
+}
+
+/* Standalone artwork (cards, avatars) sits on concrete in light. */
+.cv-standalone {
+  --cv-ground: var(--colors-bg-emphasized);
+}
+:root[data-theme="dark"] .cv-standalone {
+  --cv-ground: var(--colors-bg-canvas);
+}
+
+/* --- base ----------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--colors-bg-canvas);
+  color: var(--cv-ink);
+  font-family: var(--fonts-body);
+  font-size: var(--font-sizes-md);
+  line-height: var(--line-heights-relaxed);
+}
+h1,
+h2,
+h3 {
+  font-family: var(--fonts-heading);
+  font-weight: var(--cv-heading-weight);
+  line-height: var(--line-heights-tight);
+  margin: 0;
+}
+a {
+  color: var(--colors-brand-fg);
+  text-underline-offset: 0.2em;
+}
+
+/* The label: the only uppercase text in the system. */
+.cv-label {
+  font-family: var(--fonts-mono);
+  font-size: var(--font-sizes-xs);
+  font-weight: var(--font-weights-medium);
+  letter-spacing: var(--letter-spacings-widest);
+  line-height: var(--line-heights-tight);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cv-ink);
+  margin: 0;
+}
+.cv-label-quiet {
+  color: var(--cv-muted);
+}
+
+.cv-wordmark {
+  font-family: var(--fonts-heading);
+  font-weight: var(--font-weights-semibold);
+  font-size: var(--font-sizes-lg);
+  letter-spacing: var(--letter-spacings-tight);
+}
+
+/* The bullet: one per composition, a disc carrying one letter. */
+.cv-bullet {
+  display: inline-grid;
+  place-items: center;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  border-radius: var(--radii-full);
+  background: var(--cv-signal);
+  color: var(--cv-ground);
+  font-family: var(--fonts-heading);
+  font-weight: var(--font-weights-semibold);
+  font-size: var(--font-sizes-lg);
+  line-height: 1;
+}
+
+/* The key: two or three pieces of one size on one baseline. */
+.cv-key {
+  display: inline-flex;
+  gap: var(--spacing-3);
+}
+.cv-key svg {
+  width: var(--spacing-8);
+  height: var(--spacing-8);
+  display: block;
+}
+
+/* A pattern fills its box. Colours come from the custom properties above. */
+.cv-pattern {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cv-feature {
+  position: relative;
+  background: var(--cv-ground);
+}
+.cv-feature .cv-anchor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 66%;
+  aspect-ratio: 1;
+  color: var(--cv-ink);
+}
+
+/* --- the frame, closed: cards --------------------------------------------- */
+
+.cv-card {
+  width: 1200px;
+  height: 630px;
+  /* Half a rule less than the token, so the feature is exactly twelve tiles high. */
+  padding: calc(var(--spacing-8) - var(--cv-rule) / 2)
+    calc(var(--spacing-8) + var(--spacing-2));
+  background: var(--cv-ground);
+  color: var(--cv-ink);
+  /* 32px: eleven tiles across the feature, twelve down. */
+  --cv-tile: var(--spacing-8);
+}
+.cv-card.cv-has-band {
+  border-top: var(--spacing-6) solid var(--cv-ink);
+}
+.cv-frame {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr calc(var(--cv-tile) * 11);
+  grid-template-rows: auto 1fr auto;
+  gap: var(--cv-rule);
+  padding: var(--cv-rule);
+  /* The rules are the gaps: ink shows between cells. */
+  background: var(--cv-ink);
+}
+.cv-cell {
+  background: var(--cv-ground);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: 0 var(--spacing-8);
+  min-height: calc(var(--spacing-16) + var(--spacing-6));
+}
+.cv-cell .cv-label {
+  font-size: var(--font-sizes-md);
+}
+.cv-cell-title {
+  padding-top: var(--spacing-6);
+  padding-bottom: var(--spacing-6);
+}
+.cv-cell-title h1 {
+  font-size: 5.5rem;
+  line-height: 1.1;
+  letter-spacing: var(--letter-spacings-tight);
+}
+.cv-cell-feature {
+  padding: 0;
+}
+.cv-push {
+  margin-left: auto;
+}
+.cv-span {
+  grid-column: 1 / -1;
+}
+
+/* --- the frame, open: page headers ----------------------------------------- */
+
+.cv-page {
+  max-width: var(--sizes-6xl);
+  margin: 0 auto;
+  padding: var(--spacing-12) var(--cv-margin) var(--spacing-24);
+  --cv-tile: 24px;
+}
+.cv-header {
+  border-top: var(--cv-rule) solid var(--cv-ink);
+  border-bottom: var(--cv-rule) solid var(--cv-ink);
+}
+.cv-header-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  min-height: var(--spacing-16);
+}
+.cv-header-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border-top: var(--cv-rule) solid var(--cv-ink);
+  border-bottom: var(--cv-rule) solid var(--cv-ink);
+}
+.cv-header-body h1 {
+  align-self: center;
+  padding: var(--spacing-8) var(--spacing-8) var(--spacing-8) 0;
+  font-size: var(--font-sizes-display);
+  letter-spacing: var(--letter-spacings-tight);
+}
+.cv-header-body .cv-feature {
+  /* Whole tiles: ten across, eight down. */
+  width: calc(var(--cv-tile) * 10);
+  min-height: calc(var(--cv-tile) * 8);
+  border-left: var(--cv-rule) solid var(--cv-ink);
+}
+@media (max-width: 640px) {
+  /* A header with no feature is complete (L5). */
+  .cv-header-body .cv-feature {
+    display: none;
+  }
+}
+.cv-standfirst {
+  max-width: var(--sizes-prose);
+  margin: var(--spacing-8) 0 0;
+  font-size: var(--font-sizes-lg);
+}
+
+/* --- prose ----------------------------------------------------------------- */
+
+.cv-prose {
+  max-width: var(--sizes-prose);
+}
+.cv-prose > p,
+.cv-prose > ul,
+.cv-prose > ol {
+  margin: var(--spacing-4) 0 0;
+}
+.cv-section {
+  margin-top: var(--spacing-16);
+  padding-top: var(--spacing-4);
+  border-top: var(--cv-rule) solid var(--cv-ink);
+}
+.cv-section h2 {
+  margin-top: var(--spacing-2);
+  font-size: var(--font-sizes-xl);
+  letter-spacing: var(--letter-spacings-tight);
+}
+.cv-prose code {
+  font-family: var(--fonts-mono);
+  font-size: 0.9em;
+  background: var(--colors-bg-muted);
+  padding: 0 var(--spacing-1);
+}
+
+/* Lists: a small square, a mono numeral, or ruled rows. */
+.cv-prose ul,
+.cv-prose ol {
+  list-style: none;
+  padding-left: var(--spacing-8);
+}
+.cv-prose li {
+  position: relative;
+  margin-top: var(--spacing-2);
+}
+.cv-prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--spacing-6) * -1);
+  top: 0.65em;
+  width: 6px;
+  height: 6px;
+  background: var(--cv-ink);
+}
+.cv-prose ol {
+  counter-reset: item;
+}
+.cv-prose ol > li {
+  counter-increment: item;
+}
+.cv-prose ol > li::before {
+  content: counter(item, decimal-leading-zero);
+  position: absolute;
+  left: calc(var(--spacing-8) * -1);
+  top: 0.35em;
+  font-family: var(--fonts-mono);
+  font-size: var(--font-sizes-xs);
+  font-weight: var(--font-weights-medium);
+  color: var(--cv-muted);
+}
+.cv-terms {
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  margin: var(--spacing-6) 0 0;
+  border-top: var(--cv-hairline) solid var(--colors-border-emphasized);
+}
+.cv-terms dt,
+.cv-terms dd {
+  margin: 0;
+  padding: var(--spacing-3) 0;
+  border-bottom: var(--cv-hairline) solid var(--colors-border-emphasized);
+}
+.cv-terms dt {
+  padding-top: calc(var(--spacing-3) + 0.3em);
+}
+
+/* Ruled lists: the index and attachments. A rule, a label, hairlines. */
+.cv-ruled {
+  margin: var(--spacing-12) 0 0;
+  border-top: var(--cv-rule) solid var(--cv-ink);
+}
+.cv-ruled > .cv-label {
+  padding: var(--spacing-4) 0;
+}
+.cv-ruled ol,
+.cv-ruled ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cv-prose .cv-ruled li::before {
+  content: none;
+}
+.cv-prose .cv-ruled li {
+  margin-top: 0;
+}
+.cv-ruled li {
+  display: grid;
+  gap: var(--spacing-6);
+  align-items: baseline;
+  padding: var(--spacing-4) 0;
+  border-top: var(--cv-hairline) solid var(--colors-border-emphasized);
+}
+.cv-index li {
+  grid-template-columns: var(--spacing-8) 1fr auto;
+}
+.cv-index h3 {
+  font-size: var(--font-sizes-lg);
+}
+.cv-index h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.cv-index p {
+  margin: var(--spacing-1) 0 0;
+  max-width: var(--sizes-prose);
+  font-size: var(--font-sizes-sm);
+  color: var(--cv-muted);
+}
+.cv-attachments li {
+  grid-template-columns: 1fr auto;
+}
+.cv-path {
+  font-family: var(--fonts-mono);
+  font-size: var(--font-sizes-sm);
+  color: var(--cv-muted);
+}
+
+/* Table: rules and hairlines. No fills. */
+.cv-table {
+  width: 100%;
+  margin-top: var(--spacing-6);
+  border-collapse: collapse;
+  border-top: var(--cv-rule) solid var(--cv-ink);
+  font-size: var(--font-sizes-sm);
+}
+.cv-table th {
+  text-align: left;
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) 0;
+  border-bottom: var(--cv-rule) solid var(--cv-ink);
+}
+.cv-table td {
+  padding: var(--spacing-3) var(--spacing-4) var(--spacing-3) 0;
+  border-bottom: var(--cv-hairline) solid var(--colors-border-emphasized);
+  vertical-align: top;
+}
+.cv-table .cv-num {
+  font-family: var(--fonts-mono);
+}
+
+/* Callout: an aside. Tint, edge, and at most an edge fade with one piece. */
+.cv-callout {
+  --cv-tint: var(--colors-accent-subtle);
+  --cv-tone: var(--colors-accent-solid);
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--spacing-8);
+  padding: var(--spacing-6);
+  background: var(--cv-tint);
+  border-left: var(--cv-edge) solid var(--cv-tone);
+  /* The art dissolves into the tint, not the page. */
+  --cv-ground: var(--cv-tint);
+  --cv-pattern-from: var(--cv-tint);
+  --cv-pattern-to: var(--cv-tone);
+}
+.cv-callout-tip {
+  --cv-tint: var(--colors-highlight-subtle);
+  --cv-tone: var(--colors-highlight-solid);
+}
+.cv-callout-note {
+  --cv-tint: var(--colors-brand-subtle);
+  --cv-tone: var(--colors-brand-solid);
+}
+.cv-callout-info {
+  --cv-tint: var(--colors-info-subtle);
+  --cv-tone: var(--colors-info-solid);
+}
+.cv-callout.cv-rounded {
+  border-radius: var(--radii-md);
+}
+/* Text stops where the art starts (C6). */
+.cv-callout > :not(.cv-callout-art) {
+  position: relative;
+  max-width: calc(100% - min(var(--cv-art), 33%));
+}
+.cv-callout-info > :not(.cv-callout-art) {
+  max-width: none;
+}
+.cv-callout p {
+  margin: var(--spacing-2) 0 0;
+}
+.cv-callout-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(var(--cv-art), 33%);
+}
+.cv-callout-art .cv-piece {
+  position: absolute;
+  right: 0;
+  width: var(--spacing-12);
+  height: var(--spacing-12);
+  color: var(--cv-ink);
+}
+.cv-callout-art .cv-piece-bottom {
+  bottom: 0;
+}
+.cv-callout-art .cv-piece-top {
+  top: 0;
+}
+
+/* Pull quote: the author's own words, lifted. Not a callout: no tint, no art. */
+.cv-pullquote {
+  margin: var(--spacing-12) 0 0;
+  padding-left: var(--spacing-8);
+  position: relative;
+}
+.cv-pullquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: var(--spacing-3);
+  height: var(--spacing-3);
+  background: var(--cv-ink);
+}
+.cv-pullquote p {
+  margin: 0;
+  font-family: var(--fonts-heading);
+  font-weight: var(--font-weights-medium);
+  font-size: var(--font-sizes-xl);
+  line-height: var(--line-heights-snug);
+  letter-spacing: var(--letter-spacings-tight);
+}
+
+/* Code block. */
+.cv-code {
+  margin: var(--spacing-6) 0 0;
+  padding: var(--spacing-4);
+  overflow: auto;
+  background: var(--colors-bg-subtle);
+  border: var(--cv-hairline) solid var(--colors-border-emphasized);
+  font-family: var(--fonts-mono);
+  font-size: var(--font-sizes-sm);
+  line-height: var(--line-heights-relaxed);
+}
+.cv-code.cv-rounded {
+  border-radius: var(--radii-md);
+}
+
+/* Figure and diagram. */
+.cv-figure {
+  margin: var(--spacing-8) 0 0;
+}
+.cv-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.cv-figure figcaption {
+  margin-top: var(--spacing-3);
+}
+.cv-diagram rect {
+  fill: var(--colors-bg-canvas);
+  stroke: var(--cv-ink);
+  stroke-width: 2;
+}
+.cv-diagram .cv-node-out rect {
+  fill: var(--cv-ink);
+}
+.cv-diagram .cv-group rect {
+  stroke: var(--colors-border-emphasized);
+  stroke-width: 1;
+}
+.cv-diagram path {
+  fill: none;
+  stroke: var(--cv-ink);
+  stroke-width: 2;
+}
+.cv-diagram .cv-head {
+  fill: var(--cv-ink);
+  stroke: none;
+}
+.cv-diagram text {
+  fill: var(--cv-ink);
+  font-family: var(--fonts-body);
+  font-size: 14px;
+  text-anchor: middle;
+}
+.cv-diagram .cv-node-out text {
+  fill: var(--colors-bg-canvas);
+}
+.cv-diagram .cv-group text {
+  font-family: var(--fonts-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-anchor: start;
+}
+
+/* Section texture: a pattern alone, a fixed number of tile rows. */
+.cv-texture {
+  height: calc(var(--cv-tile) * 3);
+  margin-top: var(--spacing-16);
+}
+
+/* Footnotes and footer. */
+.cv-footnotes {
+  margin-top: var(--spacing-16);
+  padding-top: var(--spacing-4);
+  border-top: var(--cv-hairline) solid var(--colors-border-emphasized);
+  font-size: var(--font-sizes-sm);
+}
+.cv-footer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-24);
+  padding-top: var(--spacing-4);
+  border-top: var(--cv-rule) solid var(--cv-ink);
+}
+
+/* --- seed sheet chrome (not part of the style) ----------------------------- */
+
+.seed-sheet {
+  padding: var(--spacing-12) var(--cv-margin);
+}
+.seed-sheet > h1 {
+  font-size: var(--font-sizes-xl);
+}
+.seed {
+  margin-top: var(--spacing-12);
+}
+.seed > .cv-label {
+  margin-bottom: var(--spacing-3);
+}
+.seed-note {
+  max-width: var(--sizes-prose);
+  margin: var(--spacing-2) 0 var(--spacing-4);
+  font-size: var(--font-sizes-sm);
+  color: var(--cv-muted);
+}
+.seed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, calc(var(--cv-tile) * 10));
+  gap: var(--spacing-8);
+  --cv-tile: 24px;
+}
+.seed-grid .cv-feature {
+  height: calc(var(--cv-tile) * 10);
+  border: var(--cv-rule) solid var(--cv-ink);
+  margin-bottom: var(--spacing-2);
+}
+.seed-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-6);
+  margin-top: var(--spacing-4);
+}
+
+/* --- print (proposed Print rules) ------------------------------------------ */
+
+@page {
+  size: A4;
+  margin: 18mm 16mm 20mm;
+}
+@media print {
+  /* Unprinted paper is the ground. Patterns and tints still print. */
+  :root {
+    --cv-ground: var(--colors-base-white);
+  }
+  body {
+    background: none;
+  }
+  * {
+    print-color-adjust: exact;
+  }
+  .cv-page {
+    max-width: none;
+    padding: 0;
+  }
+  h1,
+  h2,
+  h3,
+  .cv-label {
+    break-after: avoid;
+  }
+  .cv-header,
+  .cv-callout,
+  .cv-pullquote,
+  .cv-figure,
+  .cv-code,
+  .cv-table tr,
+  .cv-ruled li {
+    break-inside: avoid;
+  }
+  .cv-prose a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--fonts-mono);
+    font-size: var(--font-sizes-xs);
+  }
+  .seed-nav {
+    display: none;
+  }
+}
