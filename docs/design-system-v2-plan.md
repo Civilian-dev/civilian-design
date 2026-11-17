@@ -149,7 +149,7 @@ One concern per PR, squash-merged, in this order. Each is sized for one session 
 - Round 4 review applied (see above).
 - Done when: the decisions page has no open questions.
 
-**PR 2. `docs`: `DESIGN.md` v2** `[ ]`
+**PR 2. `docs`: `DESIGN.md` v2** `[x]`
 
 The aim is a shorter guide that is easier to follow. The current one has about 330 lines and 50 numbered rules, and several of them pulled against each other (structure everywhere against space; rationed colour against a callout piece). An agent weighing that many rules guesses.
 
@@ -168,11 +168,12 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 
 ### Phase 3: packages
 
-**PR 4. `feat(brand-fonts)`: new package** `[ ]`
+**PR 4. `feat(brand-fonts)`: new package** `[x]`
 
-- Poppins, Instrument Sans and Monaspace Xenon as woff2 (pages) and ttf (rasterisers), each licence beside its files, one `fonts.css`.
+- Poppins, Instrument Sans and Monaspace Xenon as woff2 (pages) and OpenType (renderers), each licence beside its files, one `fonts.css`.
 - `claude-design-system` reads its fonts from here.
-- Done when: a page that imports only `tokens.css` and `fonts.css` renders all three faces offline.
+- Done when: a page that imports only `tokens.css` and `fonts.css` renders all three faces offline. Checked in Chromium: every face loaded from the package, with no other font requests.
+- Changed from the plan: Monaspace Xenon decodes to CFF outlines, so its renderer files are `.otf`; the folder is `opentype/`, not `ttf/`.
 
 **PR 5. `build(brand-graphics)`: publishable build** `[ ]`
 
