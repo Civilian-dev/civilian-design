@@ -193,14 +193,15 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
   - **The Design System cover keeps its own weave.** Its card format allows only token variables and one SVG, and the cover's weave is flat block colour with no noise, so the library does not fit it.
   - **The composer's weave and grain move to the library in PR 7**, when the composer is rewritten for the one card layout.
 
-**PR 7. `feat(brand-graphics)`: one layout, exported geometry** `[ ]`
+**PR 7. `feat(brand-graphics)`: one layout, exported geometry** `[x]`
 
-- The unified frame replaces `sign` and `ledger`; themes replace schemes. Breaking; regenerate examples.
-- The card's feature, the footer strip, `texture()` and `calloutBackground()` are drawn with `pattern()` and `calloutArt()`, so there is one weave in the package.
-- `layout(options)` returns every zone and type size. The same values go on the SVG as `data-` attributes and are available as custom properties, so a page can set its title in HTML on the composer's grid.
-- Export `put`, `rect`, `Box` and the constants. A `wordmark` option.
-- `defineTheme()` with the bounded choices typed.
-- Done when: the text-free header seed has its HTML title aligned using only `layout()`.
+- The card replaces `sign` and `ledger`, with the seed card's proportions at any size; `light` and `dark` themes from semantic tokens replace the three schemes. Breaking; examples regenerated.
+- The card's feature, `texture()` and `calloutBackground()` are drawn with `pattern()` and `calloutArt()`, so there is one weave in the package. Callout backgrounds now have a dark version.
+- `layout(options)` returns every cell and type size. The title cell goes on the SVG as `data-title-*` attributes and is available as custom properties through `layoutVars()`.
+- Exports `put`, `rect`, `Box`, `THEMES` and a `wordmark` option.
+- `defineTheme()` with the bounded choices typed, and the letter and wordmark checked.
+- Done when: the text-free header seed has its HTML title aligned using only `layout()`. Met by the `card-overlay` specimen on the Card page.
+- Changed from the plan: `layout()` gives the card's geometry, not a page header's. On a page the header is the HTML card from the specimens, so only composed images need it.
 
 **PR 8. `feat(brand-graphics)`: rasters and diagram theme** `[ ]`
 
