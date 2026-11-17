@@ -382,69 +382,22 @@ interface Open {
   see: [href: string, text: string];
 }
 
-const labelsMini = `<div class="seed-mini"><div class="seed-mini-row"><span class="cv-bullet">A</span>${label("Article · No. 012")}</div>${label("14 Nov 2026 · 6 min read", true)}${tableHtml}</div>`;
-
-const cornersMini = `<div class="seed-mini cv-prose">${callout("salmon", "In short", "Read the source before the README.")}${codeHtml}</div>`;
-
-const tilesMini = (tiles: Tile[]) =>
-  `<div class="seed-grid seed-grid-small">${tiles.map((t) => swatch(t === "check" ? "Check" : t[0]?.toUpperCase() + t.slice(1), { tile: t, size: 16 })).join("")}</div>`;
-
-const OPEN: Open[] = [
-  {
-    id: "labels",
-    question: "Which typeface for labels?",
-    options: [
-      { name: "Monaspace Xenon, weight 500", html: labelsMini },
-      {
-        name: "Instrument Sans, weight 600",
-        html: `<div style="--cv-label-family:var(--fonts-body);--cv-label-weight:var(--font-weights-semibold)">${labelsMini}</div>`,
-      },
-    ],
-    pick: 0,
-    why: "A third face for facts keeps labels apart from body text without making them bolder. The tokens say Instrument Sans today, so this needs a change in Figma.",
-    see: ["article.html#table", "Labels throughout the article"],
-  },
-  {
-    id: "corners",
-    question: "Square or rounded corners on callouts and code blocks?",
-    options: [
-      { name: "Square", html: cornersMini },
-      {
-        name: "Rounded (8px)",
-        html: `<div style="--cv-radius:var(--radii-md)">${cornersMini}</div>`,
-      },
-    ],
-    pick: 0,
-    why: "The card, the tiles and the frame are square. Rounded boxes would be the only soft corners on the page.",
-    see: ["article.html#callout", "Callouts in the article"],
-  },
-  {
-    id: "tiles",
-    question: "Which pieces can a pattern repeat?",
-    options: [
-      {
-        name: "Triangle and quarter-disc",
-        html: tilesMini(["triangle", "quarter-disc"]),
-      },
-      {
-        name: "All five",
-        html: tilesMini([
-          "triangle",
-          "quarter-disc",
-          "half-disc",
-          "disc",
-          "check",
-        ]),
-      },
-    ],
-    pick: 1,
-    why: "More variety from the same rule, so pages differ without new artwork. Half-disc, disc and check are drawn square-cornered like the others.",
-    see: ["patterns.html#tiles", "All tiles on the Patterns page"],
-  },
-];
+/** Open questions. Empty when everything in this round is settled. */
+const OPEN: Open[] = [];
 
 /** Decided items: the question and the answer, newest round first. */
 const DECIDED: [question: string, answer: string, by: string][] = [
+  [
+    "Label typeface",
+    "Instrument Sans, weight 600, uppercase with wide tracking. This is what the tokens already say",
+    "You, 17 Nov",
+  ],
+  ["Corners on callouts and code blocks", "Square", "You, 17 Nov"],
+  [
+    "Pieces a pattern can repeat",
+    "All five: triangle, quarter-disc, half-disc, disc and check",
+    "You, 17 Nov",
+  ],
   ["Heading weight", "600", "You, 17 Nov"],
   ["Top band on the card", "None", "You, 17 Nov"],
   [
@@ -485,6 +438,7 @@ const option = (o: Option, picked: boolean) =>
 const decisionsPage = `<main class="cv-main" data-seed="decisions">
 <h1 class="seed-title">Decisions</h1>
 <p class="seed-note">The one list of design decisions for this round. Open questions first, each with the options side by side. Reply with the option name; anything decided moves to the list at the end.</p>
+${OPEN.length ? "" : '<p class="seed-why"><strong>No open questions.</strong> Everything in this round is settled.</p>'}
 ${OPEN.map(
   (d, i) => `<section class="seed-decision" id="${d.id}">
   <p class="cv-label cv-label-quiet">Open · ${i + 1} of ${OPEN.length}</p>

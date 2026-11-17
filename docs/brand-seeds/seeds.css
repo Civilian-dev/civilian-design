@@ -67,9 +67,9 @@
   --cv-edge: 4px;
   --cv-art: 240px;
 
-  /* Open decisions: labels and corners. */
-  --cv-label-family: var(--fonts-mono);
-  --cv-label-weight: var(--font-weights-medium);
+  /* Labels follow the label.overline text style; corners are square. */
+  --cv-label-family: var(--fonts-body);
+  --cv-label-weight: var(--font-weights-semibold);
   --cv-radius: var(--radii-none);
 
   /* Patterns: a tile in --cv-pattern-tile over noise from -from into -to. */
@@ -392,9 +392,10 @@ header.cv-window nav {
   position: absolute;
   left: calc(var(--spacing-8) * -1);
   top: 0.35em;
-  font-family: var(--fonts-mono);
+  font-family: var(--cv-label-family);
   font-size: var(--font-sizes-xs);
-  font-weight: var(--font-weights-medium);
+  font-weight: var(--cv-label-weight);
+  font-variant-numeric: tabular-nums;
   color: var(--cv-muted);
 }
 .cv-terms {
@@ -472,8 +473,9 @@ header.cv-window nav {
   border-bottom: var(--cv-hairline) solid var(--colors-border-default);
   vertical-align: top;
 }
+/* Numbers line up without a code face: mono is for code and paths only. */
 .cv-table .cv-num {
-  font-family: var(--fonts-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .cv-code {
@@ -620,7 +622,7 @@ header.cv-window nav {
 .cv-diagram .cv-group text {
   font-family: var(--cv-label-family);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: var(--cv-label-weight);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-anchor: start;
@@ -658,17 +660,10 @@ header.cv-window nav {
   grid-template-columns: repeat(auto-fill, 240px);
   gap: var(--spacing-8);
 }
-.seed-grid-small {
-  grid-template-columns: repeat(auto-fill, 112px);
-  gap: var(--spacing-4);
-}
 .seed-swatch .cv-feature {
   height: 240px;
   margin-bottom: var(--spacing-2);
   outline: var(--cv-hairline) solid var(--colors-border-default);
-}
-.seed-grid-small .cv-feature {
-  height: 96px;
 }
 .seed-callout-art {
   height: 120px;
