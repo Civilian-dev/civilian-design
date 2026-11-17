@@ -60,6 +60,8 @@ Format research: Google Labs' [DESIGN.md](https://github.com/google-labs-code/de
 
 ## Stages
 
+Stages 4 to 7 below are superseded by [`design-system-v2-plan.md`](design-system-v2-plan.md). They are kept as the record of what was planned; do not start work from them.
+
 ### Stage 0: research and plan `[x]`
 
 This file.
