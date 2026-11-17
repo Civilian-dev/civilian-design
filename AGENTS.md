@@ -5,7 +5,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 ## Ground rules
 
 - **Figma is the source of truth.** Never hand-edit token values. `packages/design-tokens/src/tokens.json` is written only by the Token Forge sync.
-- **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/`, `packages/brand-graphics/examples/` and the pages in `docs/brand-seeds/*.html`.
+- **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/`, `packages/brand-graphics/examples/`, `packages/brand-graphics/src/kit.ts` and the pages in `docs/brand-seeds/*.html`.
 - **One concern per PR.** PRs are squash-merged, so the PR becomes one commit on `main`. See [Git and PRs](#git-and-prs).
 - **Package names say what they are without the scope:** `design-tokens`, `panda-design-preset`, `claude-design-system`, `brand-graphics`. Folder names match package names. Use the package name as the commit scope.
 - Pin exact dependency versions. Node and pnpm come from `mise.toml`.
@@ -15,7 +15,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 - `packages/design-tokens` (`@civilian-dev/design-tokens`, published): Token Forge source, normalise + build scripts, `dist/`.
 - `packages/panda-design-preset` (`@civilian-dev/panda-design-preset`, published): Panda CSS preset generated from tokens.
 - `packages/claude-design-system` (private): generates the committed Claude plugin/skill and Design System artifact bundle.
-- `packages/brand-graphics` (private): brand artwork sources (SVG kit), composer, and generated `examples/`.
+- `packages/brand-graphics` (`@civilian-dev/brand-graphics`, published): brand artwork sources (SVG kit), composer compiled to `dist/`, generated `examples/` and the seed pages.
 - `apps/*`: reserved for later.
 - `DESIGN.md`: the brand guide (rules agents must follow for anything visual). `docs/brand-plan.md`: how the brand work got here (stages 0 to 3). `docs/design-system-v2-plan.md`: the current plan.
 - `.github/`: workflows, ruleset (`rulesets/main.json`), CODEOWNERS.

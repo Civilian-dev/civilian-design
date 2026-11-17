@@ -174,7 +174,7 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 - `claude-design-system` reads its fonts from here.
 - Done when: a page that imports only `tokens.css` and `fonts.css` renders all three faces offline.
 
-**PR 5. `build(brand-graphics)`: publishable build** `[ ]`
+**PR 5. `build(brand-graphics)`: publishable build** `[x]`
 
 - Compile to `dist/` with types; an `exports` map (`.`, `./css`, `./masks/*`, `./shapes/*`); the kit pre-parsed and the token lookup built in, so `compose(options)` needs no setup. Join the fixed version group; changeset.
 - No behaviour change in this PR.
