@@ -5,7 +5,7 @@ Workspace for the Civilian design system: tokens, Panda preset, and the Claude d
 ## Ground rules
 
 - **Figma is the source of truth.** Never hand-edit token values. `packages/design-tokens/src/tokens.json` is written only by the Token Forge sync.
-- **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/`, `packages/brand-graphics/examples/`, `packages/brand-graphics/src/kit.ts` and the pages in `docs/brand-seeds/*.html`.
+- **Generated files are never edited by hand.** They are rebuilt by `pnpm build` and checked by CI. This covers `dist/`, `packages/claude-design-system/plugin/`, `packages/claude-design-system/design-system/`, `packages/brand-graphics/examples/`, `packages/brand-graphics/src/kit.ts`, the pages in `docs/brand-seeds/*.html` and the YAML front matter of `DESIGN.md` (its prose below the front matter is hand-written).
 - **One concern per PR.** PRs are squash-merged, so the PR becomes one commit on `main`. See [Git and PRs](#git-and-prs).
 - **Package names say what they are without the scope:** `design-tokens`, `panda-design-preset`, `claude-design-system`, `brand-graphics`, `brand-fonts`. Folder names match package names. Use the package name as the commit scope.
 - Pin exact dependency versions. Node and pnpm come from `mise.toml`.
