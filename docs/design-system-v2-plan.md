@@ -219,11 +219,12 @@ The aim is a shorter guide that is easier to follow. The current one has about 3
 - Done when: tested rather than by a separate session. The tests check that the skill names the patterns allowed in a callout and that its specimen index sends attachments to `article.html`.
 - Changed from the plan: the theme contract stays in `DESIGN.md`, which the skill ships whole, rather than being copied into `SKILL.md`. The decisions page is left out of the skill.
 
-**PR 10. `test`: conformance audit** `[ ]`
+**PR 10. `test`: conformance audit** `[x]`
 
-- A script that loads a page and checks computed styles against the fixed part of the contract: label face and case, heading weight, rule widths, no radius in artwork, no fills in tables, at most one feature in the first screen, ground continuity between header and page.
-- Runs on the seeds in CI, and against any URL by hand.
-- Done when: it passes on every seed and fails on the current article page for the reasons in the evidence table.
+- `packages/brand-audit` loads pages in Chrome and checks computed styles: label style, heading weight, rule widths, rules in the body, square containers, table fills, one card, one feature in the first screen, and grounds.
+- Runs on the seeds in `pnpm check` (so in CI), and against any URL with `pnpm --filter @civilian-dev/brand-audit pages <url>`.
+- Done when: it passes on every seed and fails on the current article page for the reasons in the evidence table. Met: all 12 specimen pages pass. The live article page fails with 42 findings: headings at 500, rules between sections and list items, filled table rows, rounded callouts and pull quotes, and no card.
+- Changed from the plan: "ground continuity between header and page" became two checks after round 4: the window header is on the page ground, and the card is not. Labels now pass on the article page, because Instrument Sans was chosen for them.
 
 ### Phase 5: prove it
 
