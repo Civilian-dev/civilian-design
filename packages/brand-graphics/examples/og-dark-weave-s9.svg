@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" data-theme="dark" data-feature="weave" data-seed="9" data-title-x="42" data-title-y="123" data-title-w="762" data-title-h="384" data-title-size="88">
+<rect width="1200" height="630" fill="#2c3536"/>
+<rect x="40" y="31" width="1120" height="568" fill="#f9fafb"/>
+<rect x="42" y="33" width="762" height="88" fill="#2c3536"/>
+<rect x="806" y="33" width="352" height="88" fill="#2c3536"/>
+<rect x="42" y="123" width="762" height="384" fill="#2c3536"/>
+<rect x="806" y="123" width="352" height="384" fill="#2c3536"/>
+<rect x="42" y="509" width="762" height="88" fill="#2c3536"/>
+<rect x="806" y="509" width="352" height="88" fill="#2c3536"/>
+<svg x="806" y="123" width="352" height="384"><svg class="cv-pattern" data-tile="check" data-turn="0" data-direction="down" data-size="32" data-noise="crisp" aria-hidden="true"><defs><linearGradient id="card-dark-weave-s9-weave-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-opacity="0"/><stop offset="0.5" stop-opacity="0.5"/><stop offset="1" stop-opacity="1"/></linearGradient><filter id="card-dark-weave-s9-weave-f" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="9" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 0 0 0 -0.7" result="a"/><feComposite in="SourceGraphic" in2="a" operator="arithmetic" k1="0" k2="1.4" k3="1" k4="-0.62"/><feComponentTransfer result="t"><feFuncA type="linear" slope="14" intercept="-6.5"/></feComponentTransfer><feFlood style="flood-color:#f25855"/><feComposite in2="t" operator="in"/></filter><pattern id="card-dark-weave-s9-weave-p" patternUnits="userSpaceOnUse" width="64" height="64" style="fill:#2c3536"><g transform="translate(0 0) scale(0.2667)"><rect width="120" height="120"/></g><g transform="translate(32 32) scale(0.2667)"><rect width="120" height="120"/></g></pattern></defs><rect width="100%" height="100%" style="fill:#fea993"/><rect width="100%" height="100%" fill="url(#card-dark-weave-s9-weave-g)" filter="url(#card-dark-weave-s9-weave-f)"/><rect width="100%" height="100%" fill="url(#card-dark-weave-s9-weave-p)"/></svg></svg>
+<circle cx="98" cy="77" r="24" fill="#f25855"/>
+<text x="98" y="84.2" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" text-anchor="middle" fill="#ffffff">A</text>
+<text x="134" y="82.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#f9fafb">ARTICLE · NO. 012</text>
+<text x="74" y="558.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#aab7b9">14 NOV 2026 · 6 MIN READ</text>
+<text x="838" y="558.76" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="600" letter-spacing="0.1em" fill="#f9fafb">FIELD NOTES</text>
+<text x="838" y="84.2" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="-0.025em" fill="#f9fafb">civilian.dev</text>
+<text x="74" y="298.28" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-0.025em" fill="#f9fafb">A field guide to</text>
+<text x="74" y="395.08" font-family="Poppins, 'Helvetica Neue', Arial, sans-serif" font-size="88" font-weight="600" letter-spacing="-0.025em" fill="#f9fafb">small libraries</text>
+<g transform="translate(1014 537) scale(0.2667)" fill="#f9fafb"><rect width="120" height="120"/></g>
+<g transform="translate(1054 537) scale(0.2667)" fill="#f25855"><path d="M0 120V0L120 120Z"/></g>
+<g transform="translate(1094 537) scale(0.2667)" fill="#fede8f"><path d="M0 120V0A120 120 0 0 1 120 120Z"/></g>
+</svg>
