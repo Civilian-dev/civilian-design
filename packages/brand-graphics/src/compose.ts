@@ -595,7 +595,9 @@ export function texture(
   o: { scheme: SchemeName; feature: "grain" | "weave"; seed: number },
 ): string {
   const s = SCHEMES[o.scheme];
-  const [from, to] = (o.feature === "weave" ? s.weave : s.grain)[0] as Pair;
+  // The seed chooses the pair, as it does in compose().
+  const pairs: readonly Pair[] = o.feature === "weave" ? s.weave : s.grain;
+  const [from, to] = pick(mulberry32(o.seed), pairs);
   const tile = 32;
   const id = `texture-${o.scheme}-${o.feature}-s${o.seed}`;
   const triangle = kit.shapes.triangle;
