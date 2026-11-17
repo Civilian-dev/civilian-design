@@ -112,15 +112,15 @@ export const rolesTable = (roles: Role[]): string =>
     ),
   ].join("\n");
 
-export const aesthetic = `Clean, professional, roomy, verging on cold. Warm accents (salmon and gold) are used sparingly, as a hint of warmth against the cool teal and neutral base. Use generous whitespace; let the layout breathe.`;
+export const aesthetic = `Plain, exact and calm, with a little warmth: ink on paper, one framed card at the top of each page, and open space for reading. Warm accents (salmon and gold) are rationed against the cool teal and neutral base.`;
 
 export const usageRules = [
   "Use semantic roles (`bg.canvas`, `fg.default`, `brand.solid`), never primitives (`teal.700`) or raw hex values.",
   "Support light and dark. Roles resolve per theme, so a role-based design adapts automatically.",
-  "Radius: `sm` for controls (buttons, inputs), `md` for surfaces (cards, panels); `lg` / `xl` only for rare emphasis.",
-  "Type: Poppins for headings, Instrument Sans for body text, Monaspace Xenon for code.",
+  "Corners: artwork, cards, callouts and code blocks are square; controls use `radii.sm`; pills and avatars use `radii.full`.",
+  "Type: Poppins 600 for headings, Instrument Sans for body text and labels, Monaspace Xenon for code and file paths only.",
   "Text contrast must be at least 4.5:1 against its background. Pair `*.solid` with `*.contrast`, and use `fg.*` on `bg.*` surfaces.",
-  "Use warm accents (`accent`, `highlight`) sparingly: one accent per view is usually plenty.",
+  "In the body, separate things with space. Rules belong to the card frame and tables only.",
 ];
 
 export const consumption = `### CSS variables (any web output)
@@ -143,6 +143,9 @@ Then use roles in styles: \`css({ bg: "bg.canvas", color: "fg.default", textStyl
 
 ### Raster, canvas, slides, OG images
 
-CSS variables are unavailable here. Read \`references/tokens.resolved.json\`: per-theme final values, with \`hex\` and \`oklch\` for each colour (\`resolved.light.colors.bg.canvas.hex\`). Never hardcode colours.`;
+CSS variables are unavailable here. Read \`references/tokens.resolved.json\`: per-theme final values, with \`hex\` and \`oklch\` for each colour (\`resolved.light.colors.bg.canvas.hex\`). Never hardcode colours. For a card or banner image, use \`compose()\` and \`toPng()\` from \`@civilian-dev/brand-graphics\`.
 
-export const generativePlaceholder = `Generative patterns and gradients (\`@civilian-dev/brand-graphics\`) are coming. Until then, build backgrounds from flat role colours and simple gradients between role colours; do not invent decorative illustration styles.`;
+### Fonts, patterns, cards and diagrams
+
+- **Fonts:** \`@civilian-dev/brand-fonts\` (\`fonts.css\` for pages, OpenType files for renderers). Never load fonts from a CDN.
+- **Graphics:** \`@civilian-dev/brand-graphics\` draws the card (\`compose\`), patterns (\`pattern\`, \`calloutArt\`), PNGs (\`toPng\`) and diagrams (\`mermaidTheme\`). Never draw a pattern or the card by hand.`;
