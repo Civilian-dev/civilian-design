@@ -7,37 +7,37 @@
 @font-face {
   font-family: Poppins;
   font-weight: 500;
-  src: url("../../packages/claude-design-system/design-system/project/fonts/poppins-latin-500-normal.woff2")
+  src: url("fonts/poppins-latin-500-normal.woff2")
     format("woff2");
 }
 @font-face {
   font-family: Poppins;
   font-weight: 600;
-  src: url("../../packages/claude-design-system/design-system/project/fonts/poppins-latin-600-normal.woff2")
+  src: url("fonts/poppins-latin-600-normal.woff2")
     format("woff2");
 }
 @font-face {
   font-family: "Instrument Sans";
   font-weight: 400;
-  src: url("../../packages/claude-design-system/design-system/project/fonts/instrument-sans-latin-400-normal.woff2")
+  src: url("fonts/instrument-sans-latin-400-normal.woff2")
     format("woff2");
 }
 @font-face {
   font-family: "Instrument Sans";
   font-weight: 600;
-  src: url("../../packages/claude-design-system/design-system/project/fonts/instrument-sans-latin-600-normal.woff2")
+  src: url("fonts/instrument-sans-latin-600-normal.woff2")
     format("woff2");
 }
 @font-face {
   font-family: "Monaspace Xenon";
   font-weight: 400;
-  src: url("../../packages/claude-design-system/design-system/project/fonts/monaspace-xenon-latin-400-normal.woff2")
+  src: url("fonts/monaspace-xenon-latin-400-normal.woff2")
     format("woff2");
 }
 @font-face {
   font-family: "Monaspace Xenon";
   font-weight: 500;
-  src: url("../../packages/claude-design-system/design-system/project/fonts/monaspace-xenon-latin-500-normal.woff2")
+  src: url("fonts/monaspace-xenon-latin-500-normal.woff2")
     format("woff2");
 }
 
