@@ -7,6 +7,7 @@
  */
 import { resolved } from "@civilian-dev/design-tokens/resolved";
 import * as raw from "./compose.js";
+import * as diagram from "./diagram.js";
 import { kit } from "./kit.js";
 import * as patterns from "./pattern.js";
 
@@ -37,6 +38,7 @@ export {
   THEMES,
   WORDMARK,
 } from "./compose.js";
+export type { MermaidConfig } from "./diagram.js";
 export type {
   CalloutArtOptions,
   Direction,
@@ -94,3 +96,10 @@ export const BORDER_WIDTHS = { hairline: 1, rule: 2, edge: 4 } as const;
 
 /** The widest a callout's art may be, in px, until a size token exists. */
 export const ART_WIDTH = 240;
+
+/**
+ * Mermaid options for a theme: spread into `mermaid.initialize()`. Mark the
+ * diagram's output node `:::output`.
+ */
+export const mermaidTheme = (theme: raw.Theme): diagram.MermaidConfig =>
+  diagram.mermaidTheme(hex, theme);

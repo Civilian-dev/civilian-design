@@ -571,55 +571,22 @@ header.cv-window nav {
   letter-spacing: var(--letter-spacings-tight);
 }
 
-/* Figure and diagram: ink on ground, 2px rules, square corners. */
+/* Figure. Diagrams are drawn by Mermaid with mermaidTheme() from the package. */
 .cv-figure {
   margin: var(--spacing-8) 0 0;
 }
 .cv-figure svg {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
 }
 .cv-figure figcaption {
   margin-top: var(--spacing-3);
 }
-.cv-diagram rect {
-  fill: var(--cv-ground);
-  stroke: var(--cv-ink);
-  stroke-width: 2;
-}
-.cv-diagram .cv-node-out rect {
-  fill: var(--cv-ink);
-}
-.cv-diagram .cv-group rect {
-  stroke: var(--colors-border-emphasized);
-  stroke-width: 1;
-}
-.cv-diagram path {
-  fill: none;
-  stroke: var(--cv-ink);
-  stroke-width: 2;
-}
-.cv-diagram .cv-head {
-  fill: var(--cv-ink);
-  stroke: none;
-}
-.cv-diagram text {
-  fill: var(--cv-ink);
-  font-family: var(--fonts-body);
-  font-size: 14px;
-  text-anchor: middle;
-}
-.cv-diagram .cv-node-out text {
-  fill: var(--cv-ground);
-}
-.cv-diagram .cv-group text {
-  font-family: var(--cv-label-family);
-  font-size: 11px;
-  font-weight: var(--cv-label-weight);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-anchor: start;
+/* Mermaid's source stays hidden until it is replaced by the drawing. */
+.cv-figure pre.mermaid {
+  margin: 0;
+  color: transparent;
 }
 
 .cv-footnotes {
