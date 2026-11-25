@@ -18,17 +18,46 @@ export const TILE_NAMES = ["grain", ...TILES] as const;
 export type TileName = (typeof TILE_NAMES)[number];
 
 /**
- * The surface a pattern sits on. Its colour is the tile colour, and its
- * theme picks the noise colours.
+ * The surface a pattern sits on: the background colour, which is also the
+ * tile colour. Its theme picks the noise colours. Grounds are the page and
+ * card grounds; colours are the solid brand colours.
  */
 export const SURFACES = {
-  paper: { label: "Paper", theme: "light", token: "bg.canvas" },
-  concrete: { label: "Concrete", theme: "light", token: "bg.emphasized" },
-  dark: { label: "Dark", theme: "dark", token: "bg.canvas" },
-  "dark-card": { label: "Dark card", theme: "dark", token: "bg.default" },
+  paper: { label: "Paper", group: "Light", theme: "light", token: "bg.canvas" },
+  concrete: {
+    label: "Concrete",
+    group: "Light",
+    theme: "light",
+    token: "bg.emphasized",
+  },
+  brand: {
+    label: "Brand",
+    group: "Colour",
+    theme: "light",
+    token: "brand.solid",
+  },
+  accent: {
+    label: "Accent",
+    group: "Colour",
+    theme: "light",
+    token: "accent.solid",
+  },
+  highlight: {
+    label: "Highlight",
+    group: "Colour",
+    theme: "light",
+    token: "highlight.solid",
+  },
+  dark: { label: "Dark", group: "Dark", theme: "dark", token: "bg.canvas" },
+  "dark-card": {
+    label: "Dark card",
+    group: "Dark",
+    theme: "dark",
+    token: "bg.default",
+  },
 } as const satisfies Record<
   string,
-  { label: string; theme: Theme; token: string }
+  { label: string; group: string; theme: Theme; token: string }
 >;
 export type Surface = keyof typeof SURFACES;
 
@@ -99,25 +128,70 @@ export function label(tile: TileName, surface: Surface): string {
   return `${title(tile)} ${SURFACES[surface].label}`;
 }
 
+export interface Grid {
+  /** Tile size in px; may be fractional. */
+  size: number;
+  /** True when the box holds whole tiles both ways. */
+  whole: boolean;
+  /** How far the grid starts outside the box, to centre cut tiles. */
+  x: number;
+  y: number;
+}
+
+const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+const closest = (list: number[], target: number) =>
+  list.reduce<number | undefined>(
+    (best, s) =>
+      best === undefined || Math.abs(s - target) <= Math.abs(best - target)
+        ? s
+        : best,
+    undefined,
+  );
+
 /**
- * The tile size closest to `target` that gives whole tiles both ways. When
- * no size within half or double the target does, the width decides and the
- * last row is cut.
+ * Tile sizes for each scale. Sizes that give whole tiles both ways are
+ * the box's common divisor over 1, 2, 3...; each scale takes the one
+ * nearest its target, within half to double, whole pixels first, ties to
+ * the smaller, and coarser scales always
+ * take bigger tiles. A scale with no whole size left fits whole tiles on
+ * the short side and centres the long side, so its cut tiles match.
  */
-export function fitTile(
-  width: number,
-  height: number,
-  target: number,
-): { size: number; whole: boolean } {
-  let best = 0;
-  for (let s = Math.ceil(target / 2); s <= target * 2; s++) {
-    if (width % s === 0 && height % s === 0) {
-      if (!best || Math.abs(s - target) <= Math.abs(best - target)) best = s;
+export function grids(width: number, height: number): Record<Scale, Grid> {
+  const g = gcd(width, height);
+  const whole: number[] = [];
+  for (let k = 1; g / k >= 4; k++) whole.push(g / k);
+  // Whole-pixel tiles first: they draw without seams.
+  const near = (target: number, keep: (s: number) => boolean) => {
+    const fits = whole.filter(
+      (s) => keep(s) && s >= target / 2 && s <= target * 2,
+    );
+    return (
+      closest(fits.filter(Number.isInteger), target) ?? closest(fits, target)
+    );
+  };
+  const short = Math.min(width, height);
+  const fallback = (target: number, keep: (s: number) => boolean): Grid => {
+    const sizes: number[] = [];
+    for (let rows = 1; short / rows >= 2; rows++) {
+      if (keep(short / rows)) sizes.push(short / rows);
     }
-  }
-  if (best) return { size: best, whole: true };
-  const across = Math.max(1, Math.round(width / target));
-  return { size: Math.round((width / across) * 100) / 100, whole: false };
+    const size =
+      closest(sizes, target) ?? short / Math.max(1, Math.round(short / target));
+    const cut = (n: number) => (Math.ceil(n / size - 1e-9) * size - n) / 2;
+    return { size, whole: false, x: cut(width), y: cut(height) };
+  };
+  const pick = (target: number, keep: (s: number) => boolean): Grid => {
+    const size = near(target, keep);
+    return size === undefined
+      ? fallback(target, keep)
+      : { size, whole: true, x: 0, y: 0 };
+  };
+  const regular = pick(SCALES.regular, () => true);
+  return {
+    regular,
+    coarse: pick(SCALES.coarse, (s) => s > regular.size),
+    fine: pick(SCALES.fine, (s) => s < regular.size),
+  };
 }
 
 /** Reads `1280x288` (or `1280 x 288`) as a size. */
@@ -141,17 +215,13 @@ export function fileName(o: Options): string {
 export function generate(o: Options): string {
   const { theme, token } = SURFACES[o.surface];
   const [from, to] = PAIRS[o.pair ?? DEFAULTS.pair][theme];
-  const { size } = fitTile(
-    o.width,
-    o.height,
-    SCALES[o.scale ?? DEFAULTS.scale],
-  );
+  const grid = grids(o.width, o.height)[o.scale ?? DEFAULTS.scale];
   const tile: Tile = o.tile === "grain" ? "none" : o.tile;
   const inner = pattern({
     tile,
     turn: o.turn ?? DEFAULTS.turn,
     dir: o.dir ?? (tile === "none" ? "diagonal" : DEFAULTS.dir),
-    size,
+    size: grid.size,
     soft: (o.noise ?? DEFAULTS.noise) === "soft",
     seed: o.seed ?? DEFAULTS.seed,
     id: "cv",
@@ -161,9 +231,18 @@ export function generate(o: Options): string {
       tile: hex(token, theme),
     },
   });
+  // A cut grid is drawn a little larger than the box and shifted, so the
+  // cut tiles are the same at both ends.
+  const placed =
+    grid.x || grid.y
+      ? inner.replace(
+          "<svg ",
+          `<svg x="${-grid.x}" y="${-grid.y}" width="${o.width + 2 * grid.x}" height="${o.height + 2 * grid.y}" `,
+        )
+      : inner;
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" width="${o.width}" height="${o.height}" viewBox="0 0 ${o.width} ${o.height}">` +
-    `<title>${label(o.tile, o.surface)}</title>${inner}</svg>\n`
+    `<title>${label(o.tile, o.surface)}</title>${placed}</svg>\n`
   );
 }
 
@@ -174,6 +253,7 @@ export function choices() {
     surfaces: Object.entries(SURFACES).map(([id, s]) => ({
       id,
       label: s.label,
+      group: s.group,
       theme: s.theme,
       colour: hex(s.token, s.theme),
     })),

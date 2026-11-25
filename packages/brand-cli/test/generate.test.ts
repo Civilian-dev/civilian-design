@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   choices,
   fileName,
-  fitTile,
   generate,
+  grids,
   label,
   parseSize,
   TILE_NAMES,
@@ -21,18 +21,33 @@ describe("parseSize", () => {
   });
 });
 
-describe("fitTile", () => {
-  it("picks a size that gives whole tiles both ways", () => {
-    const { size, whole } = fitTile(1280, 288, 24);
-    expect(whole).toBe(true);
-    expect(1280 % size).toBe(0);
-    expect(288 % size).toBe(0);
+describe("grids", () => {
+  it.each([
+    [1280, 288],
+    [1200, 630],
+    [1500, 500],
+    [1440, 72],
+    [1001, 333],
+    [400, 400],
+  ])("gives fine < regular < coarse at %ix%i", (w, h) => {
+    const g = grids(w, h);
+    expect(g.fine.size).toBeLessThan(g.regular.size);
+    expect(g.regular.size).toBeLessThan(g.coarse.size);
   });
 
-  it("fits the width when no whole size is near", () => {
-    const { size, whole } = fitTile(1001, 333, 24);
+  it("uses whole tiles both ways where it can", () => {
+    for (const { size, whole } of Object.values(grids(1280, 288))) {
+      expect(whole).toBe(true);
+      expect((1280 / size) % 1).toBeCloseTo(0);
+      expect((288 / size) % 1).toBeCloseTo(0);
+    }
+  });
+
+  it("centres cut tiles when it cannot", () => {
+    const { size, whole, x, y } = grids(1001, 333).regular;
     expect(whole).toBe(false);
-    expect(Math.round(1001 / size) * size).toBeCloseTo(1001, 0);
+    expect(y).toBeCloseTo(0);
+    expect(((1001 + 2 * x) / size) % 1).toBeCloseTo(0);
   });
 });
 

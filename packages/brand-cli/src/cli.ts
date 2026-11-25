@@ -22,6 +22,7 @@ import {
   DIRECTIONS,
   fileName,
   generate,
+  grids,
   NOISES,
   type Options,
   PAIRS,
@@ -97,6 +98,11 @@ function pattern(args: string[]): string {
     throw new Error("density must be above 0 and at most 4");
 
   const svg = generate(o);
+  if (!grids(o.width, o.height)[o.scale ?? "regular"].whole) {
+    console.error(
+      `note: no ${o.scale ?? "regular"} tile fits ${o.width}x${o.height} in whole tiles; the cut tiles are centred`,
+    );
+  }
   const out = resolve(values.out ?? `${fileName(o)}.${format}`);
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(

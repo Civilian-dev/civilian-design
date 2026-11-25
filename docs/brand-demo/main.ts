@@ -8,6 +8,7 @@ import "@civilian-dev/brand-fonts/fonts.css";
 interface Choice {
   id: string | number;
   label?: string;
+  group?: string;
 }
 
 const SIZES: Record<string, [number, number]> = {
@@ -30,8 +31,22 @@ function select(name: string, label: string, items: Choice[], value: unknown) {
   el.textContent = label;
   const s = document.createElement("select");
   s.name = name;
-  for (const c of items)
-    s.add(new Option(c.label ?? String(c.id), String(c.id)));
+  const groups = new Map<string, HTMLOptGroupElement>();
+  for (const c of items) {
+    const option = new Option(c.label ?? String(c.id), String(c.id));
+    if (!c.group) {
+      s.add(option);
+      continue;
+    }
+    let g = groups.get(c.group);
+    if (!g) {
+      g = document.createElement("optgroup");
+      g.label = c.group;
+      groups.set(c.group, g);
+      s.append(g);
+    }
+    g.append(option);
+  }
   s.value = String(value);
   el.append(s);
   form.append(el);
@@ -94,7 +109,7 @@ for (const n of ["width", "height"]) {
 }
 select("tile", "Pattern", c.tiles, "grain");
 select("surface", "Surface", c.surfaces, "paper");
-select("pair", "Colours", c.pairs, c.defaults.pair);
+select("pair", "Noise colours", c.pairs, c.defaults.pair);
 select("scale", "Scale", c.scales, c.defaults.scale);
 select(
   "turn",
