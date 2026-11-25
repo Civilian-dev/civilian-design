@@ -4,14 +4,37 @@
     {
       "name": "brand-graphics-gallery",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173", "--directory", "packages/brand-graphics"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4173",
+        "--directory",
+        "packages/brand-graphics"
+      ],
       "port": 4173
     },
     {
       "name": "brand-seeds",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4311"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4311"
+      ],
       "port": 4311
+    },
+    {
+      "name": "brand-demo",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": [
+        "--filter",
+        "@civilian-dev/brand-demo",
+        "dev",
+        "--port",
+        "5180",
+        "--strictPort"
+      ],
+      "port": 5180
     }
   ]
 }

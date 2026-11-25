@@ -1,0 +1,22 @@
+{
+  "name": "@civilian-dev/brand-demo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A local page for making brand assets with brand-cli: choose the dials, preview, download SVG or PNG",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@civilian-dev/brand-cli": "workspace:^",
+    "@civilian-dev/brand-fonts": "workspace:^",
+    "@civilian-dev/design-tokens": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  }
+}
