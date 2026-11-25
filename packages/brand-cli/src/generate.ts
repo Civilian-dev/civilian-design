@@ -226,7 +226,8 @@ export function generate(o: Options): string {
     seed: o.seed ?? DEFAULTS.seed,
     id: "cv",
     paint: {
-      from: hex(from, theme),
+      // Grain has no tile, so the surface shows as the gradient's start.
+      from: hex(tile === "none" ? token : from, theme),
       to: hex(to, theme),
       tile: hex(token, theme),
     },

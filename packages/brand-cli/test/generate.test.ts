@@ -59,6 +59,23 @@ describe("generate", () => {
     expect(svg).not.toContain("var(--");
   });
 
+  it("starts grain from the surface colour", () => {
+    const paper = generate({
+      tile: "grain",
+      surface: "paper",
+      width: 64,
+      height: 64,
+    });
+    const accent = generate({
+      tile: "grain",
+      surface: "accent",
+      width: 64,
+      height: 64,
+    });
+    expect(paper).not.toBe(accent);
+    expect(accent.toLowerCase()).toContain("fill:#fea993");
+  });
+
   it("is the same for the same options", () => {
     const o = {
       tile: "disc",

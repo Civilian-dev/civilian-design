@@ -25,6 +25,6 @@ pnpm --filter @civilian-dev/brand-cli brand pattern grain paper 1280x288 --forma
 | `--density` | PNG pixels per px, up to 4                                 | 1                                   |
 | `--out`     | file path                                                  | `<tile>-<surface>-<W>x<H>.<format>` |
 
-The tile size is fitted so the box holds whole tiles both ways where it can (DESIGN.md, Patterns). The SVG uses resolved token colours, so it renders without the page's CSS. PNG is rendered with `toPng()` from `@civilian-dev/brand-graphics/raster`.
+Grain has no tile, so its gradient starts from the surface colour and runs into the second colour of the pair. The tile size is fitted so the box holds whole tiles both ways where it can (DESIGN.md, Patterns). The SVG uses resolved token colours, so it renders without the page's CSS. PNG is rendered with `toPng()` from `@civilian-dev/brand-graphics/raster`.
 
 `docs/brand-demo` is a page for choosing the dials and downloading the result.
