@@ -1,0 +1,27 @@
+{
+  "name": "@civilian-dev/brand-cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Makes brand assets, such as pattern banners, from @civilian-dev/brand-graphics as SVG or PNG",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "brand": "./src/cli.ts"
+  },
+  "exports": {
+    ".": "./src/generate.ts"
+  },
+  "scripts": {
+    "brand": "node src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@civilian-dev/brand-graphics": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
+  }
+}
