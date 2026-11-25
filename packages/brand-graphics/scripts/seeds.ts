@@ -363,8 +363,26 @@ interface Open {
   see: [href: string, text: string];
 }
 
+/** One tile scale: the three steps, the footer strip and callout art. */
+const scaleOption = (fine: number, regular: number, coarse: number) =>
+  `<div class="seed-grid">${swatch(`Fine · ${fine}px`, { tile: "triangle", size: fine })}${swatch(`Regular · ${regular}px`, { tile: "triangle", size: regular })}${swatch(`Coarse · ${coarse}px`, { tile: "triangle", size: coarse })}</div>` +
+  `<p class="cv-label cv-label-quiet" style="margin-top:var(--spacing-6)">Footer strip · regular, three rows, ${regular * 3}px tall</p><div class="cv-strip" style="height:${regular * 3}px">${pattern({ tile: "quarter-disc", size: regular })}</div>` +
+  `<p class="cv-label cv-label-quiet" style="margin-top:var(--spacing-6)">Callout art · fine</p><div class="cv-callout cv-callout-salmon seed-callout-art"><div class="cv-callout-art">${pattern({ tile: "triangle", dir: "edge", size: fine, soft: true })}</div></div>`;
+
 /** Open questions. Empty when everything in this round is settled. */
-const OPEN: Open[] = [];
+const OPEN: Open[] = [
+  {
+    id: "tile-scale",
+    question: "How big should pattern tiles be?",
+    options: [
+      { name: "As now: 12, 24, 40px", html: scaleOption(12, 24, 40) },
+      { name: "One step larger: 16, 32, 64px", html: scaleOption(16, 32, 64) },
+    ],
+    pick: 1,
+    why: "On banners, fine at 12px read as too small, and one set of sizes means fine is the same on a page as on a banner.",
+    see: ["patterns.html#scales", "The scale row as it is now"],
+  },
+];
 
 /** Decided items: the question and the answer, newest round first. */
 const DECIDED: [question: string, answer: string, by: string][] = [
