@@ -36,10 +36,10 @@ describe("grids", () => {
   });
 
   it("uses whole tiles both ways where it can", () => {
-    for (const { size, whole } of Object.values(grids(1280, 288))) {
+    for (const { size, whole } of Object.values(grids(1920, 1080))) {
       expect(whole).toBe(true);
-      expect((1280 / size) % 1).toBeCloseTo(0);
-      expect((288 / size) % 1).toBeCloseTo(0);
+      expect((1920 / size) % 1).toBeCloseTo(0);
+      expect((1080 / size) % 1).toBeCloseTo(0);
     }
   });
 

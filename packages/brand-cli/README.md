@@ -16,7 +16,7 @@ pnpm --filter @civilian-dev/brand-cli brand pattern grain paper 1280x288 --forma
 | tile        | grain, triangle, quarter-disc, half-disc, disc, check      | required                            |
 | surface     | paper, concrete; brand, accent, highlight; dark, dark-card | required                            |
 | `--pair`    | ink-red, ink-teal, salmon-red                              | ink-red                             |
-| `--scale`   | fine, regular, coarse (about 12, 24, 48px tiles)           | regular                             |
+| `--scale`   | fine, regular, coarse (about 16, 32, 64px tiles)           | regular                             |
 | `--turn`    | 0, 90, 180, 270                                            | 0                                   |
 | `--dir`     | down, diagonal, edge                                       | down (diagonal for grain)           |
 | `--noise`   | crisp, soft                                                | crisp                               |

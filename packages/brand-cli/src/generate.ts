@@ -85,7 +85,7 @@ export const PAIRS = {
 export type Pair = keyof typeof PAIRS;
 
 /** Target tile sizes in px. The actual size is fitted to the box. */
-export const SCALES = { fine: 12, regular: 24, coarse: 48 } as const;
+export const SCALES = { fine: 16, regular: 32, coarse: 64 } as const;
 export type Scale = keyof typeof SCALES;
 
 export const TURNS = [0, 90, 180, 270] as const satisfies readonly Turn[];
