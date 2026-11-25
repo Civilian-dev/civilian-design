@@ -176,6 +176,28 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  docs/brand-demo:
+    dependencies:
+      '@civilian-dev/brand-cli':
+        specifier: workspace:^
+        version: link:../../packages/brand-cli
+      '@civilian-dev/brand-fonts':
+        specifier: workspace:^
+        version: link:../../packages/brand-fonts
+      '@civilian-dev/design-tokens':
+        specifier: workspace:^
+        version: link:../../packages/design-tokens
+    devDependencies:
+      '@types/node':
+        specifier: 26.6.6
+        version: 26.6.6
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+      vite:
+        specifier: 8.3.8
+        version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.9.1)
+
   packages/brand-audit:
     devDependencies:
       '@types/node':
